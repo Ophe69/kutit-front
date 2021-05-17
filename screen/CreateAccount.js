@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ImageBackground, View, Text} from 'react-native';
-import { Button, Input, inputStyle} from 'react-native-elements';
+import { StyleSheet, TextInput, ImageBackground, View} from 'react-native';
+import { Button, Input, inputStyle, CheckBox } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
 
 
-export default function Login(props) {
+function CreateAccount(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [checked, setChecked] = useState(false);
 
     
     return (
-        <ImageBackground /* source={require('../assets/images/pexels-thgusstavo-santana-2076932.jpg')} */ style={styles.container}>
+        <View /* source={require('../assets/images/pexels-thgusstavo-santana-2076932.jpg')} */ style={styles.container}>
                 <Input
                 placeholder='email'
                 leftIcon={{ type: 'font-awesome', name: 'user', color: 'black'}}
@@ -38,11 +38,38 @@ export default function Login(props) {
                 <Button
                     title='Se connecter'
                     buttonStyle={{backgroundColor: '#354F52'}}
-                    onPress={() => {console.log(email)}}
+                    onPress={() => {console.log('email')}}
     
                 />
 
-        </ImageBackground>
+{/*             <CheckBox style={{backgroundColor: ''}}
+            center
+            title='Accepter les CGV'
+            checked={checked}
+            onPress={() => (!setChecked)}
+            /> */}
+
+            <Button
+                title='Créer un compte'
+                buttonStyle={{backgroundColor: '#354F52'}}
+                onPress={() => {
+                    props.navigation.navigate('BottomNavigator', { screen: 'Profile' });
+                }}
+            />
+
+            <Button style
+            type="outline"
+            icon={
+                <Icon style={{ marginRight: 20, marginLeft: 20, color: "blue" }}
+                name="facebook"
+                size={15}
+                color="white"
+                
+                />
+            }
+            title="Se connecter avec Facebook"
+            />
+        </View>
         
     )
             }
@@ -68,15 +95,4 @@ const styles = StyleSheet.create({
 
 });
 
-/* function mapDispatchToProps(dispatch) {
-    return {
-      onSubmitPseudo: function (pseudo) {
-        dispatch({ type: 'savePseudo', pseudo: pseudo })
-      }
-    }
-  }
-  
-  export default connect(
-    null,
-    mapDispatchToProps
-  )(HomeScreen); */
+export default CreateAccount;
