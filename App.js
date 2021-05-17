@@ -18,7 +18,12 @@ import Dashboard from './screen/Dashboard';
 import HairdresserList from './screen/HairderesserList';
 import HairdresserDetails from './screen/HairdresserDetails';
 import Profile from './screen/Profile';
+import RecapRDV from './screen/RecapRDV';
+import Paiement from './screen/Paiement';
+import ChoixRDV from './screen/ChoixRDV';
 import Favorite from './screen/Favorite';
+
+
 
 const BottomNavigator = () => {
   return(
@@ -58,13 +63,15 @@ export default function App() {
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
             <Stack.Screen name="HairdresserList" component={HairdresserList} />
             <Stack.Screen name="HairdresserDetails" component={HairdresserDetails} />
+            <Stack.Screen name="RecapRDV" component={RecapRDV} />
+            <Stack.Screen name="ChoixRDV" component={ChoixRDV} />
+            <Stack.Screen name="paiement" component={Paiement} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Favorite" component={Favorite} />
           </Stack.Navigator>
       </NavigationContainer> 
   );
 }
-
 
 
 {/* <View style={styles.container}>
