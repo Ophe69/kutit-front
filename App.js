@@ -12,6 +12,7 @@ const Tab = createBottomTabNavigator();
 // const store = createStore(combineReducers({  }));
 
 import Login from './screen/Login';
+import NavLoginScreen from './screen/NavLoginScreen';
 import Home from './screen/Home';
 import Calendar from './screen/Calendar';
 import Dashboard from './screen/Dashboard';
@@ -58,7 +59,8 @@ const BottomNavigator = () => {
 export default function App() {
   return (
     <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+      <NavLoginScreen/>
+{/*         <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
             <Stack.Screen name="HairdresserList" component={HairdresserList} />
@@ -68,7 +70,7 @@ export default function App() {
             <Stack.Screen name="paiement" component={Paiement} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Favorite" component={Favorite} />
-          </Stack.Navigator>
+          </Stack.Navigator> */}
       </NavigationContainer> 
   );
 }
