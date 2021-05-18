@@ -59,9 +59,9 @@ const BottomNavigator = () => {
 export default function App() {
   return (
     <NavigationContainer>
-      <NavLoginScreen/>
-{/*         <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="Login" component={Login} />
+     {/*  <NavLoginScreen/> */}
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen name="Login" component={NavLoginScreen} />
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
             <Stack.Screen name="HairdresserList" component={HairdresserList} />
             <Stack.Screen name="HairdresserDetails" component={HairdresserDetails} />
@@ -70,7 +70,7 @@ export default function App() {
             <Stack.Screen name="paiement" component={Paiement} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Favorite" component={Favorite} />
-          </Stack.Navigator> */}
+          </Stack.Navigator>
       </NavigationContainer> 
   );
 }

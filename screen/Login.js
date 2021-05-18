@@ -9,7 +9,7 @@ import {
 import { Button } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-//MyCustomComponent = Animatable.createAnimatableComponent(MyCustomComponent);
+
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
