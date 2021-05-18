@@ -71,17 +71,17 @@ const SignInScreen = (props) =>{
 
 
 
-                <Button style={styles.buttonSignIn}
-                type="clear"
-                title= "Se connecter"
-                //onPress={()=> console.log('SignIn button Clicked!')}
-                onPress={()=> {
-                    console.log(email);
-                    setEmail('');
-                    setPassword('');
-                    props.navigation.navigate('BottomNavigator', { screen: 'Home'})
-                }}
-                />
+                    <Button style={styles.buttonSignIn}
+                        type="clear"
+                        title= "Se connecter"
+                        //onPress={()=> console.log('SignIn button Clicked!')}
+                        onPress={()=> {
+                            console.log(email);
+                            setEmail('');
+                            setPassword('');
+                            props.navigation.navigate('BottomNavigator', { screen: 'Home'})
+                        }}
+                    />
             </Animatable.View>
         </View>
     );
