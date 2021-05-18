@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     View, 
     Text,
@@ -13,10 +13,17 @@ import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
-const SignInScreen = () =>{
+const SignInScreen = (props) =>{
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [secureTextEntry, setSecureTextEntry] = useState(false);
+    
+
+
     return(
         <View style={styles.container}>
-            <View style={styles.header}>
+            <View style={[styles.header, {marginTop: 55}]}>
                 <Text style={styles.text_header}>Bienvenue!</Text>
             </View>
                 {/* <Button
@@ -31,12 +38,34 @@ const SignInScreen = () =>{
                     <View style={styles.action}>
                         <FontAwesome
                             name="user-o"
-                            color='white'
+                            color='#354F52'
                             size={20}
                         />
                         <TextInput
                             placeholder="Email"
                             style={styles.TextInput}
+                            autoCapitalize="none"
+                          /*   onChangeText={(value) => textInputChange(value)} */
+                        />
+                    </View>
+                <Text style={styles.text_footer}>Password</Text>
+                    <View style={styles.action}>
+                        <FontAwesome
+                            name="lock"
+                            color='#354F52'
+                            size={25}
+                        />
+                        <TextInput
+                            placeholder="Votre password"
+                            style={styles.TextInput}
+                            autoCapitalize="none"
+                            secureTextEntry={true}
+                            /* onChangeText ={() => handlePasswordChange(value)} */
+                        />
+                        <Feather
+                            name="eye-off"
+                            color="grey"
+                            size={20}
                         />
                     </View>
 
@@ -45,8 +74,11 @@ const SignInScreen = () =>{
                 <Button style={styles.buttonSignIn}
                 type="clear"
                 title= "Se connecter"
-                //onPress={()=> console.log('SignIn button Clicked!')}
-                onPress={()=> navigation.navigate('SignInScreen')}
+                onPress={()=> console.log('SignIn button Clicked!')}
+          /*       onPress={()=> {
+                    console.log('SignIn button Clicked!')
+                    props.navigation.navigate('Home', { screen: 'Home'})
+                }} */
                 />
             </Animatable.View>
         </View>
@@ -109,10 +141,18 @@ const styles = StyleSheet.create({
         elevation:3,
     },
     action: {
-
+        flexDirection: 'row',
+        marginTop: 10,
+        marginBottom: 30,
+        borderBottomWidth: 1,
+        borderBottomColor: '#354F52',
+        paddingBottom: 5
     },
     TextInput:{
-        
+        flex: 1,
+        paddingLeft: 10,
+        fontSize: 18,
+        color: 'black'
     }
 
     });
