@@ -9,7 +9,6 @@ import {
 import { Button } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-//MyCustomComponent = Animatable.createAnimatableComponent(MyCustomComponent);
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -37,7 +36,7 @@ const Login = ({navigation}) => {
             <Button style={styles.buttonSignIn}
               type="clear"
               title= "Log Me In"
-              //onPress={()=> console.log('SignIn button Clicked!')}
+              onPress={()=> console.log('SignIn button Clicked!')}
               onPress={()=> navigation.navigate('SignInScreen')}
             />
           </Animatable.View>
