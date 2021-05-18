@@ -22,6 +22,8 @@ export default function Home(props) {
     const [barbershop, setBarbershop] = useState(false);
     const [distance, setDistance] = useState(5);
 
+    const [hairdressers, setHairdressers] = useState([]);
+
 
     useEffect(() => {
         async function askPermissions() {
@@ -37,8 +39,31 @@ export default function Home(props) {
         }
 
         askPermissions();
-    });
+    }, []);
 
+    useEffect(() => {
+        const call = async() => {
+            const response = await fetch('/search', {
+                method: 'POST',
+                headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                body: `latitude=${currentLatitude}&longitude=${currentLongitude}&distance=${distance}`
+            });
+            const data = await response.json();
+        }
+        call();
+    }, []);
+
+    const handleSearch = async() => {
+        const call = async() => {
+            const response = await fetch('/search', {
+                method: 'POST',
+                headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                body: `latitude=${currentLatitude}&longitude=${currentLongitude}&distance=${distance}&barbershop=${barbershop}&date=${date}`
+            });
+            const data = await response.json();
+        }
+        call();
+    }
 
     return (
         <View style={{ flex: 1  }}>
@@ -52,13 +77,17 @@ export default function Home(props) {
             <View style={{ marginBottom: 40, alignItems: 'center'}}>
                 <Text style={{ textAlign: 'center', marginBottom: 20 }}>vos disponibilites</Text>
                 <DatePicker
+                    customStyles={{
+                        dateTouchBody: {borderColor:"red", borderWidth:3},
+                        dateInput: {borderColor:"green", borderWidth:1},
+                        dateTouchBody:{ borderColor:"geen" }
+                    }}
                     style={{width: 200}}
                     date={date}
                     mode="date"
                     placeholder="select date"
-                    format="YYYY-MM-DD"
-                    minDate="2021-05-01"
-                    maxDate="2022-05-01"
+                    minDate="01-05-2021"
+                    maxDate="01-05-2022"
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{
@@ -76,6 +105,8 @@ export default function Home(props) {
                     onDateChange={(value) => {setDate(value)}}
                     // style={{ color: '#52796F' }}
                     format='DD-MM-YYYY'
+                    // onPressDate={}
+                    // onPressCancel={}
                 />
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
