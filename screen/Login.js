@@ -1,82 +1,95 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, ImageBackground, View, Text} from 'react-native';
-import { Button, Input, inputStyle} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react';
+import {
+    View, 
+    Text,
+    StyleSheet,
+    Dimensions,
+    Image
+} from 'react-native';
+import { Button } from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
+//MyCustomComponent = Animatable.createAnimatableComponent(MyCustomComponent);
 
-import { connect } from 'react-redux';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+const Login = ({navigation}) => {
+    return(
+        <View style={styles.container}>
+{/*             <Text>Login</Text>
+            <Button
+                title= "Click Here"
+                onPress={() => console.log('button Login clicked')}
+                /> */}
+          <View style={styles.header}>
+            <Image
+            source={require('../assets/man-beard.png')}
+            style={styles.logo}
+            resizeMode="stretch"
+            />
+          </View>
+          <Animatable.View 
+            style={styles.footer}
+            animation="fadeInUpBig"
 
-export default function Login(props) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+          >
+            <Text style={styles.text}>Déjà membre? Connecte-toi :</Text>
+            <Button style={styles.buttonSignIn}
+              type="clear"
+              title= "Log Me In"
+              //onPress={()=> console.log('SignIn button Clicked!')}
+              onPress={()=> navigation.navigate('SignInScreen')}
+            />
+          </Animatable.View>
+        </View>
+    );
 
+};
 
-    
-    return (
-        <ImageBackground /* source={require('../assets/images/pexels-thgusstavo-santana-2076932.jpg')} */ style={styles.container}>
-                <Input
-                placeholder='email'
-                leftIcon={{ type: 'font-awesome', name: 'user', color: 'black'}}
-                containerStyle={{ marginBottom: 25, width: '70%' }}
-                inputStyle={{ marginLeft: 10 }}
-                value={email}
-                onChangeText={(value) => setEmail(value)}
-                
-                />
+export default Login;
 
-                <Input
-                placeholder='password'
-                leftIcon={{ type: 'font-awesome', name: 'lock', color: 'black' }}
-                containerStyle={{ marginBottom: 25, width: '70%', color: 'black' }}
-                inputStyle={{ marginLeft: 10}}
-                value={password}
-                onChangeText={(value) => setPassword(value)}
-
-                />
-        
-                
-                <Button
-                    title='Se connecter'
-                    buttonStyle={{backgroundColor: '#354F52'}}
-                    onPress={() => {console.log(email)}}
-    
-                />
-
-        </ImageBackground>
-        
-    )
-            }
-
+const {height} = Dimensions.get("screen");
+const height_logo = height * 0.38;
+const width_logo = height * 0.28;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: '#354F52',
         
     },
-    background: {
-        color: 'white'
+    header:{
+      flex: 2,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
-/*     views: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        alignItems : 'center',
-    } */
+    footer:{
+      flex: 1,
+      backgroundColor:'#CAD2C5',
+      borderTopLeftRadius: 30,
+      borderTopRightRadius: 30,
+      paddingVertical: 50,
+      paddingHorizontal: 30
+    },
+    logo: {
+      width: width_logo,
+      height: height_logo
+    },
+    text: {
+      marginBottom: 30,
+      fontSize: 25,
+      fontWeight: 'bold',
+
+    },
+    buttonSignIn: {
+      flexDirection: 'row', 
+      height: 40,
+      backgroundColor: '#354F52',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: 90,
+      marginTop: 30,
+      elevation:3,
+    }
 
 });
-
-/* function mapDispatchToProps(dispatch) {
-    return {
-      onSubmitPseudo: function (pseudo) {
-        dispatch({ type: 'savePseudo', pseudo: pseudo })
-      }
-    }
-  }
-  
-  export default connect(
-    null,
-    mapDispatchToProps
-  )(HomeScreen); */
