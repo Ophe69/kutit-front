@@ -10,7 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Login from './screen/Login';
 import NavLoginScreen from './screen/NavLoginScreen';
-import Home from './screen/Home';
+import Home from './screen/HomeBeta';
 import Calendar from './screen/Calendar';
 import Dashboard from './screen/Dashboard';
 import HairdresserList from './screen/HairderesserList';

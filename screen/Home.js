@@ -44,12 +44,7 @@ function Home(props) {
 
     useEffect(() => {
         const call = async() => {
-<<<<<<< HEAD
-            const response = await fetch('http://172.16.189.138:3000/search', {
-                // const response = await fetch('http://172.17.188.9:3000/search', {
-=======
             const response = await fetch('http://172.17.188.11:3000/search', {
->>>>>>> 6a08248b10e8b44e84ad053bcdff01a7e8b49a8d
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`

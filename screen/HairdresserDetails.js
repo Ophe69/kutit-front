@@ -5,12 +5,9 @@ import {Button, Input} from 'react-native-elements';
 import {FontAwesome} from '@expo/vector-icons';
 import {connect} from 'react-redux';
 
-<<<<<<< HEAD
-=======
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
->>>>>>> 6a08248b10e8b44e84ad053bcdff01a7e8b49a8d
 function HairdresserDetails(props) {
 
     const [review, setReview] = useState(0);
@@ -44,11 +41,7 @@ function HairdresserDetails(props) {
         }
     })
 
-<<<<<<< HEAD
-    //console.log(props.professionnels[0].nom);
-=======
     console.log('details bitch', props.proDetails);
->>>>>>> 6a08248b10e8b44e84ad053bcdff01a7e8b49a8d
 
     return (
         <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%"}}>
@@ -116,20 +109,6 @@ function HairdresserDetails(props) {
     )
 }
 
-<<<<<<< HEAD
-
-function mapStateToProps(state) {
-    return {
-        professionnels : state.professionnels
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    null
-)(HairdresserDetails);
-
-=======
 function mapStateToProps(state) {
     return { 
         professionnels : state.professionnels,
@@ -141,4 +120,3 @@ function mapStateToProps(state) {
     mapStateToProps, 
     null
   )(HairdresserDetails);
->>>>>>> 6a08248b10e8b44e84ad053bcdff01a7e8b49a8d
