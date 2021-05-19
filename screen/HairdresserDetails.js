@@ -1,16 +1,12 @@
 import React, {useState} from 'react'
 import {connect} from 'react-redux';
 import {StyleSheet, Text, View, Image} from 'react-native';
-import {Button, Input} from 'react-native-elements';
 import {FontAwesome} from '@expo/vector-icons';
-import {connect} from 'react-redux';
+import {vw, vh, vmin, vmax} from 'react-native-expo-viewport-units';
 
-<<<<<<< HEAD
-=======
+import {Card, ListItem, Button, Icon} from 'react-native-elements'
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 
->>>>>>> 6a08248b10e8b44e84ad053bcdff01a7e8b49a8d
 function HairdresserDetails(props) {
 
     const [review, setReview] = useState(0);
@@ -44,11 +40,34 @@ function HairdresserDetails(props) {
         }
     })
 
-<<<<<<< HEAD
-    //console.log(props.professionnels[0].nom);
-=======
-    console.log('details bitch', props.proDetails);
->>>>>>> 6a08248b10e8b44e84ad053bcdff01a7e8b49a8d
+    // recupération des infos du coiffeur
+    var nomRecup = props.proDetails.nom
+    var prenomRecup = props.proDetails.prenom
+
+    // Mise en majiscule des premiers caractère du nom et prénom
+    var nom = nomRecup.charAt(0).toUpperCase() + nomRecup.substr(1);
+    var prenom = prenomRecup.charAt(0).toUpperCase() + prenomRecup.substr(1)
+
+    console.log(prenom + " " + nom);
+
+
+    /*
+   nous allons maper ici pour la liste des reviews
+    users.map((u, i) => {
+        return (
+            <View key={i} style={styles.user}>
+                <Image
+                    style={styles.image}
+                    resizeMode="cover"
+                    source={{ uri: u.avatar }}
+                />
+                <Text style={styles.name}>{u.name}</Text>
+            </View>
+        );
+    })
+
+     */
+
 
     return (
         <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%"}}>
@@ -67,15 +86,17 @@ function HairdresserDetails(props) {
                 <View style={{display: "flex", justifyContent: "space-evenly", flexDirection: "row"}}>
                     <View>
                         <Image
-                            style = {{ width: 5, height: 5}}
-                            source={{
-                                uri: './assets/avatar.png',
-                            }}
+                            style={{width: 100, height: 100}}
+                            source={
+                                require("../assets/profil.png")
+                            }
                         />
+
+
                     </View>
                     <View>
-                        <Text style={{fontWeight: "bold", fontSize: "25px", marginBottom: 0}}>{props.professionnels[0].prenom} {props.professionnels[0].nom}</Text>
-                        <View style={{flexDirection: 'row', justifyContent: "flex-end"}}>
+                        <Text style={{fontWeight: "bold", fontSize: "25px", marginBottom: 0}}>{prenom} {nom}</Text>
+                        <View style={{flexDirection: 'row', justifyContent: "flex-end", marginTop: 10}}>
                             {stars}
                         </View>
                     </View>
@@ -84,14 +105,17 @@ function HairdresserDetails(props) {
                 <View style={{
                     flexDirection: "row",
                     fontSize: "20px",
-                    justifyContent: "space-between",
+                    justifyContent: "space-evenly",
                     margin: 15,
                 }}>
                     <Text style={{fontSize: "20px"}}>portFolio </Text>
                     <Text style={{fontSize: "20px"}}>Contact </Text>
                 </View>
                 <View>
-                    <Text style={{margin: 10, fontSize: "15px"}}>Choisissez votre prestation</Text>
+                    <Text
+                        style={{margin: 10, fontSize: "15px"}}>-------------------------------------------------</Text>
+
+                    <Text style={{margin: 10, fontSize: "25px", textAlign: "center"}}>Choisissez votre prestation</Text>
                     <View Style={{width: "90%", display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
                         <Button
                             title="decapage - 27€"
@@ -108,7 +132,28 @@ function HairdresserDetails(props) {
                                 props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
                             }}/>
                     </View>
-                    <Text style={{margin: 10, fontSize: "15px"}}>-------------------------------------------------</Text>
+                    <Text
+                        style={{margin: 10, fontSize: "15px"}}>-------------------------------------------------</Text>
+                </View>
+                <View>
+                    <Text style={{margin: 10, fontSize: "20px", textAlign: "center"}}>Ce que les autres ont pensé</Text>
+                    <Card>
+                        <Card.Title>Fleury nichon</Card.Title>
+                        <Card.Divider/>
+                        <View style={{ display: "flex", flexDirection: "row"}}>
+                            <Image
+                                style={{ width: 60, height: 60 }}
+                                //resizeMode="cover"
+                                source={
+                                    require("../assets/avatar.png")
+                                }
+                            />
+                            <View>
+                                <Text style={{width:vw(60) }}>Très bon coiffeur, professionnel et pointuel</Text>
+                                <View style={{display:"flex", flexDirection:"row"}}>{stars}</View>
+                            </View>
+                        </View>
+                    </Card>
                 </View>
             </View>
         </View>
@@ -116,7 +161,7 @@ function HairdresserDetails(props) {
     )
 }
 
-<<<<<<< HEAD
+/*<<<<<<< HEAD
 
 function mapStateToProps(state) {
     return {
@@ -130,15 +175,21 @@ export default connect(
 )(HairdresserDetails);
 
 =======
+
+ */
 function mapStateToProps(state) {
-    return { 
-        professionnels : state.professionnels,
+    return {
+        professionnels: state.professionnels,
         proDetails: state.proDetails
     }
 }
-  
-  export default connect(
-    mapStateToProps, 
+
+export default connect(
+    mapStateToProps,
     null
-  )(HairdresserDetails);
+)(HairdresserDetails);
+/*
 >>>>>>> 6a08248b10e8b44e84ad053bcdff01a7e8b49a8d
+
+
+ */
