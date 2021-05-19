@@ -5,6 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Feather } from '@expo/vector-icons';
+import {connect} from 'react-redux';
 
 
 
@@ -14,7 +15,7 @@ import * as Permissions from 'expo-permissions';
 
 const customer = <FontAwesome name="user" size={24} color="black"/>;
 
-export default function Home(props) {
+function Home(props) {
     const [currentLatitude, setCurrentLatitude] = useState(0);
     const [currentLongitude, setCurrentLongitude] = useState(0);
     const [date, setDate] = useState(new Date())
@@ -43,12 +44,15 @@ export default function Home(props) {
 
     useEffect(() => {
         const call = async() => {
-            const response = await fetch('/search', {
+            const response = await fetch('http://172.16.189.138:3000/search', {
+                // const response = await fetch('http://172.17.188.9:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                body: `latitude=${currentLatitude}&longitude=${currentLongitude}&distance=${distance}`
+                body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
             });
             const data = await response.json();
+            // console.log(data.professionnels);
+            props.getHairdressers(data.professionnels);
         }
         call();
     }, []);
@@ -78,9 +82,9 @@ export default function Home(props) {
                 <Text style={{ textAlign: 'center', marginBottom: 20 }}>vos disponibilites</Text>
                 <DatePicker
                     customStyles={{
-                        dateTouchBody: {borderColor:"red", borderWidth:3},
-                        dateInput: {borderColor:"green", borderWidth:1},
-                        dateTouchBody:{ borderColor:"geen" }
+                       // dateTouchBody: {borderColor:"red", borderWidth:3},
+                        //dateInput: {borderColor:"green", borderWidth:1},
+                        //dateTouchBody:{ borderColor:"geen" }
                     }}
                     style={{width: 200}}
                     date={date}
@@ -171,6 +175,7 @@ export default function Home(props) {
                     containerStyle={{ width: 80 }}
                     title='trouver'
                     onPress={() => {
+                        // handleSearch();
                         props.navigation.navigate('HairdresserList', { screen: 'HairdresserList' });
                     }}
                 />
@@ -182,6 +187,19 @@ export default function Home(props) {
 
     )
 }
+
+function mapDispatchToProps(dispatch){
+    return {
+      getHairdressers: (pro) => {
+        dispatch({ type:'get-hairdressers', professionnels: pro });
+      }
+    }
+  }
+  
+  export default connect(
+    null,
+    mapDispatchToProps
+  )(Home);
 
 
 // const styles = StyleSheet.create({

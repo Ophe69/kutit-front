@@ -5,9 +5,6 @@ import {Button, Input} from 'react-native-elements';
 import {FontAwesome} from '@expo/vector-icons';
 import {connect} from 'react-redux';
 
-
-import Icon from 'react-native-vector-icons/FontAwesome';
-
 function HairdresserDetails(props) {
 
     const [review, setReview] = useState(0);
@@ -41,7 +38,7 @@ function HairdresserDetails(props) {
         }
     })
 
-    // console.log(props.professionnels);
+    //console.log(props.professionnels[0].nom);
 
     return (
         <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%"}}>
@@ -67,7 +64,7 @@ function HairdresserDetails(props) {
                         />
                     </View>
                     <View>
-                        <Text style={{fontWeight: "bold", fontSize: "25px", marginBottom: 0}}>Lucien Fiard</Text>
+                        <Text style={{fontWeight: "bold", fontSize: "25px", marginBottom: 0}}>{props.professionnels[0].prenom} {props.professionnels[0].nom}</Text>
                         <View style={{flexDirection: 'row', justifyContent: "flex-end"}}>
                             {stars}
                         </View>
@@ -79,14 +76,20 @@ function HairdresserDetails(props) {
                     fontSize: "20px",
                     justifyContent: "space-between",
                     margin: 15,
-                    borderBottom: "2px black solid"
                 }}>
                     <Text style={{fontSize: "20px"}}>portFolio </Text>
                     <Text style={{fontSize: "20px"}}>Contact </Text>
                 </View>
                 <View>
-                    <Text style={{margin: 5}}>Choisissez votre prestation</Text>
+                    <Text style={{margin: 10, fontSize: "15px"}}>Choisissez votre prestation</Text>
                     <View Style={{width: "90%", display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
+                        <Button
+                            title="decapage - 27€"
+                            type="solid"
+                            buttonStyle={{backgroundColor: "#009788", display: "inline"}}
+                            onPress={() => {
+                                props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
+                            }}/>
                         <Button
                             title="shampoing - 23€"
                             type="solid"
@@ -94,8 +97,8 @@ function HairdresserDetails(props) {
                             onPress={() => {
                                 props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
                             }}/>
-
                     </View>
+                    <Text style={{margin: 10, fontSize: "15px"}}>-------------------------------------------------</Text>
                 </View>
             </View>
         </View>
@@ -103,10 +106,6 @@ function HairdresserDetails(props) {
     )
 }
 
-export default HairdresserDetails;
-
-
-/*
 
 function mapStateToProps(state) {
     return {
@@ -119,4 +118,3 @@ export default connect(
     null
 )(HairdresserDetails);
 
- */
