@@ -50,25 +50,6 @@ function HairdresserDetails(props) {
 
     console.log(prenom + " " + nom);
 
-
-    /*
-   nous allons maper ici pour la liste des reviews
-    users.map((u, i) => {
-        return (
-            <View key={i} style={styles.user}>
-                <Image
-                    style={styles.image}
-                    resizeMode="cover"
-                    source={{ uri: u.avatar }}
-                />
-                <Text style={styles.name}>{u.name}</Text>
-            </View>
-        );
-    })
-
-     */
-
-
     return (
         <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%"}}>
             <View style={{width: '100%', alignItems: 'flex-start'}}>
@@ -161,22 +142,6 @@ function HairdresserDetails(props) {
     )
 }
 
-/*<<<<<<< HEAD
-
-function mapStateToProps(state) {
-    return {
-        professionnels : state.professionnels
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    null
-)(HairdresserDetails);
-
-=======
-
- */
 function mapStateToProps(state) {
     return {
         professionnels: state.professionnels,
@@ -188,8 +153,4 @@ export default connect(
     mapStateToProps,
     null
 )(HairdresserDetails);
-/*
->>>>>>> 6a08248b10e8b44e84ad053bcdff01a7e8b49a8d
 
-
- */
