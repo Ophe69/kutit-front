@@ -22,10 +22,11 @@ import ChoixRDV from './screen/ChoixRDV';
 import Favorite from './screen/Favorite';
 
 import professionnels from './reducers/professionnels';
+import proDetails from './reducers/proDetails';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const store = createStore(combineReducers({ professionnels }));
+const store = createStore(combineReducers({ professionnels, proDetails }));
 
 
 
