@@ -49,7 +49,7 @@ const SignUpScreen = ({navigation}) =>{
     
     var handleSubmitSignup = async () => {
 
-        const data = await fetch('http://172.16.190.142:3000/users/sign-up',  {
+        const data = await fetch('http://172.16.190.142:3000/signup',  {   //attention à changer l'adresse IP
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}`

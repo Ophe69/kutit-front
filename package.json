@@ -41,14 +41,8 @@
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.4",
-<<<<<<< HEAD
-    "react-router-dom": "^5.2.0",
-    "redux": "^4.1.0",
-    "uid2": "^0.0.3"
-=======
     "reactnative-ui-bootstrap": "^1.1.8",
     "redux": "^4.1.0"
->>>>>>> af182b8097b425e9b5f8c6d69ec64a87128e1f26
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
