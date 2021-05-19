@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
-
+import {connect} from 'react-redux';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Button, Input} from 'react-native-elements'
 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function HairdresserDetails(props) {
+function HairdresserDetails(props) {
 
     const [review, setReview] = useState(0);
 
@@ -23,6 +23,7 @@ export default function HairdresserDetails(props) {
             key={i}/>)
     })
 
+    console.log('details bitch', props.proDetails);
 
     return (
         <View >
@@ -84,3 +85,15 @@ export default function HairdresserDetails(props) {
 
     )
 }
+
+function mapStateToProps(state) {
+    return { 
+        professionnels : state.professionnels,
+        proDetails: state.proDetails
+    }
+}
+  
+  export default connect(
+    mapStateToProps, 
+    null
+  )(HairdresserDetails);
