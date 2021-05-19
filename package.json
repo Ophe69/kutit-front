@@ -10,7 +10,6 @@
   "dependencies": {
     "@dietime/react-native-date-picker": "^1.1.2",
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@react-native-community/datetimepicker": "3.2.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.10",
     "@react-navigation/native": "^5.9.4",
@@ -41,6 +40,7 @@
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.4",
+    "reactnative-ui-bootstrap": "^1.1.8",
     "redux": "^4.1.0"
   },
   "devDependencies": {
