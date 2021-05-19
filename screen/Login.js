@@ -33,7 +33,7 @@ const Login = ({navigation}) => {
 
           >
             <Text style={styles.text}>Déjà membre? Connecte-toi :</Text>
-            <Button style={styles.buttonSignIn}
+            <Button style={styles.buttonSign}
               type="clear"
               title= "Log Me In"
               onPress={()=> console.log('SignIn button Clicked!')}
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
 
     },
-    buttonSignIn: {
+    buttonSign: {
       flexDirection: 'row', 
       height: 40,
       backgroundColor: '#354F52',
