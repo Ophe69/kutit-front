@@ -39,27 +39,6 @@ function HairdresserList(props) {
         }    
     })
 
-<<<<<<< HEAD
-    //console.log(props.professionnels);
-=======
-    // const hairdressers2 = props.professionnels.map((pro, i) => {
-    //     return(
-    //         <ListItem 
-    //             key={i} 
-    //             onPress={() => {
-    //                 props.getDetails(pro);
-    //                 props.navigation.navigate('HairdresserDetails', { screen: 'HairdresserDetails' });
-    //             }}
-    //             style={{ flexDirection: 'row', justifyContent: 'center', width: '100%' }}
-    //         bottomDivider>
-    //             <Ionicons name="person-circle-sharp" size={24} color="black" />
-    //             <ListItem.Content style={{width: '100%'}}>
-    //                 <ListItem.Title>{`${pro.prenom} ${pro.nom}`}</ListItem.Title>
-    //                 <ListItem.Subtitle>{pro.status}</ListItem.Subtitle>
-    //             </ListItem.Content>
-    //         </ListItem>  
-    //     );
-    // });
 
     const hairdressers3 = props.professionnels.map((pro, i) => {
         return(
@@ -81,8 +60,7 @@ function HairdresserList(props) {
         );
     });
 
-    console.log(props.professionnels);
->>>>>>> 6a08248b10e8b44e84ad053bcdff01a7e8b49a8d
+   // console.log(props.professionnels);
     
     return (
         
