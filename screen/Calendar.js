@@ -155,7 +155,7 @@ export default function Calendar() {
                     style={{margin: 10 }}
                 />
                 <Button 
-                    title={barbershop ? 'salon -- toggle' : 'barbershop -- toggle'}
+                    title={barbershop ? 'salon -- toggle' : 'barbershop  -- toggle'}
                     onPress={() => setBarbershop(!barbershop)}
                     buttonStyle={{ margin: 10 }}
                 /> 
