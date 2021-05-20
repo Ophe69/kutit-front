@@ -1,19 +1,12 @@
 import React, {useState} from 'react'
 import {connect} from 'react-redux';
-<<<<<<< HEAD
 import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {vw, vh, vmin, vmax} from 'react-native-expo-viewport-units';
 import Modal from 'react-native-modal'
 
 import {Card, ListItem, Button, Icon, Overlay, Tab} from 'react-native-elements'
-=======
-import {StyleSheet, Text, View, Image} from 'react-native';
-import {Button, Input} from 'react-native-elements';
-import {FontAwesome} from '@expo/vector-icons';
->>>>>>> f54254c4975b0212f6edb058e0a2574d5df3bf63
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 function HairdresserDetails(props) {
 
@@ -58,7 +51,6 @@ function HairdresserDetails(props) {
         }
     })
 
-<<<<<<< HEAD
     var statutBeta = props.proDetails.statut
     var statut = statutBeta.charAt(0).toUpperCase() + statutBeta.substr(1);
 
@@ -72,9 +64,7 @@ function HairdresserDetails(props) {
     var prenom = prenomRecup.charAt(0).toUpperCase() + prenomRecup.substr(1)
 
     console.log(prenom + " " + nom);
-=======
-    console.log('details bitch', props.proDetails);
->>>>>>> f54254c4975b0212f6edb058e0a2574d5df3bf63
+
 
     return (
         <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%"}}>
@@ -89,7 +79,6 @@ function HairdresserDetails(props) {
                     }}
                 />
             </View>
-<<<<<<< HEAD
             <ScrollView
                 style={styles.scrollview}
                 contentContainerStyle={{alignItems: 'center'}}
@@ -146,22 +135,6 @@ function HairdresserDetails(props) {
                                     </View>
                                 </Modal>
                             </View>
-=======
-            <View>
-                <View style={{display: "flex", justifyContent: "space-evenly", flexDirection: "row"}}>
-                    <View>
-                        <Image
-                            style = {{ width: 5, height: 5}}
-                            source={{
-                                uri: './assets/avatar.png',
-                            }}
-                        />
-                    </View>
-                    <View>
-                        <Text style={{fontWeight: "bold", fontSize: 25, marginBottom: 0}}>{props.professionnels[0].prenom} {props.professionnels[0].nom}</Text>
-                        <View style={{flexDirection: 'row', justifyContent: "flex-end"}}>
-                            {stars}
->>>>>>> f54254c4975b0212f6edb058e0a2574d5df3bf63
                         </View>
 
                     </View>
@@ -172,7 +145,7 @@ function HairdresserDetails(props) {
                                 fontSize: "15px"
                             }}>-------------------------------------------------</Text>
 
-<<<<<<< HEAD
+
                         <Text style={{margin: 10, fontSize: "25px", textAlign: "center"}}>Choisissez votre
                             prestation</Text>
                         <View Style={{
@@ -259,37 +232,6 @@ function HairdresserDetails(props) {
                             </View>
                         </Card>
                     </View>
-=======
-                </View>
-                <View style={{
-                    flexDirection: "row",
-                    fontSize: 20,
-                    justifyContent: "space-between",
-                    margin: 15,
-                }}>
-                    <Text style={{fontSize: 20}}>portFolio </Text>
-                    <Text style={{fontSize: 20}}>Contact </Text>
-                </View>
-                <View>
-                    <Text style={{margin: 10, fontSize: 15}}>Choisissez votre prestation</Text>
-                    <View Style={{width: "90%", display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
-                        <Button
-                            title="decapage - 27€"
-                            type="solid"
-                            buttonStyle={{backgroundColor: "#009788" }}
-                            onPress={() => {
-                                props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
-                            }}/>
-                        <Button
-                            title="shampoing - 23€"
-                            type="solid"
-                            buttonStyle={{backgroundColor: "#009788"}}
-                            onPress={() => {
-                                props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
-                            }}/>
-                    </View>
-                    <Text style={{margin: 10, fontSize: 15}}>-------------------------------------------------</Text>
->>>>>>> f54254c4975b0212f6edb058e0a2574d5df3bf63
                 </View>
             </ScrollView>
         </View>
@@ -307,7 +249,6 @@ function mapStateToProps(state) {
   export default connect( 
     mapStateToProps, 
     null
-<<<<<<< HEAD
 )(HairdresserDetails);
 
 const styles = StyleSheet.create({
@@ -316,6 +257,3 @@ const styles = StyleSheet.create({
         marginTop: -10
     },
 });
-=======
-  )(HairdresserDetails);
->>>>>>> f54254c4975b0212f6edb058e0a2574d5df3bf63
