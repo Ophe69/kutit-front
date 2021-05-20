@@ -153,7 +153,6 @@ function Home(props) {
                 <Marker
                     key={"currentPos"}
                     pinColor="red"
-                    // icon={customer}
                     title=""
                     description="I am here"
                     coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
