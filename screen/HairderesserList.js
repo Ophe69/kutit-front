@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View , ScrollView, TouchableOpacity } from 'react-native';
 import {connect} from 'react-redux';
 import { Button, Card, ListItem } from 'react-native-elements';
@@ -14,6 +14,19 @@ import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 function HairdresserList(props) {
 
     const [review, setReview] = useState(0);
+    const [proList, setProList] = useState([]);
+    const [status, setStatus] = useState(null);
+
+    useEffect(() => {
+        setStatus(props.statut);
+        if(status == "independant"){
+            const freelanceCopy = props.professionnels.filter(e => e.statut != "salon");
+            setProList(freelanceCopy);
+        } else {
+            const barbershopCopy = props.professionnels.filter(e => e.statut != "independant");
+            setProList(barbershopCopy);
+        }
+    }, [status])
 
     const stars = [1,2,3,4,5].map((star, i) => {
         if(review > i) {
@@ -55,10 +68,11 @@ function HairdresserList(props) {
             />)
     })
 
-    console.log(props.professionnels);
-    console.log(props.professionnels.prestations);
+    // console.log(props.professionnels);
+    console.log('prestations ', console.log(props.professionnels.map(m => m.prestations)));
+    console.log('log status ', props.statut)
 
-    const hairdressers = props.professionnels.map((pro, i) => {
+    const hairdressers = proList.map((pro, i) => {
         return(
             <TouchableOpacity
                 key={i}
@@ -88,8 +102,6 @@ function HairdresserList(props) {
         );
     });
 
-    console.log(props.professionnels);
-
     return (
 
         <ScrollView
@@ -117,7 +129,8 @@ function HairdresserList(props) {
 
 function mapStateToProps(state) {
     return {
-        professionnels : state.professionnels
+        professionnels : state.professionnels,
+        statut: state.statut
     }
 }
 

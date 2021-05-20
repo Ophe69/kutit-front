@@ -19,11 +19,12 @@ function Home(props) {
     const [currentLatitude, setCurrentLatitude] = useState(0);
     const [currentLongitude, setCurrentLongitude] = useState(0);
     const [date, setDate] = useState(new Date())
-    const [atHome, setAtHome] = useState(true);
     const [barbershop, setBarbershop] = useState(false);
     const [distance, setDistance] = useState(5);
+    const [proList, setProList] = useState([]);
+    
 
-
+// Geoloc Enabled
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -40,6 +41,8 @@ function Home(props) {
         askPermissions();
     }, []);
 
+
+// Fetch all Professionnels from db
     useEffect(() => {
         const call = async() => {
             const response = await fetch('http://172.17.188.8:3000/search', {
@@ -48,25 +51,36 @@ function Home(props) {
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
             });
             const data = await response.json();
-            // console.log(data.professionnels);
             props.getHairdressers(data.professionnels);
         }
         call();
     }, []);
 
-    const handleSearch = async() => {
-        const call = async() => {
-            const response = await fetch('/search', {
-                method: 'POST',
-                headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                body: `latitude=${currentLatitude}&longitude=${currentLongitude}&distance=${distance}&barbershop=${barbershop}&date=${date}`
-            });
-            const data = await response.json();
-        }
-        call();
-    }
+// Get independant or salon
+    useEffect(() => {
 
-    const proList;
+        if(!barbershop){
+            const freelanceCopy = props.professionnels.filter(e => e.statut != "independant");
+            setProList(freelanceCopy);
+            // getFreelance(freelanceCopy);
+            props.getStatus("independant")
+        } else {
+            const barbershopCopy = props.professionnels.filter(e => e.statut != "salon");
+            setProList(barbershopCopy);
+            props.getStatus("salon");
+            // getBarbershop(barbershopCopy);
+        }
+    }, [barbershop]);
+
+    let markerPro = proList.map((pro, i) => {
+        return <Marker key={i} pinColor="blue" coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
+          prenom={pro.prenom}
+          nom={pro.nom}
+        />
+      });
+
+    // console.log('test', proList)
+
 
     return (
         <View style={{ flex: 1  }}>
@@ -118,8 +132,10 @@ function Home(props) {
                     title='coiffeur a domicile'
                     checkedIcon='dot-circle-o'
                     uncheckedIcon='circle-o'
-                    checked={atHome}
-                    onPress={() => {setAtHome(!atHome); setBarbershop(!barbershop)}}
+                    checked={!barbershop}
+                    onPress={() => {
+                        setBarbershop(!barbershop);
+                    }}
                     containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
                     checkedColor='#52796F'
                 />
@@ -129,7 +145,9 @@ function Home(props) {
                     checkedIcon='dot-circle-o'
                     uncheckedIcon='circle-o'
                     checked={barbershop}
-                    onPress={() => {setBarbershop(!barbershop); setAtHome(!atHome)}}
+                    onPress={() => {
+                        setBarbershop(!barbershop);
+                    }}
                     containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
                     checkedColor='#52796F'
                 />    
@@ -154,6 +172,7 @@ function Home(props) {
                     description="I am here"
                     coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
                 />
+                {markerPro}
             </MapView>
             </View>
             <View style={{ alignItems: 'center', marginTop: 40 }}>
@@ -196,8 +215,18 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch){
     return {
       getHairdressers: (pro) => {
-        dispatch({ type:'get-hairdressers', professionnels: pro });
+        dispatch({ type: 'get-hairdressers', professionnels: pro });
+      },
+      getStatus: (status) => {
+          dispatch({ type: 'get-status', statut: status })
       }
+    //   getFreelance: (freelance) => {
+    //       dispatch({ type: 'get-freelance', independants: freelance })
+    //   },
+    //   getBarbershop: (bs) => {
+    //       dispatch({ type: 'get-barbershop', salons: bs })
+    //   }
+      
     }
   }
   

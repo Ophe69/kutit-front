@@ -23,10 +23,11 @@ import Favorite from './screen/Favorite';
 
 import professionnels from './reducers/professionnels';
 import proDetails from './reducers/proDetails';
+import statut from './reducers/status';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const store = createStore(combineReducers({ professionnels, proDetails }));
+const store = createStore(combineReducers({ professionnels, proDetails, statut }));
 
 
 
