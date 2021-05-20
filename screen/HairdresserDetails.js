@@ -1,11 +1,10 @@
 import React, {useState} from 'react'
 import {connect} from 'react-redux';
 import {StyleSheet, Text, View, Image} from 'react-native';
+import {Button, Input} from 'react-native-elements';
 import {FontAwesome} from '@expo/vector-icons';
-import {vw, vh, vmin, vmax} from 'react-native-expo-viewport-units';
 
-import {Card, ListItem, Button, Icon} from 'react-native-elements'
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 function HairdresserDetails(props) {
 
@@ -40,15 +39,7 @@ function HairdresserDetails(props) {
         }
     })
 
-    // recupération des infos du coiffeur
-    var nomRecup = props.proDetails.nom
-    var prenomRecup = props.proDetails.prenom
-
-    // Mise en majiscule des premiers caractère du nom et prénom
-    var nom = nomRecup.charAt(0).toUpperCase() + nomRecup.substr(1);
-    var prenom = prenomRecup.charAt(0).toUpperCase() + prenomRecup.substr(1)
-
-    console.log(prenom + " " + nom);
+    console.log('details bitch', props.proDetails);
 
     return (
         <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%"}}>
@@ -67,17 +58,15 @@ function HairdresserDetails(props) {
                 <View style={{display: "flex", justifyContent: "space-evenly", flexDirection: "row"}}>
                     <View>
                         <Image
-                            style={{width: 100, height: 100}}
-                            source={
-                                require("../assets/profil.png")
-                            }
+                            style = {{ width: 5, height: 5}}
+                            source={{
+                                uri: './assets/avatar.png',
+                            }}
                         />
-
-
                     </View>
                     <View>
-                        <Text style={{fontWeight: "bold", fontSize: "25px", marginBottom: 0}}>{prenom} {nom}</Text>
-                        <View style={{flexDirection: 'row', justifyContent: "flex-end", marginTop: 10}}>
+                        <Text style={{fontWeight: "bold", fontSize: 25, marginBottom: 0}}>{props.professionnels[0].prenom} {props.professionnels[0].nom}</Text>
+                        <View style={{flexDirection: 'row', justifyContent: "flex-end"}}>
                             {stars}
                         </View>
                     </View>
@@ -85,56 +74,32 @@ function HairdresserDetails(props) {
                 </View>
                 <View style={{
                     flexDirection: "row",
-                    fontSize: "20px",
-                    justifyContent: "space-evenly",
+                    fontSize: 20,
+                    justifyContent: "space-between",
                     margin: 15,
                 }}>
-                    <Text style={{fontSize: "20px"}}>portFolio </Text>
-                    <Text style={{fontSize: "20px"}}>Contact </Text>
+                    <Text style={{fontSize: 20}}>portFolio </Text>
+                    <Text style={{fontSize: 20}}>Contact </Text>
                 </View>
                 <View>
-                    <Text
-                        style={{margin: 10, fontSize: "15px"}}>-------------------------------------------------</Text>
-
-                    <Text style={{margin: 10, fontSize: "25px", textAlign: "center"}}>Choisissez votre prestation</Text>
+                    <Text style={{margin: 10, fontSize: 15}}>Choisissez votre prestation</Text>
                     <View Style={{width: "90%", display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
                         <Button
                             title="decapage - 27€"
                             type="solid"
-                            buttonStyle={{backgroundColor: "#009788", display: "inline"}}
+                            buttonStyle={{backgroundColor: "#009788" }}
                             onPress={() => {
                                 props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
                             }}/>
                         <Button
                             title="shampoing - 23€"
                             type="solid"
-                            buttonStyle={{backgroundColor: "#009788", display: "inline"}}
+                            buttonStyle={{backgroundColor: "#009788"}}
                             onPress={() => {
                                 props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
                             }}/>
                     </View>
-                    <Text
-                        style={{margin: 10, fontSize: "15px"}}>-------------------------------------------------</Text>
-                </View>
-                <View>
-                    <Text style={{margin: 10, fontSize: "20px", textAlign: "center"}}>Ce que les autres ont pensé</Text>
-                    <Card>
-                        <Card.Title>Fleury nichon</Card.Title>
-                        <Card.Divider/>
-                        <View style={{ display: "flex", flexDirection: "row"}}>
-                            <Image
-                                style={{ width: 60, height: 60 }}
-                                //resizeMode="cover"
-                                source={
-                                    require("../assets/avatar.png")
-                                }
-                            />
-                            <View>
-                                <Text style={{width:vw(60) }}>Très bon coiffeur, professionnel et pointuel</Text>
-                                <View style={{display:"flex", flexDirection:"row"}}>{stars}</View>
-                            </View>
-                        </View>
-                    </Card>
+                    <Text style={{margin: 10, fontSize: 15}}>-------------------------------------------------</Text>
                 </View>
             </View>
         </View>
@@ -143,14 +108,13 @@ function HairdresserDetails(props) {
 }
 
 function mapStateToProps(state) {
-    return {
-        professionnels: state.professionnels,
+    return { 
+        professionnels : state.professionnels,
         proDetails: state.proDetails
     }
 }
-
-export default connect(
-    mapStateToProps,
+  
+  export default connect( 
+    mapStateToProps, 
     null
-)(HairdresserDetails);
-
+  )(HairdresserDetails);

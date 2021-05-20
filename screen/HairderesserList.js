@@ -55,6 +55,9 @@ function HairdresserList(props) {
             />)
     })
 
+    console.log(props.professionnels);
+    console.log(props.professionnels.prestations);
+
     const hairdressers = props.professionnels.map((pro, i) => {
         return(
             <TouchableOpacity
