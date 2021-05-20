@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     View, 
     Text,
@@ -12,6 +12,8 @@ import {
     CheckBox
  } from 'react-native-elements';
 
+ import {connect} from 'react-redux';
+
 
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -19,10 +21,10 @@ import Feather from 'react-native-vector-icons/Feather';
 
 
 
-const SignUpScreen = ({navigation}) =>{
+function SignUpScreen ({navigation, props}){
 
     const [state, setState] = useState(false);
-    const [signupUserName, setSignupUserName] = useState('');
+    const [signupUserName, setSignupUserName] = useState(''); 
     const [signupEmail, setSignupEmail] = useState('');
     const [signupPassword, setSignupPassword] = useState('');
     const [signupPasswordConf, setSignupPasswordConf] = useState('');
@@ -34,8 +36,11 @@ const SignUpScreen = ({navigation}) =>{
     const [error, setError] = useState('');
     
     const onSubmitClick = () =>{
-        if(signupUserName !== '' && signupEmail !== '' && signupPassword !== ''){
+        if(signupUserName !== '' && signupEmail !== '' && signupPassword !== '' && signupPasswordConf){
             setIsLogin(true)
+            if(signupPassword !== signupPasswordConf){
+                setError('Merci de confirmer votre password')
+            }
         }else {
             setError('Merci de ne pas laisser de champs vides')
             console.log(error)
@@ -45,26 +50,30 @@ const SignUpScreen = ({navigation}) =>{
     if(isLogin){
         navigation.navigate('BottomNavigator', { screen: 'Home' })
     }
-    
-    
-    var handleSubmitSignup = async () => {
 
-        const data = await fetch('http://172.16.190.142:3000/signup',  {   //attention à changer l'adresse IP
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}`
-        })
-
-        const body = await data.json()
-
-        if(body.result == true){
+    /*  if(body.result == true){
             props.addToken(body.token)
             setUserExists(true)
             
         } else {
             setErrorsSignup(body.error)
-        }
-        }
+        } */
+        
+        const handleSubmitSignup = () => {
+            const call = async () => {
+                
+                const data = await fetch('http://172.16.190.143:3000/signup', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}`
+                });
+        
+                const response = await response.json();
+                console.log(data)
+            }
+            call();
+        };
+
     
 
 
@@ -130,20 +139,24 @@ const SignUpScreen = ({navigation}) =>{
                     title="J'accepte les CGV"
                     checked={state.checked}
                     />
+                </View>
+                <View>
+                <Text>{error}</Text>
                 </View>    
                     <Button style={styles.buttonSign}
                         type="clear"
                         title= "je créé mon compte"
 
                         onPress={()=> {
-                            console.log(signupUserName, signupEmail, signupPassword);
+                            console.log(signupUserName, signupEmail, signupPassword, signupPasswordConf);
+                            handleSubmitSignup();
+                            onSubmitClick();
                             setSignupUserName('');
                             setSignupEmail('');
                             setSignupPassword('');
-                            setSignupPasswordConf('');
-                            handleSubmitSignup();
-                            onSubmitClick();
-                            /* navigation.navigate('BottomNavigator', { screen: 'Home'}) */
+                            setSignupPasswordConf(''); 
+                            
+                            //navigation.navigate('BottomNavigator', { screen: 'Home'})
                         }}
                     />
 
@@ -156,11 +169,13 @@ const SignUpScreen = ({navigation}) =>{
             />
             </Animatable.View>
         </View>
-    );
+    )
 
-};
+                    };
 
 export default SignUpScreen;
+
+
 
 const {height} = Dimensions.get("screen");
 const height_logo = height * 0.38;

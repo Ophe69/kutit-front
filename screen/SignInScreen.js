@@ -21,42 +21,46 @@ const SignInScreen = ({navigation}) =>{
     const [secureTextEntry, setSecureTextEntry] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const [error, setError] = useState('');
-    const [listErrorsSignin, setErrorsSignin] = useState('');
+    const [listErrorsSignin, setListErrorsSignin] = useState('');
     const [userExists, setUserExists] = useState(false);
 
-    const onSubmitClick = () =>{
-        if(signInEmail !== '' && signInPassword !== ''){
+/*     const onSubmitClick = () =>{
+        if(signupEmail !== '' && signupPassword !== ''){
             setIsLogin(true)
         }else {
             setError('Merci de ne pas laisser de champs vides')
-            console.log(error)
+
         }
-    }
+    } 
 
     if(isLogin){
         navigation.navigate('BottomNavigator', { screen: 'Home' })
-    }
+    }*/
 
     var handleSubmitSignin = async () => {
+            
+        const call = async () => {
+            const response = await fetch('http://172.16.190.143:3000/signin', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `mail=${signInEmail}&password=${signInPassword}`
+            })
+            const data = await response.json();
+            console.log(data)
+        }
+    call();
+};
+        if(isLogin){
+            navigation.navigate('BottomNavigator', { screen: 'Home' })
+        }
 
-        const data = await fetch('/sign-in', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `mail=${signInEmail}&password=${signInPassword}`
-        })
-
-        console.log(data);
-
-        const body = await data.json()
-
-        if(body.result == true){
+/*         if(body.result == true){
             props.addToken(body.token)
             setUserExists(true)
             
         }  else {
             setErrorsSignin(body.error)
-        }
-        }
+         } */
 
 
     return(
@@ -117,7 +121,7 @@ const SignInScreen = ({navigation}) =>{
                             console.log(signInEmail, signInPassword);
                             setSignInEmail('');
                             setSignInPassword('');
-                            onSubmitClick();
+                            //onSubmitClick();
                             handleSubmitSignin();
 
                         }}
