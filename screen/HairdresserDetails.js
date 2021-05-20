@@ -3,8 +3,6 @@ import {connect} from 'react-redux';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Button, Input} from 'react-native-elements';
 import {FontAwesome} from '@expo/vector-icons';
-import {connect} from 'react-redux';
-
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -67,7 +65,7 @@ function HairdresserDetails(props) {
                         />
                     </View>
                     <View>
-                        <Text style={{fontWeight: "bold", fontSize: "25px", marginBottom: 0}}>{props.professionnels[0].prenom} {props.professionnels[0].nom}</Text>
+                        <Text style={{fontWeight: "bold", fontSize: 25, marginBottom: 0}}>{props.professionnels[0].prenom} {props.professionnels[0].nom}</Text>
                         <View style={{flexDirection: 'row', justifyContent: "flex-end"}}>
                             {stars}
                         </View>
@@ -76,32 +74,32 @@ function HairdresserDetails(props) {
                 </View>
                 <View style={{
                     flexDirection: "row",
-                    fontSize: "20px",
+                    fontSize: 20,
                     justifyContent: "space-between",
                     margin: 15,
                 }}>
-                    <Text style={{fontSize: "20px"}}>portFolio </Text>
-                    <Text style={{fontSize: "20px"}}>Contact </Text>
+                    <Text style={{fontSize: 20}}>portFolio </Text>
+                    <Text style={{fontSize: 20}}>Contact </Text>
                 </View>
                 <View>
-                    <Text style={{margin: 10, fontSize: "15px"}}>Choisissez votre prestation</Text>
+                    <Text style={{margin: 10, fontSize: 15}}>Choisissez votre prestation</Text>
                     <View Style={{width: "90%", display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
                         <Button
                             title="decapage - 27€"
                             type="solid"
-                            buttonStyle={{backgroundColor: "#009788", display: "inline"}}
+                            buttonStyle={{backgroundColor: "#009788" }}
                             onPress={() => {
                                 props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
                             }}/>
                         <Button
                             title="shampoing - 23€"
                             type="solid"
-                            buttonStyle={{backgroundColor: "#009788", display: "inline"}}
+                            buttonStyle={{backgroundColor: "#009788"}}
                             onPress={() => {
                                 props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
                             }}/>
                     </View>
-                    <Text style={{margin: 10, fontSize: "15px"}}>-------------------------------------------------</Text>
+                    <Text style={{margin: 10, fontSize: 15}}>-------------------------------------------------</Text>
                 </View>
             </View>
         </View>

@@ -44,7 +44,7 @@ function Home(props) {
 
     useEffect(() => {
         const call = async() => {
-            const response = await fetch('http://172.17.188.11:3000/search', {
+            const response = await fetch('http://172.17.188.8:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
@@ -187,6 +187,12 @@ function Home(props) {
     )
 }
 
+function mapStateToProps(state) {
+    return { 
+        professionnels : state.professionnels
+    }
+}
+
 function mapDispatchToProps(dispatch){
     return {
       getHairdressers: (pro) => {
@@ -196,27 +202,7 @@ function mapDispatchToProps(dispatch){
   }
   
   export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(Home);
 
-
-// const styles = StyleSheet.create({
-//     container: {
-//       width: '100%',
-//       height: '50%',
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//       paddingVertical: 55
-//     },
-
-//   });
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: '#fff',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//     },
-// });
