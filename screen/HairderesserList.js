@@ -85,8 +85,6 @@ function HairdresserList(props) {
         );
     });
 
-    console.log(props.professionnels);
-
     return (
 
         <ScrollView

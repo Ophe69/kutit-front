@@ -45,7 +45,7 @@ function Home(props) {
     useEffect(() => {
         const call = async() => {
 
-            const response = await fetch('http://172.16.189.160:3000/search', {
+            const response = await fetch('http://172.16.189.138:3000/search', {
                 // const response = await fetch('http://172.17.188.9:3000/search', {
 
             //const response = await fetch('http://172.17.188.11:3000/search', {
