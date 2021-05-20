@@ -8,17 +8,55 @@ import {
 } from 'react-native';
 
 import { Button } from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
-const SignInScreen = (props) =>{
+const SignInScreen = ({navigation}) =>{
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [secureTextEntry, setSecureTextEntry] = useState(false);
     
+    const [signInEmail, setSignInEmail] = useState('');
+    const [signInPassword, setSignInPassword] = useState('');
+
+    const [secureTextEntry, setSecureTextEntry] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
+    const [error, setError] = useState('');
+    const [listErrorsSignin, setErrorsSignin] = useState('');
+    const [userExists, setUserExists] = useState(false);
+
+    const onSubmitClick = () =>{
+        if(signInEmail !== '' && signInPassword !== ''){
+            setIsLogin(true)
+        }else {
+            setError('Merci de ne pas laisser de champs vides')
+            console.log(error)
+        }
+    }
+
+    if(isLogin){
+        navigation.navigate('BottomNavigator', { screen: 'Home' })
+    }
+
+    var handleSubmitSignin = async () => {
+
+        const data = await fetch('/sign-in', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `mail=${signInEmail}&password=${signInPassword}`
+        })
+
+        console.log(data);
+
+        const body = await data.json()
+
+        if(body.result == true){
+            props.addToken(body.token)
+            setUserExists(true)
+            
+        }  else {
+            setErrorsSignin(body.error)
+        }
+        }
 
 
     return(
@@ -26,10 +64,7 @@ const SignInScreen = (props) =>{
             <View style={[styles.header, {marginTop: 55}]}>
                 <Text style={styles.text_header}>Bienvenue!</Text>
             </View>
-                {/* <Button
-                    title= "Click Here"
-                    onPress={() => console.log('button Sign In clicked')}
-                    /> */}
+
             <Animatable.View 
                 style={styles.footer}
                 animation="fadeInUpBig"
@@ -42,10 +77,11 @@ const SignInScreen = (props) =>{
                             size={20}
                         />
                         <TextInput
-                            placeholder="Email"
+                            placeholder="Votre Email"
+                            value={signInEmail}
                             style={styles.TextInput}
                             autoCapitalize="none"
-                          /*   onChangeText={(value) => textInputChange(value)} */
+                            onChangeText={(value) => {setSignInEmail(value)}}
                         />
                     </View>
                 <Text style={styles.text_footer}>Password</Text>
@@ -57,10 +93,11 @@ const SignInScreen = (props) =>{
                         />
                         <TextInput
                             placeholder="Votre password"
+                            value={signInPassword}
                             style={styles.TextInput}
                             autoCapitalize="none"
                             secureTextEntry={true}
-                            /* onChangeText ={() => handlePasswordChange(value)} */
+                            onChangeText={(value) => {setSignInPassword(value)}}
                         />
                         <Feather
                             name="eye-off"
@@ -68,19 +105,29 @@ const SignInScreen = (props) =>{
                             size={20}
                         />
                     </View>
+                    <View style={{marginTop: 55}}>  
+                       {/*  {error === '' ? null : <Text style={styles.error}>{error}</Text>} */}
 
+                    </View>
 
-
-                    <Button style={styles.buttonSignIn}
+                    <Button style={styles.buttonSign}
                         type="clear"
                         title= "Se connecter"
-                        //onPress={()=> console.log('SignIn button Clicked!')}
                         onPress={()=> {
-                            console.log(email);
-                            setEmail('');
-                            setPassword('');
-                            props.navigation.navigate('BottomNavigator', { screen: 'Home'})
+                            console.log(signInEmail, signInPassword);
+                            setSignInEmail('');
+                            setSignInPassword('');
+                            onSubmitClick();
+                            handleSubmitSignin();
+
                         }}
+                    />
+                    <Button style={styles.buttonSign}
+                        type="clear"
+                        title= "Créer un compte"
+                        onPress={()=> navigation.navigate('SignUpScreen')}
+                        
+                        
                     />
             </Animatable.View>
         </View>
@@ -89,6 +136,7 @@ const SignInScreen = (props) =>{
 };
 
 export default SignInScreen;
+
 
 const {height} = Dimensions.get("screen");
 const height_logo = height * 0.38;
@@ -132,7 +180,7 @@ const styles = StyleSheet.create({
     text_footer:{
         fontSize: 20,
     },
-    buttonSignIn: {
+    buttonSign: {
         flexDirection: 'row', 
         height: 40,
         backgroundColor: '#354F52',
@@ -155,6 +203,12 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontSize: 18,
         color: 'black'
+    },
+    error: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center', 
+        color: 'red',
     }
 
     });

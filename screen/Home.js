@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, DatePickerIOS } from 'react-native';
 import { Button, CheckBox, Slider } from 'react-native-elements';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons'; 
 import DatePicker from 'react-native-datepicker'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Feather } from '@expo/vector-icons';
@@ -23,8 +23,6 @@ function Home(props) {
     const [barbershop, setBarbershop] = useState(false);
     const [distance, setDistance] = useState(5);
 
-    const [hairdressers, setHairdressers] = useState([]);
-
 
     useEffect(() => {
         async function askPermissions() {
@@ -44,12 +42,16 @@ function Home(props) {
 
     useEffect(() => {
         const call = async() => {
+<<<<<<< HEAD
 
             const response = await fetch('http://172.16.189.138:3000/search', {
                 // const response = await fetch('http://172.17.188.9:3000/search', {
 
             //const response = await fetch('http://172.17.188.11:3000/search', {
             //const response = await fetch('http://172.17.188.11:3000/search', {
+=======
+            const response = await fetch('http://172.17.188.8:3000/search', {
+>>>>>>> f54254c4975b0212f6edb058e0a2574d5df3bf63
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
@@ -73,9 +75,11 @@ function Home(props) {
         call();
     }
 
+    const proList;
+
     return (
         <View style={{ flex: 1  }}>
-            {/* <ScrollView
+            {/* <ScrollView 
                 style={{flex: 1}}
             > */}
             <View style={{ margin: 40, marginTop: 75 }}>
@@ -137,7 +141,7 @@ function Home(props) {
                     onPress={() => {setBarbershop(!barbershop); setAtHome(!atHome)}}
                     containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
                     checkedColor='#52796F'
-                />
+                />    
             </View>
             <View style={{ height: '35%' }}>
             <MapView
@@ -192,6 +196,12 @@ function Home(props) {
     )
 }
 
+function mapStateToProps(state) {
+    return { 
+        professionnels : state.professionnels
+    }
+}
+
 function mapDispatchToProps(dispatch){
     return {
       getHairdressers: (pro) => {
@@ -199,29 +209,9 @@ function mapDispatchToProps(dispatch){
       }
     }
   }
-
+  
   export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(Home);
 
-
-// const styles = StyleSheet.create({
-//     container: {
-//       width: '100%',
-//       height: '50%',
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//       paddingVertical: 55
-//     },
-
-//   });
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: '#fff',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//     },
-// });
