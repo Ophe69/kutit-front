@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, DatePickerIOS } from 'react-native';
 import { Button, CheckBox, Slider } from 'react-native-elements';
-import { FontAwesome } from '@expo/vector-icons'; 
+import { FontAwesome } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Feather } from '@expo/vector-icons';
@@ -22,7 +22,6 @@ function Home(props) {
     const [barbershop, setBarbershop] = useState(false);
     const [distance, setDistance] = useState(5);
     const [proList, setProList] = useState([]);
-    
 
 // Geoloc Enabled
     useEffect(() => {
@@ -46,17 +45,20 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-           // const response = await fetch('http://172.16.189.138:3000/search', {
+
+         // const response = await fetch('http://172.16.189.138:3000/search', {
                  const response = await fetch('http://192.168.1.3:3000/search', {
 
             //const response = await fetch('http://172.17.188.11:3000/search', {
             //const response = await fetch('http://172.17.188.11:3000/search', {
+
 
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
             });
             const data = await response.json();
+
             props.getHairdressers(data.professionnels);
         }
         call();
@@ -85,23 +87,24 @@ function Home(props) {
         />
       });
 
+
     // console.log('test', proList)
 
 
     return (
         <View style={{ flex: 1  }}>
-            {/* <ScrollView 
+            {/* <ScrollView
                 style={{flex: 1}}
             > */}
             <View style={{ margin: 40, marginTop: 75 }}>
                 <Text style={{ textAlign: 'center', fontSize: 20}}
-            >Bonjour Cantin, de quoi avez-vous envie aujourd'hui?</Text>
+                >Bonjour Cantin, de quoi avez-vous envie aujourd'hui?</Text>
             </View>
             <View style={{ marginBottom: 40, alignItems: 'center'}}>
                 <Text style={{ textAlign: 'center', marginBottom: 20 }}>vos disponibilites</Text>
                 <DatePicker
                     customStyles={{
-                       // dateTouchBody: {borderColor:"red", borderWidth:3},
+                        // dateTouchBody: {borderColor:"red", borderWidth:3},
                         //dateInput: {borderColor:"green", borderWidth:1},
                         //dateTouchBody:{ borderColor:"geen" }
                     }}
@@ -114,16 +117,16 @@ function Home(props) {
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{
-                    dateIcon: {
-                        position: 'absolute',
-                        left: 0,
-                        top: 4,
-                        marginLeft: 0
-                    },
-                    dateInput: {
-                        marginLeft: 36
-                    }
-                    // ... You can check the source to find the other keys.
+                        dateIcon: {
+                            position: 'absolute',
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0
+                        },
+                        dateInput: {
+                            marginLeft: 36
+                        }
+                        // ... You can check the source to find the other keys.
                     }}
                     onDateChange={(value) => {setDate(value)}}
                     // style={{ color: '#52796F' }}
@@ -156,7 +159,7 @@ function Home(props) {
                     }}
                     containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
                     checkedColor='#52796F'
-                />    
+                />
             </View>
             <View style={{ height: '35%' }}>
             <MapView
@@ -179,18 +182,19 @@ function Home(props) {
                 />
                 {markerPro}
             </MapView>
+
             </View>
             <View style={{ alignItems: 'center', marginTop: 40 }}>
                 <View style={{ flex: 1, alignItems: 'stretch', justifyContent: 'center', width: '40%' }}>
-                <Slider
-                    value={distance}
-                    onValueChange={(value) => setDistance(value)}
-                    maximumValue={20}
-                    minimumValue={0}
-                    step={1}
-                    thumbStyle={{ backgroundColor: '#52796F', width: 20, height: 20 }}
-                    thumbTouchSize={{ width: 10, height: 10 }}
-                />
+                    <Slider
+                        value={distance}
+                        onValueChange={(value) => setDistance(value)}
+                        maximumValue={20}
+                        minimumValue={0}
+                        step={1}
+                        thumbStyle={{ backgroundColor: '#52796F', width: 20, height: 20 }}
+                        thumbTouchSize={{ width: 10, height: 10 }}
+                    />
                     <Text style={{ textAlign: 'center' }}>Distance: {distance}km</Text>
                 </View>
                 <Button
@@ -212,31 +216,26 @@ function Home(props) {
 }
 
 function mapStateToProps(state) {
-    return { 
+    return {
         professionnels : state.professionnels
     }
 }
 
 function mapDispatchToProps(dispatch){
     return {
+
       getHairdressers: (pro) => {
         dispatch({ type: 'get-hairdressers', professionnels: pro });
       },
       getStatus: (status) => {
           dispatch({ type: 'get-status', statut: status })
       }
-    //   getFreelance: (freelance) => {
-    //       dispatch({ type: 'get-freelance', independants: freelance })
-    //   },
-    //   getBarbershop: (bs) => {
-    //       dispatch({ type: 'get-barbershop', salons: bs })
-    //   }
-      
+
     }
-  }
-  
-  export default connect(
+}
+
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Home);
+)(Home);
 
