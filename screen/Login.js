@@ -1,89 +1,94 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, ImageBackground} from 'react-native';
-import { Button, Input, inputStyle, InputText, CheckBox } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react';
+import {
+    View, 
+    Text,
+    StyleSheet,
+    Dimensions,
+    Image
+} from 'react-native';
+import { Button } from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
 
-import { connect } from 'react-redux';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-
-export default function Login(props) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [checked, setChecked] = useState(false);
-
-    
-    return (
-        <ImageBackground /* source={require('../assets/images/pexels-thgusstavo-santana-2076932.jpg')} */ style={styles.container}>
-            <Input
-            value={email}
-            placeholder='email'
-            leftIcon={{ type: 'font-awesome', name: 'user', color: 'black'}}
-            containerStyle={{ marginBottom: 25, width: '70%' }}
-            inputStyle={{ marginLeft: 10 }}
-            
-            />
-
-            <Input
-            value={password}
-            placeholder='password'
-            leftIcon={{ type: 'font-awesome', name: 'lock', color: 'black' }}
-            containerStyle={{ marginBottom: 25, width: '70%', color: 'black' }}
-            inputContainerStyle={{color: 'black'}}
-            inputStyle={{ marginLeft: 10}}
-            />
-    
-            
+const Login = ({navigation}) => {
+    return(
+        <View style={styles.container}>
+{/*             <Text>Login</Text>
             <Button
-                title='Se connecter'
-                buttonStyle={{backgroundColor: '#354F52'}}
-/*                 onPress={() => {
-                    props.navigation.navigate('BottomNavigator', { screen: 'Home' });
-                }{e => {setEmail(e.target.value); console.log('email')}}
-            } */
+                title= "Click Here"
+                onPress={() => console.log('button Login clicked')}
+                /> */}
+          <View style={styles.header}>
+            <Image
+            source={require('../assets/man-beard.png')}
+            style={styles.logo}
+            resizeMode="stretch"
             />
+          </View>
+          <Animatable.View 
+            style={styles.footer}
+            animation="fadeInUpBig"
 
-            <CheckBox style={{backgroundColor: ''}}
-            center
-            title='Accepter les CGV'
-            /* checked={state.checked}
-            onPress={() => this.setState({checked: !this.state.checked})} */
+          >
+            <Text style={styles.text}>Déjà membre? Connecte-toi :</Text>
+            <Button style={styles.buttonSign}
+              type="clear"
+              title= "Log Me In"
+              onPress={()=> console.log('SignIn button Clicked!')}
+              onPress={()=> navigation.navigate('SignInScreen')}
             />
+          </Animatable.View>
+        </View>
+    );
 
-            <Button
-                title='Créer un compte'
-                buttonStyle={{backgroundColor: '#354F52'}}
-                onPress={() => {
-                    props.navigation.navigate('BottomNavigator', { screen: 'Profile' });
-                }}
-            />
+};
 
-            <Button
-            type="outline"
-            icon={
-                <Icon style={{ marginRight: 20, marginLeft: 20, color: "blue" }}
-                name="facebook"
-                size={15}
-                color="white"
-                
-                />
-            }
-            title="Se connecter avec Facebook"
-            />
-        </ImageBackground>
-        
-    )
-            }
+export default Login;
 
+const {height} = Dimensions.get("screen");
+const height_logo = height * 0.38;
+const width_logo = height * 0.28;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: '#354F52',
         
     },
-    background: {
-        color: 'white'
+    header:{
+      flex: 2,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    footer:{
+      flex: 1,
+      backgroundColor:'#CAD2C5',
+      borderTopLeftRadius: 30,
+      borderTopRightRadius: 30,
+      paddingVertical: 50,
+      paddingHorizontal: 30
+    },
+    logo: {
+      width: width_logo,
+      height: height_logo
+    },
+    text: {
+      marginBottom: 30,
+      fontSize: 25,
+      fontWeight: 'bold',
+
+    },
+    buttonSign: {
+      flexDirection: 'row', 
+      height: 40,
+      backgroundColor: '#354F52',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: 90,
+      marginTop: 30,
+      elevation:3,
     }
+
 });
