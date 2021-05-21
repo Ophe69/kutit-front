@@ -5,6 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Feather } from '@expo/vector-icons';
+import {connect} from 'react-redux';
 
 
 
@@ -14,15 +15,24 @@ import * as Permissions from 'expo-permissions';
 
 const customer = <FontAwesome name="user" size={24} color="black"/>;
 
-export default function Home(props) {
+function Home(props) {
     const [currentLatitude, setCurrentLatitude] = useState(0);
     const [currentLongitude, setCurrentLongitude] = useState(0);
     const [date, setDate] = useState(new Date())
-    const [atHome, setAtHome] = useState(true);
     const [barbershop, setBarbershop] = useState(false);
     const [distance, setDistance] = useState(5);
+    const [proList, setProList] = useState(props.professionnels.filter(e => e.statut != "independant"));
+    const [color, setColor] = useState('orange');
+    const [status, setStatus] = useState("independant");
 
+    // const [markerPro, setMarkerPro] = useState(proList.map((pro, i) => {
+    //     return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
+    //       prenom={pro.prenom}
+    //       nom={pro.nom}
+    //     />
+    //   }));
 
+// Geoloc Enabled
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -37,7 +47,58 @@ export default function Home(props) {
         }
 
         askPermissions();
-    });
+    }, []);
+
+
+// Fetch all Professionnels from db
+    useEffect(() => {
+        const call = async() => { //call ici = handleSubmitSignup la bas
+
+            const response = await fetch('http://172.17.188.8:3000/search', {
+                method: 'POST',
+                headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
+            });
+            const data = await response.json();
+            props.getHairdressers(data.professionnels);
+        }
+        call();
+    }, []);
+
+// Get independant or salon 
+    useEffect(() => {
+        if(!barbershop){
+            const freelanceCopy = props.professionnels.filter(e => e.statut != "salon");
+            setProList(freelanceCopy);
+            // getFreelance(freelanceCopy);
+            props.getStatus("independant")
+            // setColor('orange');
+            
+        } else {
+            const barbershopCopy = props.professionnels.filter(e => e.statut != "independant");
+            setProList(barbershopCopy);
+            props.getStatus("salon");
+            // getBarbershop(barbershopCopy);
+            // setColor('green');
+        }
+    }, [barbershop]);
+
+    useEffect(() => {
+        if(status == "independant"){
+            setColor('green');
+        }else {
+            setColor('orange');
+        }
+    }, [status])
+ 
+    let markerPro = proList.map((pro, i) => {
+        return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
+          prenom={pro.prenom}
+          nom={pro.nom}
+        />
+      });
+
+    // console.log('test', proList)
 
 
     return (
@@ -52,13 +113,17 @@ export default function Home(props) {
             <View style={{ marginBottom: 40, alignItems: 'center'}}>
                 <Text style={{ textAlign: 'center', marginBottom: 20 }}>vos disponibilites</Text>
                 <DatePicker
+                    customStyles={{
+                       // dateTouchBody: {borderColor:"red", borderWidth:3},
+                        //dateInput: {borderColor:"green", borderWidth:1},
+                        //dateTouchBody:{ borderColor:"geen" }
+                    }}
                     style={{width: 200}}
                     date={date}
                     mode="date"
                     placeholder="select date"
-                    format="YYYY-MM-DD"
-                    minDate="2021-05-01"
-                    maxDate="2022-05-01"
+                    minDate="01-05-2021"
+                    maxDate="01-05-2022"
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{
@@ -76,6 +141,8 @@ export default function Home(props) {
                     onDateChange={(value) => {setDate(value)}}
                     // style={{ color: '#52796F' }}
                     format='DD-MM-YYYY'
+                    // onPressDate={}
+                    // onPressCancel={}
                 />
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -84,8 +151,10 @@ export default function Home(props) {
                     title='coiffeur a domicile'
                     checkedIcon='dot-circle-o'
                     uncheckedIcon='circle-o'
-                    checked={atHome}
-                    onPress={() => {setAtHome(!atHome); setBarbershop(!barbershop)}}
+                    checked={!barbershop}
+                    onPress={() => {
+                        setBarbershop(!barbershop);
+                    }}
                     containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
                     checkedColor='#52796F'
                 />
@@ -95,7 +164,9 @@ export default function Home(props) {
                     checkedIcon='dot-circle-o'
                     uncheckedIcon='circle-o'
                     checked={barbershop}
-                    onPress={() => {setBarbershop(!barbershop); setAtHome(!atHome)}}
+                    onPress={() => {
+                        setBarbershop(!barbershop);
+                    }}
                     containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
                     checkedColor='#52796F'
                 />    
@@ -115,11 +186,11 @@ export default function Home(props) {
                 <Marker
                     key={"currentPos"}
                     pinColor="red"
-                    // icon={customer}
                     title=""
                     description="I am here"
                     coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
                 />
+                {markerPro}
             </MapView>
             </View>
             <View style={{ alignItems: 'center', marginTop: 40 }}>
@@ -140,35 +211,39 @@ export default function Home(props) {
                     containerStyle={{ width: 80 }}
                     title='trouver'
                     onPress={() => {
+                        // handleSearch();
                         props.navigation.navigate('HairdresserList', { screen: 'HairdresserList' });
                     }}
                 />
             </View>
 
-            {/* <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae itaque vero iusto corporis ab tempore autem facere vitae recusandae voluptate reiciendis eum, totam esse dolor quaerat laboriosam, voluptas, praesentium omnis consequuntur modi ratione? Mollitia eos natus a quidem laudantium. Reiciendis excepturi omnis alias facilis enim cum accusamus aliquam doloribus dicta, dolorum exercitationem at commodi quae laboriosam consectetur repellendus minima, quisquam tempora eum facere praesentium. Tempora corrupti similique, facere ipsa assumenda, ipsam atque totam illo, provident sed non? Eveniet, sapiente quis vero assumenda recusandae libero similique cupiditate asperiores perferendis ipsum odit nostrum itaque! Aliquam velit ratione delectus dignissimos laudantium, nam similique iusto corrupti porro molestias magni? Saepe quas quibusdam voluptatum animi doloremque explicabo, in adipisci voluptates reprehenderit est! Rem, possimus sit deleniti illo fugit error est laboriosam ipsum maxime suscipit unde labore consectetur accusamus sapiente repudiandae cum distinctio eaque. Omnis, eligendi magnam? Commodi itaque dignissimos unde eius vero ipsam facilis repudiandae dolorem accusantium veritatis. Tempora tempore, temporibus aperiam iste rem consectetur molestiae deleniti delectus obcaecati? Molestias, cum. Tenetur quaerat saepe esse adipisci. Consequatur facilis debitis iste beatae ex ad temporibus. Distinctio molestiae hic consequuntur alias temporibus, quia recusandae modi odit accusamus iste quos provident nihil dicta id aliquid odio eligendi, earum vero! Beatae neque rerum esse dolores adipisci nostrum impedit reprehenderit necessitatibus nobis sint aspernatur facere rem consectetur ut, laudantium vitae totam, voluptas voluptates! Id aliquam pariatur nesciunt consectetur facere error, blanditiis corporis, sequi consequuntur ullam doloribus? Magnam, ad distinctio alias officia labore est nesciunt ex! Dignissimos incidunt eaque veniam provident possimus natus consequuntur quas molestiae minima deserunt tempore ea voluptatem magni consequatur alias, similique nobis sint. Commodi alias fuga optio sed amet recusandae ducimus, quae eaque quia nemo sit nam dolorem quidem debitis temporibus excepturi! Pariatur expedita ex nulla hic, placeat maiores voluptates tempore facilis sit harum laudantium, corrupti laborum?</Text> */}
-            {/* </ScrollView> */}
+         {/* <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae itaque vero iusto corporis ab tempore autem facere vitae recusandae voluptate reiciendis eum, totam esse dolor quaerat laboriosam, voluptas, praesentium omnis consequuntur modi ratione? Mollitia eos natus a quidem laudantium. Reiciendis excepturi omnis alias facilis enim cum accusamus aliquam doloribus dicta, dolorum exercitationem at commodi quae laboriosam consectetur repellendus minima, quisquam tempora eum facere praesentium. Tempora corrupti similique, facere ipsa assumenda, ipsam atque totam illo, provident sed non? Eveniet, sapiente quis vero assumenda recusandae libero similique cupiditate asperiores perferendis ipsum odit nostrum itaque! Aliquam velit ratione delectus dignissimos laudantium, nam similique iusto corrupti porro molestias magni? Saepe quas quibusdam voluptatum animi doloremque explicabo, in adipisci voluptates reprehenderit est! Rem, possimus sit deleniti illo fugit error est laboriosam ipsum maxime suscipit unde labore consectetur accusamus sapiente repudiandae cum distinctio eaque. Omnis, eligendi magnam? Commodi itaque dignissimos unde eius vero ipsam facilis repudiandae dolorem accusantium veritatis. Tempora tempore, temporibus aperiam iste rem consectetur molestiae deleniti delectus obcaecati? Molestias, cum. Tenetur quaerat saepe esse adipisci. Consequatur facilis debitis iste beatae ex ad temporibus. Distinctio molestiae hic consequuntur alias temporibus, quia recusandae modi odit accusamus iste quos provident nihil dicta id aliquid odio eligendi, earum vero! Beatae neque rerum esse dolores adipisci nostrum impedit reprehenderit necessitatibus nobis sint aspernatur facere rem consectetur ut, laudantium vitae totam, voluptas voluptates! Id aliquam pariatur nesciunt consectetur facere error, blanditiis corporis, sequi consequuntur ullam doloribus? Magnam, ad distinctio alias officia labore est nesciunt ex! Dignissimos incidunt eaque veniam provident possimus natus consequuntur quas molestiae minima deserunt tempore ea voluptatem magni consequatur alias, similique nobis sint. Commodi alias fuga optio sed amet recusandae ducimus, quae eaque quia nemo sit nam dolorem quidem debitis temporibus excepturi! Pariatur expedita ex nulla hic, placeat maiores voluptates tempore facilis sit harum laudantium, corrupti laborum?</Text> */}
+         {/* </ScrollView> */}
         </View>
 
     )
 }
 
+function mapStateToProps(state) {
+    return { 
+        professionnels : state.professionnels,
+        statut: state.statut
+    }
+}
 
-// const styles = StyleSheet.create({
-//     container: {
-//       width: '100%',
-//       height: '50%',
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//       paddingVertical: 55
-//     },
+function mapDispatchToProps(dispatch){
+    return {
+      getHairdressers: (pro) => {
+        dispatch({ type: 'get-hairdressers', professionnels: pro });
+      },
+      getStatus: (status) => {
+          dispatch({ type: 'get-status', statut: status })
+      }
+    }
+  }
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Home);
 
-//   });
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: '#fff',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//     },
-// });
