@@ -100,7 +100,6 @@ export default function ChoixRDV(props) {
                 <View>
                     <DatePicker
                         customStyles={{
-
                         }}
                         style={{width: 200}}
                         date={date}

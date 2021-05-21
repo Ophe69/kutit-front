@@ -53,7 +53,7 @@ function HairdresserDetails(props) {
     var statutBeta = props.proDetails.statut
     var statut = statutBeta.charAt(0).toUpperCase() + statutBeta.substr(1);
 
-    console.log("je ne recupère rien "+props.proDetails.prestations);
+    console.log("je ne recupère rien ", props.proDetails);
 
     // recupération des infos du coiffeur
     var nomRecup = props.proDetails.nom
