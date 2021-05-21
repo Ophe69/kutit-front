@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, DatePickerIOS } from 'react-native';
 import { Button, CheckBox, Slider } from 'react-native-elements';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons'; 
 import DatePicker from 'react-native-datepicker'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Feather } from '@expo/vector-icons';
@@ -19,13 +19,20 @@ function Home(props) {
     const [currentLatitude, setCurrentLatitude] = useState(0);
     const [currentLongitude, setCurrentLongitude] = useState(0);
     const [date, setDate] = useState(new Date())
-    const [atHome, setAtHome] = useState(true);
     const [barbershop, setBarbershop] = useState(false);
     const [distance, setDistance] = useState(5);
+    const [proList, setProList] = useState(props.professionnels.filter(e => e.statut != "independant"));
+    const [color, setColor] = useState('orange');
+    const [status, setStatus] = useState("independant");
 
-    const [hairdressers, setHairdressers] = useState([]);
+    // const [markerPro, setMarkerPro] = useState(proList.map((pro, i) => {
+    //     return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
+    //       prenom={pro.prenom}
+    //       nom={pro.nom}
+    //     />
+    //   }));
 
-
+// Geoloc Enabled
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -42,41 +49,61 @@ function Home(props) {
         askPermissions();
     }, []);
 
+
+// Fetch all Professionnels from db
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-            const response = await fetch('http://192.168.1.13:3000/search', {
-            //const response = await fetch('http://172.16.189.160:3000/search', {
-                // const response = await fetch('http://172.17.188.9:3000/search', {
-
-            //const response = await fetch('http://172.17.188.11:3000/search', {
-            //const response = await fetch('http://172.17.188.11:3000/search', {
+            const response = await fetch('http://172.17.188.8:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
             });
             const data = await response.json();
-            // console.log(data.professionnels);
             props.getHairdressers(data.professionnels);
         }
         call();
     }, []);
 
-    const handleSearch = async() => {
-        const call = async() => {
-            const response = await fetch('/search', {
-                method: 'POST',
-                headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                body: `latitude=${currentLatitude}&longitude=${currentLongitude}&distance=${distance}&barbershop=${barbershop}&date=${date}`
-            });
-            const data = await response.json();
+// Get independant or salon 
+    useEffect(() => {
+        if(!barbershop){
+            const freelanceCopy = props.professionnels.filter(e => e.statut != "salon");
+            setProList(freelanceCopy);
+            // getFreelance(freelanceCopy);
+            props.getStatus("independant")
+            // setColor('orange');
+            
+        } else {
+            const barbershopCopy = props.professionnels.filter(e => e.statut != "independant");
+            setProList(barbershopCopy);
+            props.getStatus("salon");
+            // getBarbershop(barbershopCopy);
+            // setColor('green');
         }
-        call();
-    }
+    }, [barbershop]);
+
+    useEffect(() => {
+        if(status == "independant"){
+            setColor('green');
+        }else {
+            setColor('orange');
+        }
+    }, [status])
+ 
+    let markerPro = proList.map((pro, i) => {
+        return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
+          prenom={pro.prenom}
+          nom={pro.nom}
+        />
+      });
+
+    // console.log('test', proList)
+
 
     return (
         <View style={{ flex: 1  }}>
-            {/* <ScrollView
+            {/* <ScrollView 
                 style={{flex: 1}}
             > */}
             <View style={{ margin: 40, marginTop: 75 }}>
@@ -124,8 +151,10 @@ function Home(props) {
                     title='coiffeur a domicile'
                     checkedIcon='dot-circle-o'
                     uncheckedIcon='circle-o'
-                    checked={atHome}
-                    onPress={() => {setAtHome(!atHome); setBarbershop(!barbershop)}}
+                    checked={!barbershop}
+                    onPress={() => {
+                        setBarbershop(!barbershop);
+                    }}
                     containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
                     checkedColor='#52796F'
                 />
@@ -135,10 +164,12 @@ function Home(props) {
                     checkedIcon='dot-circle-o'
                     uncheckedIcon='circle-o'
                     checked={barbershop}
-                    onPress={() => {setBarbershop(!barbershop); setAtHome(!atHome)}}
+                    onPress={() => {
+                        setBarbershop(!barbershop);
+                    }}
                     containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
                     checkedColor='#52796F'
-                />
+                />    
             </View>
             <View style={{ height: '35%' }}>
             <MapView
@@ -155,11 +186,11 @@ function Home(props) {
                 <Marker
                     key={"currentPos"}
                     pinColor="red"
-                    // icon={customer}
                     title=""
                     description="I am here"
                     coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
                 />
+                {markerPro}
             </MapView>
             </View>
             <View style={{ alignItems: 'center', marginTop: 40 }}>
@@ -193,36 +224,26 @@ function Home(props) {
     )
 }
 
+function mapStateToProps(state) {
+    return { 
+        professionnels : state.professionnels,
+        statut: state.statut
+    }
+}
+
 function mapDispatchToProps(dispatch){
     return {
       getHairdressers: (pro) => {
-        dispatch({ type:'get-hairdressers', professionnels: pro });
+        dispatch({ type: 'get-hairdressers', professionnels: pro });
+      },
+      getStatus: (status) => {
+          dispatch({ type: 'get-status', statut: status })
       }
     }
   }
-
+  
   export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(Home);
 
-
-// const styles = StyleSheet.create({
-//     container: {
-//       width: '100%',
-//       height: '50%',
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//       paddingVertical: 55
-//     },
-
-//   });
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: '#fff',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//     },
-// });
