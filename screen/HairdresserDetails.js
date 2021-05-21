@@ -3,22 +3,26 @@ import {connect} from 'react-redux';
 import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {vw, vh, vmin, vmax} from 'react-native-expo-viewport-units';
-import Modal from 'react-native-modal'
+import Modal from 'react-native-modal';
 
-import {Card, ListItem, Button, Icon, Overlay, Tab} from 'react-native-elements'
+import { Overlay, Tab, LinearProgress, PricingCard,Card, ListItem, Button, Icon} from 'react-native-elements'
 
 
 function HairdresserDetails(props) {
 
     const [review, setReview] = useState(0);
     const [isModalVisible, setModalVisible] = useState(false);
-
+    const [isModalVisible2, setModalVisible2] = useState(false);
 
 
 
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
+    };
+
+    const toggleModal2 = () => {
+        setModalVisible2(!isModalVisible2);
     };
 
 
@@ -54,7 +58,7 @@ function HairdresserDetails(props) {
     var statutBeta = props.proDetails.statut
     var statut = statutBeta.charAt(0).toUpperCase() + statutBeta.substr(1);
 
-    console.log(props.proDetails.prestations);
+    //console.log(props.professionnels);
     // recupération des infos du coiffeur
     var nomRecup = props.proDetails.nom
     var prenomRecup = props.proDetails.prenom
@@ -63,7 +67,28 @@ function HairdresserDetails(props) {
     var nom = nomRecup.charAt(0).toUpperCase() + nomRecup.substr(1);
     var prenom = prenomRecup.charAt(0).toUpperCase() + prenomRecup.substr(1)
 
-    console.log(prenom + " " + nom);
+    //console.log(prenom + " " + nom);
+
+    var prestations = props.proDetails.prestations
+    const parcours = prestations.map((prestation, i) => {
+        var coupe = prestation.type;
+        var bestCoupe = coupe.charAt(0).toUpperCase() + coupe.substr(1)
+        return (
+            <Card style={{borderRadius: 10}}>
+                <Card.Title>{bestCoupe} pour {prestation.prix} €</Card.Title>
+                <Card.Divider/>
+                    <Button
+                        icon={<Icon name='money' color='#ffffff' />}
+                        buttonStyle={{borderRadius: 10, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                        title=' Commander'
+                        onPress={() => {props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
+                        }}/>
+            </Card>
+        )
+    })
+
+   // <Text>{prestation.type} pour => {prestation.prix} €</Text>
+
 
 
     return (
@@ -95,7 +120,7 @@ function HairdresserDetails(props) {
 
                         </View>
                         <View>
-                            <Text style={{fontWeight: "bold", fontSize: "25px", marginBottom: 0}}>{prenom} {nom}</Text>
+                            <Text style={{fontWeight: "bold", fontSize: 25, marginBottom: 0}}>{prenom} {nom}</Text>
                             <View style={{flexDirection: 'row', justifyContent: "flex-end", marginTop: 10}}>
                                 {stars}
                             </View>
@@ -108,7 +133,7 @@ function HairdresserDetails(props) {
                     </View>
                     <View style={{
                         flexDirection: "row",
-                        fontSize: "20px",
+                        fontSize: 20,
                         justifyContent: "space-evenly",
                         margin: 15,
                     }}>
@@ -142,11 +167,11 @@ function HairdresserDetails(props) {
                         <Text
                             style={{
                                 margin: 10,
-                                fontSize: "15px"
+                                fontSize: 15
                             }}>-------------------------------------------------</Text>
 
 
-                        <Text style={{margin: 10, fontSize: "25px", textAlign: "center"}}>Choisissez votre
+                        <Text style={{margin: 10, fontSize: 25, textAlign: "center"}}>Choisissez votre
                             prestation</Text>
                         <View Style={{
                             width: "90%",
@@ -154,29 +179,16 @@ function HairdresserDetails(props) {
                             flexDirection: "row",
                             justifyContent: "space-around"
                         }}>
-                            <Button
-                                title="decapage - 27€"
-                                type="solid"
-                                buttonStyle={{backgroundColor: "#009788", display: "inline"}}
-                                onPress={() => {
-                                    props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
-                                }}/>
-                            <Button
-                                title="shampoing - 23€"
-                                type="solid"
-                                buttonStyle={{backgroundColor: "#009788", display: "inline"}}
-                                onPress={() => {
-                                    props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
-                                }}/>
+                            {parcours}
                         </View>
                         <Text
                             style={{
                                 margin: 10,
-                                fontSize: "15px"
+                                fontSize: 15
                             }}>-------------------------------------------------</Text>
                     </View>
                     <View>
-                        <Text style={{margin: 10, fontSize: "20px", textAlign: "center"}}>Ce que les autres ont
+                        <Text style={{margin: 10, fontSize: 20, textAlign: "center"}}>Ce que les autres ont
                             pensé</Text>
                         <Card>
                             <Card.Title>Fleury nichon</Card.Title>
@@ -240,15 +252,15 @@ function HairdresserDetails(props) {
 }
 
 function mapStateToProps(state) {
-    return { 
+    return {
         professionnels : state.professionnels,
         proDetails: state.proDetails
     }
 }
-  
-  export default connect( 
-    mapStateToProps, 
-    null
+
+export default connect(
+    mapStateToProps,
+    null,
 )(HairdresserDetails);
 
 const styles = StyleSheet.create({

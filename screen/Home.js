@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, DatePickerIOS } from 'react-native';
 import { Button, CheckBox, Slider } from 'react-native-elements';
-import { FontAwesome } from '@expo/vector-icons'; 
+import { FontAwesome } from '@expo/vector-icons';
 import DatePicker from 'react-native-datepicker'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Feather } from '@expo/vector-icons';
@@ -19,11 +19,12 @@ function Home(props) {
     const [currentLatitude, setCurrentLatitude] = useState(0);
     const [currentLongitude, setCurrentLongitude] = useState(0);
     const [date, setDate] = useState(new Date())
-    const [atHome, setAtHome] = useState(true);
     const [barbershop, setBarbershop] = useState(false);
     const [distance, setDistance] = useState(5);
+    const [proList, setProList] = useState([]);
 
 
+// Geoloc Enabled
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -40,52 +41,63 @@ function Home(props) {
         askPermissions();
     }, []);
 
+
+// Fetch all Professionnels from db
     useEffect(() => {
         const call = async() => {
 
-            const response = await fetch('http://172.16.189.138:3000/search', {
-                // const response = await fetch('http://172.17.188.9:3000/search', {
-
-            //const response = await fetch('http://172.17.188.11:3000/search', {
-            //const response = await fetch('http://172.17.188.11:3000/search', {
-
+            const response = await fetch('http://172.16.189.140:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
             });
             const data = await response.json();
-            // console.log(data.professionnels);
+            console.log(data.professionnels)
             props.getHairdressers(data.professionnels);
         }
         call();
     }, []);
 
-    const handleSearch = async() => {
-        const call = async() => {
-            const response = await fetch('/search', {
-                method: 'POST',
-                headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                body: `latitude=${currentLatitude}&longitude=${currentLongitude}&distance=${distance}&barbershop=${barbershop}&date=${date}`
-            });
-            const data = await response.json();
+// Get independant or salon
+    useEffect(() => {
+
+        if(!barbershop){
+            const freelanceCopy = props.professionnels.filter(e => e.statut != "independant");
+            setProList(freelanceCopy);
+            // getFreelance(freelanceCopy);
+            props.getStatus("independant")
+        } else {
+            const barbershopCopy = props.professionnels.filter(e => e.statut != "salon");
+            setProList(barbershopCopy);
+            props.getStatus("salon");
+            // getBarbershop(barbershopCopy);
         }
-        call();
-    }
+    }, [barbershop]);
+
+    let markerPro = proList.map((pro, i) => {
+        return <Marker key={i} pinColor="blue" coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
+                       prenom={pro.prenom}
+                       nom={pro.nom}
+        />
+    });
+
+    // console.log('test', proList)
+
 
     return (
         <View style={{ flex: 1  }}>
-            {/* <ScrollView 
+            {/* <ScrollView
                 style={{flex: 1}}
             > */}
             <View style={{ margin: 40, marginTop: 75 }}>
                 <Text style={{ textAlign: 'center', fontSize: 20}}
-            >Bonjour Cantin, de quoi avez-vous envie aujourd'hui?</Text>
+                >Bonjour Cantin, de quoi avez-vous envie aujourd'hui?</Text>
             </View>
             <View style={{ marginBottom: 40, alignItems: 'center'}}>
                 <Text style={{ textAlign: 'center', marginBottom: 20 }}>vos disponibilites</Text>
                 <DatePicker
                     customStyles={{
-                       // dateTouchBody: {borderColor:"red", borderWidth:3},
+                        // dateTouchBody: {borderColor:"red", borderWidth:3},
                         //dateInput: {borderColor:"green", borderWidth:1},
                         //dateTouchBody:{ borderColor:"geen" }
                     }}
@@ -98,16 +110,16 @@ function Home(props) {
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{
-                    dateIcon: {
-                        position: 'absolute',
-                        left: 0,
-                        top: 4,
-                        marginLeft: 0
-                    },
-                    dateInput: {
-                        marginLeft: 36
-                    }
-                    // ... You can check the source to find the other keys.
+                        dateIcon: {
+                            position: 'absolute',
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0
+                        },
+                        dateInput: {
+                            marginLeft: 36
+                        }
+                        // ... You can check the source to find the other keys.
                     }}
                     onDateChange={(value) => {setDate(value)}}
                     // style={{ color: '#52796F' }}
@@ -122,8 +134,10 @@ function Home(props) {
                     title='coiffeur a domicile'
                     checkedIcon='dot-circle-o'
                     uncheckedIcon='circle-o'
-                    checked={atHome}
-                    onPress={() => {setAtHome(!atHome); setBarbershop(!barbershop)}}
+                    checked={!barbershop}
+                    onPress={() => {
+                        setBarbershop(!barbershop);
+                    }}
                     containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
                     checkedColor='#52796F'
                 />
@@ -133,44 +147,47 @@ function Home(props) {
                     checkedIcon='dot-circle-o'
                     uncheckedIcon='circle-o'
                     checked={barbershop}
-                    onPress={() => {setBarbershop(!barbershop); setAtHome(!atHome)}}
+                    onPress={() => {
+                        setBarbershop(!barbershop);
+                    }}
                     containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
                     checkedColor='#52796F'
-                />    
+                />
             </View>
             <View style={{ height: '35%' }}>
-            <MapView
-                style={{ height: '100%' }}
-                region={{
-                  latitude: currentLatitude,
-                  longitude: currentLongitude,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                customMapStyle={{ alignself: 'center'}}
-                scrollEnabled={true}
-            >
-                <Marker
-                    key={"currentPos"}
-                    pinColor="red"
-                    // icon={customer}
-                    title=""
-                    description="I am here"
-                    coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
-                />
-            </MapView>
+                <MapView
+                    style={{ height: '100%' }}
+                    region={{
+                        latitude: currentLatitude,
+                        longitude: currentLongitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                    customMapStyle={{ alignself: 'center'}}
+                    scrollEnabled={true}
+                >
+                    <Marker
+                        key={"currentPos"}
+                        pinColor="red"
+                        // icon={customer}
+                        title=""
+                        description="I am here"
+                        coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
+                    />
+                    {markerPro}
+                </MapView>
             </View>
             <View style={{ alignItems: 'center', marginTop: 40 }}>
                 <View style={{ flex: 1, alignItems: 'stretch', justifyContent: 'center', width: '40%' }}>
-                <Slider
-                    value={distance}
-                    onValueChange={(value) => setDistance(value)}
-                    maximumValue={20}
-                    minimumValue={0}
-                    step={1}
-                    thumbStyle={{ backgroundColor: '#52796F', width: 20, height: 20 }}
-                    thumbTouchSize={{ width: 10, height: 10 }}
-                />
+                    <Slider
+                        value={distance}
+                        onValueChange={(value) => setDistance(value)}
+                        maximumValue={20}
+                        minimumValue={0}
+                        step={1}
+                        thumbStyle={{ backgroundColor: '#52796F', width: 20, height: 20 }}
+                        thumbTouchSize={{ width: 10, height: 10 }}
+                    />
                     <Text style={{ textAlign: 'center' }}>Distance: {distance}km</Text>
                 </View>
                 <Button
@@ -192,21 +209,31 @@ function Home(props) {
 }
 
 function mapStateToProps(state) {
-    return { 
+    return {
         professionnels : state.professionnels
     }
 }
 
 function mapDispatchToProps(dispatch){
     return {
-      getHairdressers: (pro) => {
-        dispatch({ type:'get-hairdressers', professionnels: pro });
-      }
+        getHairdressers: (pro) => {
+            dispatch({ type: 'get-hairdressers', professionnels: pro });
+        },
+        getStatus: (status) => {
+            dispatch({ type: 'get-status', statut: status })
+        }
+        //   getFreelance: (freelance) => {
+        //       dispatch({ type: 'get-freelance', independants: freelance })
+        //   },
+        //   getBarbershop: (bs) => {
+        //       dispatch({ type: 'get-barbershop', salons: bs })
+        //   }
+
     }
-  }
-  
-  export default connect(
+}
+
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Home);
+)(Home);
 
