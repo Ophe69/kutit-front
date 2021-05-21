@@ -53,8 +53,6 @@ function HairdresserDetails(props) {
     var statutBeta = props.proDetails.statut
     var statut = statutBeta.charAt(0).toUpperCase() + statutBeta.substr(1);
 
-    console.log("je ne recupère rien ", props.proDetails);
-
     // recupération des infos du coiffeur
     var nomRecup = props.proDetails.nom
     var prenomRecup = props.proDetails.prenom
@@ -62,6 +60,7 @@ function HairdresserDetails(props) {
     // Mise en majiscule des premiers caractère du nom et prénom
     var nom = nomRecup.charAt(0).toUpperCase() + nomRecup.substr(1);
     var prenom = prenomRecup.charAt(0).toUpperCase() + prenomRecup.substr(1)
+
 
     return (
         <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%"}}>
@@ -92,7 +91,7 @@ function HairdresserDetails(props) {
 
                         </View>
                         <View>
-                            <Text style={{fontWeight: "bold", fontSize: "25px", marginBottom: 0}}>{prenom} {nom}</Text>
+                            <Text style={{fontWeight: "bold", fontSize: 25, marginBottom: 0}}>{prenom} {nom}</Text>
                             <View style={{flexDirection: 'row', justifyContent: "flex-end", marginTop: 10}}>
                                 {stars}
                             </View>
@@ -105,7 +104,7 @@ function HairdresserDetails(props) {
                     </View>
                     <View style={{
                         flexDirection: "row",
-                        fontSize: "20px",
+                        fontSize: 20,
                         justifyContent: "space-evenly",
                         margin: 15,
                     }}>
@@ -182,11 +181,11 @@ function HairdresserDetails(props) {
                         <Text
                             style={{
                                 margin: 10,
-                                fontSize: "15px"
+                                fontSize: 15
                             }}>-------------------------------------------------</Text>
 
 
-                        <Text style={{margin: 10, fontSize: "25px", textAlign: "center"}}>Choisissez votre
+                        <Text style={{margin: 10, fontSize: 25, textAlign: "center"}}>Choisissez votre
                             prestation</Text>
                         <View Style={{
                             width: "90%",
@@ -197,14 +196,14 @@ function HairdresserDetails(props) {
                             <Button
                                 title="decapage - 27€"
                                 type="solid"
-                                buttonStyle={{backgroundColor: "#009788", display: "inline"}}
+                                buttonStyle={{backgroundColor: "#009788"}}
                                 onPress={() => {
                                     props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
                                 }}/>
                             <Button
                                 title="shampoing - 23€"
                                 type="solid"
-                                buttonStyle={{backgroundColor: "#009788", display: "inline"}}
+                                buttonStyle={{backgroundColor: "#009788"}}
                                 onPress={() => {
                                     props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
                                 }}/>
@@ -212,11 +211,11 @@ function HairdresserDetails(props) {
                         <Text
                             style={{
                                 margin: 10,
-                                fontSize: "15px"
+                                fontSize: 15
                             }}>-------------------------------------------------</Text>
                     </View>
                     <View>
-                        <Text style={{margin: 10, fontSize: "20px", textAlign: "center"}}>Ce que les autres ont
+                        <Text style={{margin: 10, fontSize: 20, textAlign: "center"}}>Ce que les autres ont
                             pensé</Text>
                         <Card>
                             <Card.Title>Fleury nichon</Card.Title>
@@ -287,8 +286,8 @@ function mapStateToProps(state) {
 }
   
   export default connect( 
-    mapStateToProps, 
-    null
+    mapStateToProps,
+      null,
 )(HairdresserDetails);
 
 const styles = StyleSheet.create({
