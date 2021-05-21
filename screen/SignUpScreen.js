@@ -4,11 +4,11 @@ import {
     Text,
     StyleSheet,
     Dimensions,
-    TextInput
+    TextInput,
+    Button
 } from 'react-native';
 
 import { 
-    Button,
     CheckBox
  } from 'react-native-elements';
 
@@ -21,7 +21,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 
 
-function SignUpScreen ({navigation, props}){
+function SignUpScreen ({navigation}){
 
     const [state, setState] = useState(false);
     const [signupUserName, setSignupUserName] = useState(''); 
@@ -35,7 +35,7 @@ function SignUpScreen ({navigation, props}){
     const [isLogin, setIsLogin] = useState(false);
     const [error, setError] = useState('');
     
-    const onSubmitClick = () =>{
+/*     const onSubmitClick = () =>{
         if(signupUserName !== '' && signupEmail !== '' && signupPassword !== '' && signupPasswordConf){
             setIsLogin(true)
             if(signupPassword !== signupPasswordConf){
@@ -49,7 +49,7 @@ function SignUpScreen ({navigation, props}){
 
     if(isLogin){
         navigation.navigate('BottomNavigator', { screen: 'Home' })
-    }
+    } */
 
     /*  if(body.result == true){
             props.addToken(body.token)
@@ -59,19 +59,29 @@ function SignUpScreen ({navigation, props}){
             setErrorsSignup(body.error)
         } */
         
-        const handleSubmitSignup = () => {
-            const call = async () => {
+        const handleSubmitSignup = async() => {
                 
-                const data = await fetch('http://172.16.190.143:3000/signup', {
+                var data = await fetch('http://172.16.190.136:3000/signup', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}`
                 });
-        
-                const response = await response.json();
-                console.log(data)
-            }
-            call();
+                var dataResponse = await data.json();
+                //const obj = JSON.parse(dataResponse);
+                console.log('data ' + dataResponse.saveUser)
+                /* if(signupUserName !== '' && signupEmail !== '' && signupPassword !== '' && signupPasswordConf){
+                    setIsLogin(true)
+                    if(signupPassword !== signupPasswordConf){
+                        setError('Merci de confirmer votre password')
+                    }
+                }else {
+                    setError('Merci de ne pas laisser de champs vides')
+                    console.log(error)
+                } */
+                // const response = await response.json();
+                // console.log('response', response)
+                //console.log('data', data)
+    
         };
 
     
@@ -93,6 +103,7 @@ function SignUpScreen ({navigation, props}){
                         style={styles.TextInputSignUp}
                         autoCapitalize="none"
                         onChangeText={(value) => {setSignupUserName(value)}}
+                        value={signupUserName}
                     />
                 </View>
                 <View style={styles.actionSignUp}>
@@ -101,6 +112,7 @@ function SignUpScreen ({navigation, props}){
                         style={styles.TextInputSignUp}
                         autoCapitalize="none"
                         onChangeText={(value) => {setSignupEmail(value)}}
+                        value={signupEmail}
                     />
                 </View>
                 <View style={styles.actionSignUp}>
@@ -110,6 +122,7 @@ function SignUpScreen ({navigation, props}){
                         autoCapitalize="none"
                         secureTextEntry={true}
                         onChangeText={(value) => {setSignupPassword(value)}}
+                        value={signupPassword}
                     />
                     <Feather
                         name="eye-off"
@@ -125,6 +138,7 @@ function SignUpScreen ({navigation, props}){
                         autoCapitalize="none"
                         secureTextEntry={true}
                         onChangeText={(value) => {setSignupPasswordConf(value)}}
+                        value={signupPasswordConf}
                     />
                     <Feather
                         name="eye-off"
@@ -149,12 +163,13 @@ function SignUpScreen ({navigation, props}){
 
                         onPress={()=> {
                             console.log(signupUserName, signupEmail, signupPassword, signupPasswordConf);
-                            handleSubmitSignup();
-                            onSubmitClick();
                             setSignupUserName('');
                             setSignupEmail('');
                             setSignupPassword('');
                             setSignupPasswordConf(''); 
+                            handleSubmitSignup();
+                            //onSubmitClick();
+                            
                             
                             //navigation.navigate('BottomNavigator', { screen: 'Home'})
                         }}

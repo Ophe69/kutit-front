@@ -40,12 +40,13 @@ const SignInScreen = ({navigation}) =>{
     var handleSubmitSignin = async () => {
             
         const call = async () => {
-            const response = await fetch('http://172.16.190.143:3000/signin', {
+            const response = await fetch('http://172.16.190.136:3000/signin', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: `mail=${signInEmail}&password=${signInPassword}`
             })
             const data = await response.json();
+            const dataParse = JSON.parse(data.response);
             console.log(data)
         }
     call();
@@ -53,14 +54,6 @@ const SignInScreen = ({navigation}) =>{
         if(isLogin){
             navigation.navigate('BottomNavigator', { screen: 'Home' })
         }
-
-/*         if(body.result == true){
-            props.addToken(body.token)
-            setUserExists(true)
-            
-        }  else {
-            setErrorsSignin(body.error)
-         } */
 
 
     return(
