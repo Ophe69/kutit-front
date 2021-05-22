@@ -1,15 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
     View, 
     Text,
     StyleSheet,
     Dimensions,
-    TextInput
+    TextInput,
 } from 'react-native';
 
 import { 
-    Button,
-    CheckBox
+    CheckBox, Button
  } from 'react-native-elements';
 
  import {connect} from 'react-redux';
@@ -21,7 +20,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 
 
-function SignUpScreen ({navigation, props}){
+function SignUpScreen ({navigation}){
 
     const [state, setState] = useState(false);
     const [signupUserName, setSignupUserName] = useState(''); 
@@ -32,46 +31,30 @@ function SignUpScreen ({navigation, props}){
     const [secureTextEntry, setSecureTextEntry] = useState(false);
     const [userExists, setUserExists] = useState(false);
     const [listErrorsSignup, setErrorsSignup] = useState('');
-    const [isLogin, setIsLogin] = useState(false);
+    const [isRegistered, setIsRegistered] = useState(false);
+    const [signUpMessage, setSignUpMessage] = useState('');
     const [error, setError] = useState('');
     
-    const onSubmitClick = () =>{
-        if(signupUserName !== '' && signupEmail !== '' && signupPassword !== '' && signupPasswordConf){
-            setIsLogin(true)
-            if(signupPassword !== signupPasswordConf){
-                setError('Merci de confirmer votre password')
-            }
-        }else {
-            setError('Merci de ne pas laisser de champs vides')
-            console.log(error)
-        }
-    }
-
-    if(isLogin){
-        navigation.navigate('BottomNavigator', { screen: 'Home' })
-    }
-
-    /*  if(body.result == true){
-            props.addToken(body.token)
-            setUserExists(true)
-            
-        } else {
-            setErrorsSignup(body.error)
-        } */
         
-        const handleSubmitSignup = () => {
-            const call = async () => {
+        const handleSubmitSignup = async(props) => {
                 
-                const data = await fetch('http://172.16.190.143:3000/signup', {
+                //var data = await fetch('http://192.168.1.13:3000/signup', {
+                var data = await fetch('http://172.16.190.131:3000/signup', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}`
                 });
-        
-                const response = await response.json();
-                console.log(data)
-            }
-            call();
+                var response = await data.json();
+                console.log('response', response)
+                setIsRegistered(response.registered);
+                setSignUpMessage('');
+                if(response.registered == false){
+                    setSignUpMessage(response.message);
+                }else {
+                    setSignUpMessage('');
+                    navigation.navigate('BottomNavigator', { screen: 'Home'})
+                }
+
         };
 
     
@@ -93,6 +76,7 @@ function SignUpScreen ({navigation, props}){
                         style={styles.TextInputSignUp}
                         autoCapitalize="none"
                         onChangeText={(value) => {setSignupUserName(value)}}
+                        value={signupUserName}
                     />
                 </View>
                 <View style={styles.actionSignUp}>
@@ -101,6 +85,7 @@ function SignUpScreen ({navigation, props}){
                         style={styles.TextInputSignUp}
                         autoCapitalize="none"
                         onChangeText={(value) => {setSignupEmail(value)}}
+                        value={signupEmail}
                     />
                 </View>
                 <View style={styles.actionSignUp}>
@@ -110,6 +95,7 @@ function SignUpScreen ({navigation, props}){
                         autoCapitalize="none"
                         secureTextEntry={true}
                         onChangeText={(value) => {setSignupPassword(value)}}
+                        value={signupPassword}
                     />
                     <Feather
                         name="eye-off"
@@ -125,6 +111,7 @@ function SignUpScreen ({navigation, props}){
                         autoCapitalize="none"
                         secureTextEntry={true}
                         onChangeText={(value) => {setSignupPasswordConf(value)}}
+                        value={signupPasswordConf}
                     />
                     <Feather
                         name="eye-off"
@@ -140,23 +127,24 @@ function SignUpScreen ({navigation, props}){
                     checked={state.checked}
                     />
                 </View>
-                <View>
-                <Text>{error}</Text>
-                </View>    
+                <View style={styles.ViewTextSigninMessage}>
+                    <Text style={styles.TextSigninMessage} >{signUpMessage}</Text>  
+                </View>  
+                    
+
                     <Button style={styles.buttonSign}
                         type="clear"
                         title= "je créé mon compte"
 
                         onPress={()=> {
-                            console.log(signupUserName, signupEmail, signupPassword, signupPasswordConf);
-                            handleSubmitSignup();
-                            onSubmitClick();
+                            //console.log(signupUserName, signupEmail, signupPassword, signupPasswordConf);
                             setSignupUserName('');
                             setSignupEmail('');
                             setSignupPassword('');
                             setSignupPasswordConf(''); 
-                            
-                            //navigation.navigate('BottomNavigator', { screen: 'Home'})
+                            handleSubmitSignup();
+
+
                         }}
                     />
 
@@ -165,7 +153,7 @@ function SignUpScreen ({navigation, props}){
                 title="<="
                 type="solid"
                 buttonStyle={{backgroundColor: "#009788"}}
-                onPress={() => navigation.navigate('BottomNavigator', {screen: 'Login'})}
+                onPress={() => navigation.navigate('BottomNavigator', {screen: 'registered'})}
             />
             </Animatable.View>
         </View>
@@ -263,7 +251,17 @@ const styles = StyleSheet.create({
     }, 
     cgv: {
         backgroundColor: '#CAD2C5',
+    },
+    ViewTextSigninMessage: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    TextSigninMessage: {
+        color: 'red',
+        marginTop: 20,
     }
+
 
 
     });

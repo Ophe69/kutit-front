@@ -15,52 +15,43 @@ import Feather from 'react-native-vector-icons/Feather';
 const SignInScreen = ({navigation}) =>{
 
     
-    const [signInEmail, setSignInEmail] = useState('');
+    const [signInUserName, setSignInUserName] = useState('');
     const [signInPassword, setSignInPassword] = useState('');
+    const [signInMessage, setSignInMessage] = useState('');
 
     const [secureTextEntry, setSecureTextEntry] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
-    const [error, setError] = useState('');
-    const [listErrorsSignin, setListErrorsSignin] = useState('');
+    const [passwordOK, setPasswordOk] = useState(false);
     const [userExists, setUserExists] = useState(false);
 
-/*     const onSubmitClick = () =>{
-        if(signupEmail !== '' && signupPassword !== ''){
-            setIsLogin(true)
-        }else {
-            setError('Merci de ne pas laisser de champs vides')
 
-        }
-    } 
-
-    if(isLogin){
-        navigation.navigate('BottomNavigator', { screen: 'Home' })
-    }*/
-
-    var handleSubmitSignin = async () => {
+    var handleSubmitSignIn = async () => {
             
-        const call = async () => {
-            const response = await fetch('http://172.16.190.143:3000/signin', {
+            const data = await fetch('http://172.16.190.131:3000/signin', {
+            //const response = await fetch('http://192.168.1.13:3000/signin', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: `mail=${signInEmail}&password=${signInPassword}`
+                body: `userName=${signInUserName}&password=${signInPassword}`
             })
-            const data = await response.json();
-            console.log(data)
-        }
-    call();
-};
-        if(isLogin){
-            navigation.navigate('BottomNavigator', { screen: 'Home' })
-        }
-
-/*         if(body.result == true){
-            props.addToken(body.token)
-            setUserExists(true)
+            const response = await data.json();
+            console.log('response', response);
+            setUserExists(response.exist);
+            setSignInMessage(response.message);
+            //console.log('signInMessage', signInMessage);
+            if(response.login == false){
+                setSignInMessage(response.message);
+            }else{
+                setIsLogin(response.exist);
+                setPasswordOk(response.passwordOK)
+                navigation.navigate('BottomNavigator', { screen: 'Home'})
+            }
+/*             if (isLogin && passwordOK){
+                navigation.navigate('BottomNavigator', { screen: 'Home'})
+            } */
             
-        }  else {
-            setErrorsSignin(body.error)
-         } */
+        
+};
+
 
 
     return(
@@ -81,12 +72,12 @@ const SignInScreen = ({navigation}) =>{
                             size={20}
                         />
                         <TextInput
-                            placeholder="Votre Email"
-                            value={signInEmail}
-                            style={styles.TextInput}
-                            autoCapitalize="none"
-                            onChangeText={(value) => {setSignInEmail(value)}}
-                        />
+                        placeholder="Nom d'utlisateur"
+                        style={styles.TextInput}
+                        autoCapitalize="none"
+                        onChangeText={(value) => {setSignInUserName(value)}}
+                        value={signInUserName}
+                    />
                     </View>
                 <Text style={styles.text_footer}>Password</Text>
                     <View style={styles.action}>
@@ -97,11 +88,11 @@ const SignInScreen = ({navigation}) =>{
                         />
                         <TextInput
                             placeholder="Votre password"
-                            value={signInPassword}
                             style={styles.TextInput}
                             autoCapitalize="none"
                             secureTextEntry={true}
                             onChangeText={(value) => {setSignInPassword(value)}}
+                            value={signInPassword}
                         />
                         <Feather
                             name="eye-off"
@@ -109,20 +100,19 @@ const SignInScreen = ({navigation}) =>{
                             size={20}
                         />
                     </View>
-                    <View style={{marginTop: 55}}>  
-                       {/*  {error === '' ? null : <Text style={styles.error}>{error}</Text>} */}
 
-                    </View>
+                    <View style={styles.ViewTextSigninMessage}>
+                        <Text style={styles.TextSigninMessage} >{signInMessage}</Text>  
+                    </View>  
 
                     <Button style={styles.buttonSign}
                         type="clear"
                         title= "Se connecter"
                         onPress={()=> {
-                            console.log(signInEmail, signInPassword);
-                            setSignInEmail('');
+                            console.log(signInUserName, signInPassword);
+                            setSignInUserName('');
                             setSignInPassword('');
-                            //onSubmitClick();
-                            handleSubmitSignin();
+                            handleSubmitSignIn();
 
                         }}
                     />
@@ -213,6 +203,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center', 
         color: 'red',
+    },
+    ViewTextSigninMessage: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    TextSigninMessage: {
+        color: 'red',
+        marginTop: 20,
     }
 
     });
