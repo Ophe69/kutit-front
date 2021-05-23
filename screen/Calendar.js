@@ -102,8 +102,8 @@ export default function Calendar() {
             longitude,
             prestations
         })
-
-        const proDetails = await fetch('http://172.17.188.8:3000/create-pro', {
+        const proDetails = await fetch('http://172.16.190.131:3000/create-pro', {
+        //const proDetails = await fetch('http://172.17.188.8:3000/create-pro', {
                 method: 'POST',
                 headers: {'Content-Type':'application/Json'},
                 body: datas
