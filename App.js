@@ -8,6 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { Ionicons } from '@expo/vector-icons';
+
 import Login from './screen/Login';
 import NavLoginScreen from './screen/NavLoginScreen';
 import Home from './screen/Home';
@@ -38,11 +40,13 @@ const BottomNavigator = () => {
         tabBarIcon: ({ color }) => {
           let iconName;
 
-          if (route.name == 'Snap') {
-            return <Entypo name="camera" size={24} color={color} />
-          } else if (route.name == 'Gallery') {
-            return <Ionicons name="images" size={24} color={color}/>
-          }
+          if (route.name == 'Home') {
+            return <Ionicons name="home-outline" size={24} color={color} />
+          } else if (route.name == 'Calendar') {
+            return <Ionicons name="calendar-outline" size={24} color={color}/>
+          }else if (route.name == 'Dashboard') {
+          return <Ionicons name="person-outline" size={24} color={color}/>
+        }
 
         },
         })}
@@ -50,7 +54,8 @@ const BottomNavigator = () => {
         activeTintColor: '#009788',
         inactiveTintColor: '#FFFFFF',
         style: {
-          backgroundColor: '#111224'
+          backgroundColor: '#354F52',
+          borderRadius: 20,
         }
       }}
     >

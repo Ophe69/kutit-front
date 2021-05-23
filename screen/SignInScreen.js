@@ -27,8 +27,8 @@ const SignInScreen = ({navigation}) =>{
 
     var handleSubmitSignIn = async () => {
             
-            const data = await fetch('http://172.16.190.131:3000/signin', {
-            //const response = await fetch('http://192.168.1.13:3000/signin', {
+            //const data = await fetch('http://172.16.190.131:3000/signin', {
+            const data = await fetch('http://192.168.1.13:3000/signin', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: `userName=${signInUserName}&password=${signInPassword}`
@@ -176,12 +176,15 @@ const styles = StyleSheet.create({
     },
     buttonSign: {
         flexDirection: 'row', 
-        height: 40,
+        height: 50,
+        width: 300,
+        borderRadius: 20,
         backgroundColor: '#354F52',
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 90,
+        marginHorizontal: 30,
         marginTop: 30,
+        marginBottom: 10,
         elevation:3,
     },
     action: {

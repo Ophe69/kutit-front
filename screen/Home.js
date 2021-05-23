@@ -54,8 +54,8 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-            const response = await fetch('http://172.16.190.131:3000/search', {
-            //const response = await fetch('http://192.168.1.13:3000/search', {
+            //const response = await fetch('http://172.16.190.131:3000/search', {
+            const response = await fetch('http://192.168.1.13:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
@@ -95,16 +95,16 @@ function Home(props) {
  
     let markerPro = proList.map((pro, i) => {
         return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
-          prenom={pro.prenom}
-          nom={pro.nom}
+            prenom={pro.prenom}
+            nom={pro.nom}
         />
-      });
+        });
 
     // console.log('test', proList)
 
 
     return (
-        <View style={{ flex: 1  }}>
+        <View style={styles.container}>
             {/* <ScrollView 
                 style={{flex: 1}}
             > */}
@@ -177,10 +177,10 @@ function Home(props) {
             <MapView
                 style={{ height: '100%' }}
                 region={{
-                  latitude: currentLatitude,
-                  longitude: currentLongitude,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
+                    latitude: currentLatitude,
+                    longitude: currentLongitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
                 }}
                 customMapStyle={{ alignself: 'center'}}
                 scrollEnabled={true}
@@ -235,17 +235,25 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
     return {
-      getHairdressers: (pro) => {
+        getHairdressers: (pro) => {
         dispatch({ type: 'get-hairdressers', professionnels: pro });
-      },
-      getStatus: (status) => {
-          dispatch({ type: 'get-status', statut: status })
-      }
+        },
+        getStatus: (status) => {
+            dispatch({ type: 'get-status', statut: status })
+        }
+        }
     }
-  }
-  
-  export default connect(
+
+    export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Home);
+    )(Home);
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#EAEDE8',
+        
+    }
+
+});

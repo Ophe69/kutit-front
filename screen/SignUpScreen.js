@@ -34,12 +34,13 @@ function SignUpScreen ({navigation}){
     const [isRegistered, setIsRegistered] = useState(false);
     const [signUpMessage, setSignUpMessage] = useState('');
     const [error, setError] = useState('');
+    const [cvgAccepted, setCgvAccepted] = useState(false);
     
         
         const handleSubmitSignup = async(props) => {
                 
-                //var data = await fetch('http://192.168.1.13:3000/signup', {
-                var data = await fetch('http://172.16.190.131:3000/signup', {
+                var data = await fetch('http://192.168.1.13:3000/signup', {
+                //var data = await fetch('http://172.16.190.131:3000/signup', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}`
@@ -123,9 +124,21 @@ function SignUpScreen ({navigation}){
                 <View>
                 <CheckBox
                     center
+                    title= "J'accepte les CGV"
+                    checkedIcon='dot-circle-o'
+                    uncheckedIcon='circle-o'
+                    checked={cvgAccepted}
+                    onPress={() => {
+                        setCgvAccepted(!cvgAccepted);
+                    }}
+                    containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '100%' }}
+                    checkedColor='#52796F'
+                />  
+{/*                 <CheckBox
+                    center
                     title="J'accepte les CGV"
                     checked={state.checked}
-                    />
+                    /> */}
                 </View>
                 <View style={styles.ViewTextSigninMessage}>
                     <Text style={styles.TextSigninMessage} >{signUpMessage}</Text>  
@@ -209,7 +222,9 @@ const styles = StyleSheet.create({
     },
     buttonSign: {
         flexDirection: 'row', 
-        height: 40,
+        height: 50,
+        width: 200,
+        borderRadius: 20,
         backgroundColor: '#354F52',
         alignItems: 'center',
         justifyContent: 'center',
@@ -259,7 +274,7 @@ const styles = StyleSheet.create({
     },
     TextSigninMessage: {
         color: 'red',
-        marginTop: 20,
+        marginTop: 30,
     }
 
 
