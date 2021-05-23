@@ -8,6 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { Ionicons } from '@expo/vector-icons';
+
 import Login from './screen/Login';
 import NavLoginScreen from './screen/NavLoginScreen';
 import Home from './screen/Home';
@@ -38,6 +40,7 @@ const BottomNavigator = () => {
                 tabBarIcon: ({ color }) => {
                     let iconName;
 
+<<<<<<< HEAD
                     if (route.name == 'Snap') {
                         return <Entypo name="camera" size={24} color={color} />
                     } else if (route.name == 'Gallery') {
@@ -59,6 +62,32 @@ const BottomNavigator = () => {
             <Tab.Screen name="Dashboard" component={Dashboard} />
         </Tab.Navigator>
     );
+=======
+          if (route.name == 'Home') {
+            return <Ionicons name="home-outline" size={24} color={color} />
+          } else if (route.name == 'Calendar') {
+            return <Ionicons name="calendar-outline" size={24} color={color}/>
+          }else if (route.name == 'Dashboard') {
+          return <Ionicons name="person-outline" size={24} color={color}/>
+        }
+
+        },
+        })}
+      tabBarOptions={{
+        activeTintColor: '#009788',
+        inactiveTintColor: '#FFFFFF',
+        style: {
+          backgroundColor: '#354F52',
+          borderRadius: 20,
+        }
+      }}
+    >
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Calendar" component={Calendar} />
+      <Tab.Screen name="Dashboard" component={Dashboard} />
+    </Tab.Navigator>
+  );
+>>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
 };
 
 export default function App() {
