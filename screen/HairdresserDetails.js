@@ -58,7 +58,7 @@ function HairdresserDetails(props) {
     var statutBeta = props.proDetails.statut
     var statut = statutBeta.charAt(0).toUpperCase() + statutBeta.substr(1);
 
-    //console.log(props.professionnels);
+
     // recupération des infos du coiffeur
     var nomRecup = props.proDetails.nom
     var prenomRecup = props.proDetails.prenom
@@ -88,7 +88,6 @@ function HairdresserDetails(props) {
     })
 
    // <Text>{prestation.type} pour => {prestation.prix} €</Text>
-
 
 
     return (
@@ -139,27 +138,31 @@ function HairdresserDetails(props) {
                     }}>
 
                         <View style={{display: "flex", flexDirection:"row"}}>
-                            <View style={{margin: 10}}>
+                            <Text style={{margin: 10}}>
                                 <Button title="Contacts" onPress={toggleModal} />
                                 <Modal isVisible={isModalVisible}>
                                     <View style={{flex: 1}}>
-                                        <Text>Hello!</Text>
+                                        <PricingCard
+                                            color="#4f9deb"
+                                            title="Free"
+                                            price="$0"
+                                            info={['1 User', 'Basic Support', 'All Core Features']}
+                                            button={{ title: 'GET STARTED', icon: 'flight-takeoff' }}
+                                        />;
                                         <Button title="Fermer Contacts" onPress={toggleModal} />
                                     </View>
                                 </Modal>
-                            </View>
+                            </Text>
 
-                            <View style={{ margin: 10}}>
-                                <Button title="Portfolio" onPress={toggleModal} />
+                            <Text style={{ margin: 10}}>
+                                <Button title="Portfolio" onPress={toggleModal2} />
 
-                                <Modal isVisible={isModalVisible}>
+                                <Modal isVisible={isModalVisible2}>
                                     <View style={{flex: 1}}>
-                                        <Text>Hello!</Text>
-
-                                        <Button title="Fermer Portfolio" onPress={toggleModal} />
+                                        <Button title="Fermer Portfolio" onPress={toggleModal2} />
                                     </View>
                                 </Modal>
-                            </View>
+                            </Text>
                         </View>
 
                     </View>
@@ -261,6 +264,7 @@ function mapStateToProps(state) {
 export default connect(
     mapStateToProps,
     null,
+
 )(HairdresserDetails);
 
 const styles = StyleSheet.create({

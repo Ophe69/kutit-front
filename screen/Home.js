@@ -21,7 +21,17 @@ function Home(props) {
     const [date, setDate] = useState(new Date())
     const [barbershop, setBarbershop] = useState(false);
     const [distance, setDistance] = useState(5);
-    const [proList, setProList] = useState([]);
+
+    const [proList, setProList] = useState(props.professionnels.filter(e => e.statut != "independant"));
+    const [color, setColor] = useState('orange');
+    const [status, setStatus] = useState("independant");
+
+    // const [markerPro, setMarkerPro] = useState(proList.map((pro, i) => {
+    //     return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
+    //       prenom={pro.prenom}
+    //       nom={pro.nom}
+    //     />
+    //   }));
 
 // Geoloc Enabled
     useEffect(() => {
@@ -46,12 +56,12 @@ function Home(props) {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
 
+
          // const response = await fetch('http://172.16.189.138:3000/search', {
-                 const response = await fetch('http://192.168.1.3:3000/search', {
+                 const response = await fetch('http://172.16.189.140:3000/search', {
 
             //const response = await fetch('http://172.17.188.11:3000/search', {
             //const response = await fetch('http://172.17.188.11:3000/search', {
-
 
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -64,24 +74,34 @@ function Home(props) {
         call();
     }, []);
 
-// Get independant or salon
+// Get independant or salon 
     useEffect(() => {
-
         if(!barbershop){
-            const freelanceCopy = props.professionnels.filter(e => e.statut != "independant");
+            const freelanceCopy = props.professionnels.filter(e => e.statut != "salon");
             setProList(freelanceCopy);
             // getFreelance(freelanceCopy);
             props.getStatus("independant")
+            // setColor('orange');
+            
         } else {
-            const barbershopCopy = props.professionnels.filter(e => e.statut != "salon");
+            const barbershopCopy = props.professionnels.filter(e => e.statut != "independant");
             setProList(barbershopCopy);
             props.getStatus("salon");
             // getBarbershop(barbershopCopy);
+            // setColor('green');
         }
     }, [barbershop]);
 
+    useEffect(() => {
+        if(status == "independant"){
+            setColor('green');
+        }else {
+            setColor('orange');
+        }
+    }, [status])
+ 
     let markerPro = proList.map((pro, i) => {
-        return <Marker key={i} pinColor="blue" coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
+        return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
           prenom={pro.prenom}
           nom={pro.nom}
         />
@@ -216,8 +236,10 @@ function Home(props) {
 }
 
 function mapStateToProps(state) {
-    return {
-        professionnels : state.professionnels
+
+    return { 
+        professionnels : state.professionnels,
+        statut: state.statut
     }
 }
 
@@ -228,9 +250,8 @@ function mapDispatchToProps(dispatch){
         dispatch({ type: 'get-hairdressers', professionnels: pro });
       },
       getStatus: (status) => {
-          dispatch({ type: 'get-status', statut: status })
+          dispatch({type: 'get-status', statut: status})
       }
-
     }
 }
 
