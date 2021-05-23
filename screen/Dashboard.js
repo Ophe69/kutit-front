@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
 
-export default function Dashboard(props) {
+function Dashboard(props) {
     return (
         <View style={styles.container}>
             <Text>Dashboard</Text>
@@ -24,6 +24,7 @@ export default function Dashboard(props) {
     )
 }
 
+export default Dashboard;
 
 const styles = StyleSheet.create({
     container: {

@@ -32,11 +32,13 @@ const Login = ({navigation}) => {
             animation="fadeInUpBig"
 
           >
-            <Text style={styles.text}>Déjà membre? Connecte-toi :</Text>
+            <Text style={styles.text}>Déjà membre?</Text>
+            <Text style={styles.text2}>Connecte-toi :</Text>
+              
             <Button style={styles.buttonSign}
               type="clear"
               title= "Log Me In"
-              onPress={()=> console.log('SignIn button Clicked!')}
+              //onPress={()=> console.log('SignIn button Clicked!')}
               onPress={()=> navigation.navigate('SignInScreen')}
             />
           </Animatable.View>
@@ -76,18 +78,28 @@ const styles = StyleSheet.create({
     },
     text: {
       marginBottom: 30,
-      fontSize: 25,
+      fontSize: 40,
+      fontWeight: 'bold',
+
+    },
+    text2: {
+      marginTop: -20,
+      marginLeft: 50,
+      marginBottom: 30,
+      fontSize: 35,
       fontWeight: 'bold',
 
     },
     buttonSign: {
       flexDirection: 'row', 
-      height: 40,
+      height: 50,
+      width: 200,
+      borderRadius: 20,
       backgroundColor: '#354F52',
       alignItems: 'center',
       justifyContent: 'center',
-      marginHorizontal: 90,
-      marginTop: 30,
+      marginHorizontal: 80,
+      marginTop: 40,
       elevation:3,
     }
 

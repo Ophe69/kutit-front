@@ -68,9 +68,15 @@ function HairdresserList(props) {
             />)
     })
 
+<<<<<<< HEAD
     //console.log(props.professionnels);
     //console.log('prestations ', console.log(props.professionnels.map(m => m.prestations)));
     //console.log('log status ', props.statut)
+=======
+    // console.log(props.professionnels);
+    // console.log('prestations ', console.log(props.professionnels.map(m => m.prestations)));
+    // console.log('log status ', props.statut)
+>>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
 
     const hairdressers = proList.map((pro, i) => {
         return(
