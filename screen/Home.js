@@ -21,13 +21,9 @@ function Home(props) {
     const [date, setDate] = useState(new Date())
     const [barbershop, setBarbershop] = useState(false);
     const [distance, setDistance] = useState(5);
-<<<<<<< HEAD
-    const [proList, setProList] = useState([]);
-=======
     const [proList, setProList] = useState(props.professionnels.filter(e => e.statut != "independant"));
     const [color, setColor] = useState('orange');
     const [status, setStatus] = useState("independant");
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
 
     // const [markerPro, setMarkerPro] = useState(proList.map((pro, i) => {
     //     return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
@@ -56,56 +52,22 @@ function Home(props) {
 
 // Fetch all Professionnels from db
     useEffect(() => {
-<<<<<<< HEAD
-        const call = async() => {
-
-            const response = await fetch('http://172.16.189.140:3000/search', {
-=======
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-            //const response = await fetch('http://172.16.190.131:3000/search', {
-            const response = await fetch('http://192.168.1.13:3000/search', {
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
+            const response = await fetch('http://172.16.189.137:3000/search', {
+            //const response = await fetch('http://192.168.1.13:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
             });
             const data = await response.json();
-<<<<<<< HEAD
-            console.log(data.professionnels)
-=======
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
             props.getHairdressers(data.professionnels);
-            console.log(data.professionnels)
+            //console.log(data.professionnels)
         }
         call();
     }, []);
 
-<<<<<<< HEAD
 // Get independant or salon
-    useEffect(() => {
-
-        if(!barbershop){
-            const freelanceCopy = props.professionnels.filter(e => e.statut != "independant");
-            setProList(freelanceCopy);
-            // getFreelance(freelanceCopy);
-            props.getStatus("independant")
-        } else {
-            const barbershopCopy = props.professionnels.filter(e => e.statut != "salon");
-            setProList(barbershopCopy);
-            props.getStatus("salon");
-            // getBarbershop(barbershopCopy);
-        }
-    }, [barbershop]);
-
-    let markerPro = proList.map((pro, i) => {
-        return <Marker key={i} pinColor="blue" coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
-                       prenom={pro.prenom}
-                       nom={pro.nom}
-        />
-    });
-=======
-// Get independant or salon 
     useEffect(() => {
         if(!barbershop){
             const freelanceCopy = props.professionnels.filter(e => e.statut != "salon");
@@ -113,7 +75,7 @@ function Home(props) {
             // getFreelance(freelanceCopy);
             props.getStatus("independant")
             // setColor('orange');
-            
+
         } else {
             const barbershopCopy = props.professionnels.filter(e => e.statut != "independant");
             setProList(barbershopCopy);
@@ -130,26 +92,20 @@ function Home(props) {
             setColor('orange');
         }
     }, [status])
- 
+
     let markerPro = proList.map((pro, i) => {
         return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
-            prenom={pro.prenom}
-            nom={pro.nom}
+                       prenom={pro.prenom}
+                       nom={pro.nom}
         />
-        });
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
+    });
 
     // console.log('test', proList)
 
 
     return (
-<<<<<<< HEAD
-        <View style={{ flex: 1  }}>
-            {/* <ScrollView
-=======
         <View style={styles.container}>
-            {/* <ScrollView 
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
+            {/* <ScrollView
                 style={{flex: 1}}
             > */}
             <View style={{ margin: 40, marginTop: 75 }}>
@@ -218,7 +174,6 @@ function Home(props) {
                 />
             </View>
             <View style={{ height: '35%' }}>
-<<<<<<< HEAD
                 <MapView
                     style={{ height: '100%' }}
                     region={{
@@ -233,35 +188,12 @@ function Home(props) {
                     <Marker
                         key={"currentPos"}
                         pinColor="red"
-                        // icon={customer}
                         title=""
                         description="I am here"
                         coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
                     />
                     {markerPro}
                 </MapView>
-=======
-            <MapView
-                style={{ height: '100%' }}
-                region={{
-                    latitude: currentLatitude,
-                    longitude: currentLongitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
-                customMapStyle={{ alignself: 'center'}}
-                scrollEnabled={true}
-            >
-                <Marker
-                    key={"currentPos"}
-                    pinColor="red"
-                    title=""
-                    description="I am here"
-                    coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
-                />
-                {markerPro}
-            </MapView>
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
             </View>
             <View style={{ alignItems: 'center', marginTop: 40 }}>
                 <View style={{ flex: 1, alignItems: 'stretch', justifyContent: 'center', width: '40%' }}>
@@ -287,45 +219,28 @@ function Home(props) {
                 />
             </View>
 
-         {/* <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae itaque vero iusto corporis ab tempore autem facere vitae recusandae voluptate reiciendis eum, totam esse dolor quaerat laboriosam, voluptas, praesentium omnis consequuntur modi ratione? Mollitia eos natus a quidem laudantium. Reiciendis excepturi omnis alias facilis enim cum accusamus aliquam doloribus dicta, dolorum exercitationem at commodi quae laboriosam consectetur repellendus minima, quisquam tempora eum facere praesentium. Tempora corrupti similique, facere ipsa assumenda, ipsam atque totam illo, provident sed non? Eveniet, sapiente quis vero assumenda recusandae libero similique cupiditate asperiores perferendis ipsum odit nostrum itaque! Aliquam velit ratione delectus dignissimos laudantium, nam similique iusto corrupti porro molestias magni? Saepe quas quibusdam voluptatum animi doloremque explicabo, in adipisci voluptates reprehenderit est! Rem, possimus sit deleniti illo fugit error est laboriosam ipsum maxime suscipit unde labore consectetur accusamus sapiente repudiandae cum distinctio eaque. Omnis, eligendi magnam? Commodi itaque dignissimos unde eius vero ipsam facilis repudiandae dolorem accusantium veritatis. Tempora tempore, temporibus aperiam iste rem consectetur molestiae deleniti delectus obcaecati? Molestias, cum. Tenetur quaerat saepe esse adipisci. Consequatur facilis debitis iste beatae ex ad temporibus. Distinctio molestiae hic consequuntur alias temporibus, quia recusandae modi odit accusamus iste quos provident nihil dicta id aliquid odio eligendi, earum vero! Beatae neque rerum esse dolores adipisci nostrum impedit reprehenderit necessitatibus nobis sint aspernatur facere rem consectetur ut, laudantium vitae totam, voluptas voluptates! Id aliquam pariatur nesciunt consectetur facere error, blanditiis corporis, sequi consequuntur ullam doloribus? Magnam, ad distinctio alias officia labore est nesciunt ex! Dignissimos incidunt eaque veniam provident possimus natus consequuntur quas molestiae minima deserunt tempore ea voluptatem magni consequatur alias, similique nobis sint. Commodi alias fuga optio sed amet recusandae ducimus, quae eaque quia nemo sit nam dolorem quidem debitis temporibus excepturi! Pariatur expedita ex nulla hic, placeat maiores voluptates tempore facilis sit harum laudantium, corrupti laborum?</Text> */}
-         {/* </ScrollView> */}
+            {/* <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae itaque vero iusto corporis ab tempore autem facere vitae recusandae voluptate reiciendis eum, totam esse dolor quaerat laboriosam, voluptas, praesentium omnis consequuntur modi ratione? Mollitia eos natus a quidem laudantium. Reiciendis excepturi omnis alias facilis enim cum accusamus aliquam doloribus dicta, dolorum exercitationem at commodi quae laboriosam consectetur repellendus minima, quisquam tempora eum facere praesentium. Tempora corrupti similique, facere ipsa assumenda, ipsam atque totam illo, provident sed non? Eveniet, sapiente quis vero assumenda recusandae libero similique cupiditate asperiores perferendis ipsum odit nostrum itaque! Aliquam velit ratione delectus dignissimos laudantium, nam similique iusto corrupti porro molestias magni? Saepe quas quibusdam voluptatum animi doloremque explicabo, in adipisci voluptates reprehenderit est! Rem, possimus sit deleniti illo fugit error est laboriosam ipsum maxime suscipit unde labore consectetur accusamus sapiente repudiandae cum distinctio eaque. Omnis, eligendi magnam? Commodi itaque dignissimos unde eius vero ipsam facilis repudiandae dolorem accusantium veritatis. Tempora tempore, temporibus aperiam iste rem consectetur molestiae deleniti delectus obcaecati? Molestias, cum. Tenetur quaerat saepe esse adipisci. Consequatur facilis debitis iste beatae ex ad temporibus. Distinctio molestiae hic consequuntur alias temporibus, quia recusandae modi odit accusamus iste quos provident nihil dicta id aliquid odio eligendi, earum vero! Beatae neque rerum esse dolores adipisci nostrum impedit reprehenderit necessitatibus nobis sint aspernatur facere rem consectetur ut, laudantium vitae totam, voluptas voluptates! Id aliquam pariatur nesciunt consectetur facere error, blanditiis corporis, sequi consequuntur ullam doloribus? Magnam, ad distinctio alias officia labore est nesciunt ex! Dignissimos incidunt eaque veniam provident possimus natus consequuntur quas molestiae minima deserunt tempore ea voluptatem magni consequatur alias, similique nobis sint. Commodi alias fuga optio sed amet recusandae ducimus, quae eaque quia nemo sit nam dolorem quidem debitis temporibus excepturi! Pariatur expedita ex nulla hic, placeat maiores voluptates tempore facilis sit harum laudantium, corrupti laborum?</Text> */}
+            {/* </ScrollView> */}
         </View>
 
     )
 }
 
 function mapStateToProps(state) {
-<<<<<<< HEAD
     return {
-        professionnels : state.professionnels
-=======
-    return { 
         professionnels : state.professionnels,
         statut: state.statut
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
     }
 }
 
 function mapDispatchToProps(dispatch){
     return {
         getHairdressers: (pro) => {
-<<<<<<< HEAD
             dispatch({ type: 'get-hairdressers', professionnels: pro });
-=======
-        dispatch({ type: 'get-hairdressers', professionnels: pro });
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
         },
         getStatus: (status) => {
             dispatch({ type: 'get-status', statut: status })
         }
-<<<<<<< HEAD
-        //   getFreelance: (freelance) => {
-        //       dispatch({ type: 'get-freelance', independants: freelance })
-        //   },
-        //   getBarbershop: (bs) => {
-        //       dispatch({ type: 'get-barbershop', salons: bs })
-        //   }
-
     }
 }
 
@@ -333,21 +248,12 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(Home);
-=======
-        }
-    }
-
-    export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-    )(Home);
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#EAEDE8',
-        
+
     }
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
 
 });

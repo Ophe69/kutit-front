@@ -10,7 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import Login from './screen/Login';
+//import Login from './screen/Login';
 import NavLoginScreen from './screen/NavLoginScreen';
 import Home from './screen/Home';
 import Calendar from './screen/Calendar';
@@ -18,6 +18,7 @@ import Dashboard from './screen/Dashboard';
 import HairdresserList from './screen/HairderesserList';
 import HairdresserDetails from './screen/HairdresserDetails';
 import Profile from './screen/Profile';
+//import ProfileEdit from './screen/ProfileEdit';
 import RecapRDV from './screen/RecapRDV';
 import Paiement from './screen/Paiement';
 import ChoixRDV from './screen/ChoixRDV';
@@ -26,10 +27,14 @@ import Favorite from './screen/Favorite';
 import professionnels from './reducers/professionnels';
 import proDetails from './reducers/proDetails';
 import statut from './reducers/status';
+import prestation from './reducers/prestationsDetails';
+import heure from './reducers/heureDeRDV';
+
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const store = createStore(combineReducers({ professionnels, proDetails, statut }));
+const store = createStore(combineReducers({ professionnels, proDetails, statut, prestation,heure }));
 
 
 
@@ -40,11 +45,12 @@ const BottomNavigator = () => {
                 tabBarIcon: ({ color }) => {
                     let iconName;
 
-<<<<<<< HEAD
-                    if (route.name == 'Snap') {
-                        return <Entypo name="camera" size={24} color={color} />
-                    } else if (route.name == 'Gallery') {
-                        return <Ionicons name="images" size={24} color={color}/>
+                    if (route.name == 'Home') {
+                        return <Ionicons name="home-outline" size={24} color={color} />
+                    } else if (route.name == 'Calendar') {
+                        return <Ionicons name="calendar-outline" size={24} color={color}/>
+                    }else if (route.name == 'Dashboard') {
+                        return <Ionicons name="person-outline" size={24} color={color}/>
                     }
 
                 },
@@ -53,7 +59,8 @@ const BottomNavigator = () => {
                 activeTintColor: '#009788',
                 inactiveTintColor: '#FFFFFF',
                 style: {
-                    backgroundColor: '#111224'
+                    backgroundColor: '#354F52',
+                    borderRadius: 20,
                 }
             }}
         >
@@ -83,52 +90,3 @@ export default function App() {
         </Provider>
     );
 }
-=======
-          if (route.name == 'Home') {
-            return <Ionicons name="home-outline" size={24} color={color} />
-          } else if (route.name == 'Calendar') {
-            return <Ionicons name="calendar-outline" size={24} color={color}/>
-          }else if (route.name == 'Dashboard') {
-          return <Ionicons name="person-outline" size={24} color={color}/>
-        }
-
-        },
-        })}
-      tabBarOptions={{
-        activeTintColor: '#009788',
-        inactiveTintColor: '#FFFFFF',
-        style: {
-          backgroundColor: '#354F52',
-          borderRadius: 20,
-        }
-      }}
-    >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Calendar" component={Calendar} />
-      <Tab.Screen name="Dashboard" component={Dashboard} />
-    </Tab.Navigator>
-  );
-};
-
-export default function App() {
-  return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="Login" component={NavLoginScreen} />
-            <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-            <Stack.Screen name="HairdresserList" component={HairdresserList} />
-            <Stack.Screen name="HairdresserDetails" component={HairdresserDetails} />
-            <Stack.Screen name="RecapRDV" component={RecapRDV} />
-            <Stack.Screen name="ChoixRDV" component={ChoixRDV} />
-            <Stack.Screen name="paiement" component={Paiement} />
-            <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="Favorite" component={Favorite} />
-          </Stack.Navigator>
-      </NavigationContainer> 
-    </Provider>
-  );
-}
-
-
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227

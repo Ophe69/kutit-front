@@ -3,35 +3,22 @@ import {connect} from 'react-redux';
 import {StyleSheet, Text, View,Image, ScrollView, ActivityIndicator} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {vw, vh, vmin, vmax} from 'react-native-expo-viewport-units';
-<<<<<<< HEAD
 import Modal from 'react-native-modal';
 
 import { Overlay, Tab, LinearProgress, PricingCard,Card, ListItem, Button, Icon} from 'react-native-elements'
 
-=======
-import Modal from 'react-native-modal'
-import {Card, ListItem, Button, Icon, Overlay, Tab, LinearProgress, PricingCard} from 'react-native-elements'
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
+
 
 function HairdresserDetails(props) {
 
     const [review, setReview] = useState(0);
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalVisible2, setModalVisible2] = useState(false);
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
 
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const toggleModal2 = () => {
-        setModalVisible2(!isModalVisible2);
-    };
-
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
     };
@@ -69,10 +56,7 @@ function HairdresserDetails(props) {
     var statutBeta = props.proDetails.statut
     var statut = statutBeta.charAt(0).toUpperCase() + statutBeta.substr(1);
 
-<<<<<<< HEAD
-    //console.log(props.professionnels);
-=======
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
+
     // recupération des infos du coiffeur
     var nomRecup = props.proDetails.nom
     var prenomRecup = props.proDetails.prenom
@@ -81,7 +65,6 @@ function HairdresserDetails(props) {
     var nom = nomRecup.charAt(0).toUpperCase() + nomRecup.substr(1);
     var prenom = prenomRecup.charAt(0).toUpperCase() + prenomRecup.substr(1)
 
-<<<<<<< HEAD
     //console.log(prenom + " " + nom);
 
     var prestations = props.proDetails.prestations
@@ -96,8 +79,11 @@ function HairdresserDetails(props) {
                         icon={<Icon name='money' color='#ffffff' />}
                         buttonStyle={{borderRadius: 10, marginLeft: 0, marginRight: 0, marginBottom: 0}}
                         title=' Commander'
-                        onPress={() => {props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
-                        }}/>
+                        onPress={() => {
+                            props.getPrestation(prestation);
+                            props.navigation.navigate('ChoixRDV', { screen: 'ChoixRDV' });
+                        }}
+                    />
             </Card>
         )
     })
@@ -105,22 +91,9 @@ function HairdresserDetails(props) {
    // <Text>{prestation.type} pour => {prestation.prix} €</Text>
 
 
-=======
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
 
     return (
         <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%"}}>
-            <View style={{width: '100%', alignItems: 'flex-start'}}>
-                <Button
-                    style={{marginTop: 40, display: "flex", justifyContent: "flex-start", width: "15%"}}
-                    title="<="
-                    type="solid"
-                    buttonStyle={{backgroundColor: "#009788"}}
-                    onPress={() => {
-                        props.navigation.navigate('BottomNavigator', {screen: 'HairderesserList'})
-                    }}
-                />
-            </View>
             <ScrollView
                 style={styles.scrollview}
                 contentContainerStyle={{alignItems: 'center'}}
@@ -213,6 +186,12 @@ function HairdresserDetails(props) {
                                                         require("../assets/5.png")
                                                     }
                                                 />
+                                                <Image
+                                                    style={{width: 300, height: 300, margin: 5}}
+                                                    source={
+                                                        require("../assets/6.png")
+                                                    }
+                                                />
                                             </View>
                                         </ScrollView>
                                         <LinearProgress color="primary" />
@@ -239,24 +218,7 @@ function HairdresserDetails(props) {
                             flexDirection: "row",
                             justifyContent: "space-around"
                         }}>
-<<<<<<< HEAD
                             {parcours}
-=======
-                            <Button
-                                title="decapage - 27€"
-                                type="solid"
-                                buttonStyle={{backgroundColor: "#009788"}}
-                                onPress={() => {
-                                    props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
-                                }}/>
-                            <Button
-                                title="shampoing - 23€"
-                                type="solid"
-                                buttonStyle={{backgroundColor: "#009788"}}
-                                onPress={() => {
-                                    props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
-                                }}/>
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
                         </View>
                         <Text
                             style={{
@@ -324,7 +286,6 @@ function HairdresserDetails(props) {
                 </View>
             </ScrollView>
         </View>
-
     )
 }
 
@@ -334,22 +295,22 @@ function mapStateToProps(state) {
         proDetails: state.proDetails
     }
 }
-<<<<<<< HEAD
-
-export default connect(
-    mapStateToProps,
-    null,
-=======
+function mapDispatchToProps(dispatch){
+    return{
+        getPrestation: (prestation) => {
+            dispatch({type: 'get-Prestation', prestation: prestation})
+        }
+    }
+}
   
   export default connect( 
     mapStateToProps,
-      null,
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
+      mapDispatchToProps,
 )(HairdresserDetails);
 
 const styles = StyleSheet.create({
     scrollview: {
-        flex: .9,
-        marginTop: -10
+        marginTop: 30,
+        flex: 1,
     },
 });
