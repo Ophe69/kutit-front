@@ -9,9 +9,9 @@ import {
 
 import { 
     CheckBox, Button
- } from 'react-native-elements';
+} from 'react-native-elements';
 
- import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 
 
 import * as Animatable from 'react-native-animatable';
