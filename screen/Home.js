@@ -67,7 +67,8 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-            const response = await fetch('http://172.17.188.2:3000/search', {
+            const response = await fetch('http://172.16.190.131:3000/search', {
+            //const response = await fetch('http://192.168.1.13:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
@@ -87,7 +88,7 @@ function Home(props) {
             const freelanceCopy = props.professionnels.filter(e => e.statut !== "salon");
             setProList(freelanceCopy);
             props.getStatus("independant")
-   
+
         } else {
             const barbershopCopy = props.professionnels.filter(e => e.statut !== "independant");
             setProList(barbershopCopy);
@@ -97,7 +98,7 @@ function Home(props) {
         return () => setIsMounted(false);  
     }, [barbershop]);
 
-   
+
     let markerPro = proList.map((pro, i) => {
         return (<Marker
             key={i}
@@ -108,7 +109,7 @@ function Home(props) {
             // centerOffset={{ x: 0.5, y: 1 }}
             // onPress={e => onPressMarker(e, info.id, { id: info._id, title: info.name, address: info.address, sport: info.sport, description: info.description, image: info.picture })}
         />)
-      });
+    });
 
 
     if(isMounted){
@@ -119,7 +120,7 @@ function Home(props) {
                 isVisible={isVisible}
                 onBackdropPress={() => { setIsVisible(false) }}
             >
-               <DatePicker
+            <DatePicker
                     customStyles={{
                        // dateTouchBody: {borderColor:"red", borderWidth:3},
                         //dateInput: {borderColor:"green", borderWidth:1},
@@ -147,10 +148,8 @@ function Home(props) {
                     }}
                     onDateChange={(value) => {
                         setDate(value);
-                        console.log('calendar value', value);
                         setIsVisible(false);
                         props.getDate(value);
-                        console.log('try to catch value', date.toLocaleString())
                     }}
                     // style={{ color: '#52796F' }}
                     format='DD-MM-YYYY'
@@ -161,10 +160,10 @@ function Home(props) {
             <MapView
                 style={{ height: '100%' }}
                 region={{
-                  latitude: currentLatitude,
-                  longitude: currentLongitude,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
+                latitude: currentLatitude,
+                longitude: currentLongitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
                 }}
                 customMapStyle={{ alignself: 'center'}}
                 scrollEnabled={true}
@@ -245,7 +244,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
     return {
-      getHairdressers: (pro) => {
+    getHairdressers: (pro) => {
         dispatch({ type: 'get-hairdressers', professionnels: pro });
       },
       getStatus: (status) => {
@@ -255,21 +254,21 @@ function mapDispatchToProps(dispatch){
           dispatch({ type: 'get-date', date: date });
       }
     }
-  }
-  
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Home);
+}
+
+export default connect(
+mapStateToProps,
+mapDispatchToProps
+)(Home);
 
 
 const styles = StyleSheet.create({
-  container: {
+container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+},
     bs: {
         position: 'absolute',
         fontSize: 10,
