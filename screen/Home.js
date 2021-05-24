@@ -26,10 +26,21 @@ function Home(props) {
     const [currentLongitude, setCurrentLongitude] = useState(0);
     const [date, setDate] = useState(new Date())
     const [barbershop, setBarbershop] = useState(false);
+    const [distance, setDistance] = useState(5);
     const [proList, setProList] = useState(props.professionnels.filter(e => e.statut != "independant"));
+    const [color, setColor] = useState('orange');
+    const [status, setStatus] = useState("independant");
+    const [pin, setPin] = useState('../assets/Pin1-b.png');
     const [isMounted, setIsMounted] = useState(true);
     const [isDisabled, setIsDisabled] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+
+    // const [markerPro, setMarkerPro] = useState(proList.map((pro, i) => {
+    //     return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
+    //       prenom={pro.prenom}
+    //       nom={pro.nom}
+    //     />
+    //   }));
 
 // Geoloc Enabled
     useEffect(() => {
@@ -52,7 +63,7 @@ function Home(props) {
 
 // Fetch all Professionnels from db
     useEffect(() => {
-        const call = async() => { 
+        const call = async() => { //call ici = handleSubmitSignup la bas
 
             const response = await fetch('http://172.17.188.2:3000/search', {
                 method: 'POST',
@@ -90,15 +101,18 @@ function Home(props) {
             key={i}
             coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
             image={ barbershop ? require('../assets/Pin2-b.png') : require('../assets/Pin1-b.png')}
+            
             // anchor={{ x: 0.5, y: 1 }}
             // centerOffset={{ x: 0.5, y: 1 }}
+            // onPress={e => onPressMarker(e, info.id, { id: info._id, title: info.name, address: info.address, sport: info.sport, description: info.description, image: info.picture })}
         />)
       });
 
 
     if(isMounted){
     return (
-        <View style={styles.container}>
+        <View style={{ flex: 1  }}>
+            
             <Overlay
                 isVisible={isVisible}
                 onBackdropPress={() => { setIsVisible(false) }}
@@ -139,10 +153,10 @@ function Home(props) {
             <MapView
                 style={{ height: '100%' }}
                 region={{
-                    latitude: currentLatitude,
-                    longitude: currentLongitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
+                  latitude: currentLatitude,
+                  longitude: currentLongitude,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
                 }}
                 customMapStyle={{ alignself: 'center'}}
                 scrollEnabled={true}
@@ -195,6 +209,7 @@ function Home(props) {
                         color={'#84A98C80'}
                         title="au salon" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
                         icon={filter}
+                        // visible={barbershop ? false : true}
                     />
                     <FAB
                         style={styles.findButton}
@@ -204,6 +219,8 @@ function Home(props) {
                         }}
                         color={'#52796F95'}
                         title="trouver" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
+                        icon={filter}
+                        // visible={barbershop ? false : true}
                     />
                 </View>
         </View>
@@ -220,19 +237,20 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
     return {
-        getHairdressers: (pro) => {
+      getHairdressers: (pro) => {
         dispatch({ type: 'get-hairdressers', professionnels: pro });
-        },
-        getStatus: (status) => {
-            dispatch({ type: 'get-status', statut: status })
-        }
-        }
+      },
+      getStatus: (status) => {
+          dispatch({ type: 'get-status', statut: status })
+      }
     }
-
-    export default connect(
+  }
+  
+  export default connect(
     mapStateToProps,
     mapDispatchToProps
-    )(Home);
+  )(Home);
+
 
 const styles = StyleSheet.create({
   container: {
