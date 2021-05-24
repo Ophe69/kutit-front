@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, DatePickerIOS } from 'react-native';
-import { Button, CheckBox, Slider } from 'react-native-elements';
-import { FontAwesome } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, DatePickerIOS, Image, TouchableOpacity } from 'react-native';
+import { Button, CheckBox, Slider, FAB, Overlay } from 'react-native-elements';
+import { FontAwesome } from '@expo/vector-icons'; 
 import DatePicker from 'react-native-datepicker'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons';
+import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
 
 
@@ -14,6 +18,8 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
 const customer = <FontAwesome name="user" size={24} color="black"/>;
+const filter = <MaterialIcons name="filter-list" size={24} color="black" />
+const calendarIcon = <Entypo name="calendar" size={24} color="black" />
 
 function Home(props) {
     const [currentLatitude, setCurrentLatitude] = useState(0);
@@ -21,10 +27,13 @@ function Home(props) {
     const [date, setDate] = useState(new Date())
     const [barbershop, setBarbershop] = useState(false);
     const [distance, setDistance] = useState(5);
-
     const [proList, setProList] = useState(props.professionnels.filter(e => e.statut != "independant"));
     const [color, setColor] = useState('orange');
     const [status, setStatus] = useState("independant");
+    const [pin, setPin] = useState('../assets/Pin1-b.png');
+    const [isMounted, setIsMounted] = useState(true);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     // const [markerPro, setMarkerPro] = useState(proList.map((pro, i) => {
     //     return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
@@ -34,6 +43,8 @@ function Home(props) {
     //   }));
 
 // Geoloc Enabled
+
+    console.log("Today's date", new Date().toLocaleDateString())
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -46,8 +57,9 @@ function Home(props) {
                 );
             }
         }
-
+        setIsMounted(true);
         askPermissions();
+        return () => setIsMounted(false);
     }, []);
 
 
@@ -55,76 +67,62 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-
-
-          const response = await fetch('http://172.16.189.137:3000/search', {
-               //  const response = await fetch('http://172.16.189.140:3000/search', {
-
-
+            const response = await fetch('http://172.16.190.131:3000/search', {
+            //const response = await fetch('http://192.168.1.13:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
             });
             const data = await response.json();
-
             props.getHairdressers(data.professionnels);
-            //console.log(data.professionnels)
+            setProList(data.professionnels.filter(e => e.statut !== "salon"));
         }
+        setIsMounted(true);
         call();
-    }, []);
+        return () => setIsMounted(false);
+    }, []); 
 
-
+// Get independant or salon 
     useEffect(() => {
         if(!barbershop){
-            const freelanceCopy = props.professionnels.filter(e => e.statut != "salon");
+            const freelanceCopy = props.professionnels.filter(e => e.statut !== "salon");
             setProList(freelanceCopy);
-            // getFreelance(freelanceCopy);
             props.getStatus("independant")
-            // setColor('orange');
 
         } else {
-            const barbershopCopy = props.professionnels.filter(e => e.statut != "independant");
+            const barbershopCopy = props.professionnels.filter(e => e.statut !== "independant");
             setProList(barbershopCopy);
             props.getStatus("salon");
-            // getBarbershop(barbershopCopy);
-            // setColor('green');
         }
+        setIsMounted(true);
+        return () => setIsMounted(false);  
     }, [barbershop]);
 
-    useEffect(() => {
-        if(status == "independant"){
-            setColor('green');
-        }else {
-            setColor('orange');
-        }
-    }, [status])
 
     let markerPro = proList.map((pro, i) => {
-        return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
-                       prenom={pro.prenom}
-                       nom={pro.nom}
-        />
-        });
+        return (<Marker
+            key={i}
+            coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
+            image={ barbershop ? require('../assets/Pin2-b.png') : require('../assets/Pin1-b.png')}
+            
+            // anchor={{ x: 0.5, y: 1 }}
+            // centerOffset={{ x: 0.5, y: 1 }}
+            // onPress={e => onPressMarker(e, info.id, { id: info._id, title: info.name, address: info.address, sport: info.sport, description: info.description, image: info.picture })}
+        />)
+    });
 
-    // console.log('test', proList)
 
-
+    if(isMounted){
     return (
-
         <View style={{ flex: 1  }}>
-            {/* <ScrollView
-
-                style={{flex: 1}}
-            > */}
-            <View style={{ margin: 40, marginTop: 75 }}>
-                <Text style={{ textAlign: 'center', fontSize: 20}}
-                >Bonjour Cantin, de quoi avez-vous envie aujourd'hui?</Text>
-            </View>
-            <View style={{ marginBottom: 40, alignItems: 'center'}}>
-                <Text style={{ textAlign: 'center', marginBottom: 20 }}>vos disponibilites</Text>
-                <DatePicker
+            
+            <Overlay
+                isVisible={isVisible}
+                onBackdropPress={() => { setIsVisible(false) }}
+            >
+            <DatePicker
                     customStyles={{
-                        // dateTouchBody: {borderColor:"red", borderWidth:3},
+                       // dateTouchBody: {borderColor:"red", borderWidth:3},
                         //dateInput: {borderColor:"green", borderWidth:1},
                         //dateTouchBody:{ borderColor:"geen" }
                     }}
@@ -137,108 +135,108 @@ function Home(props) {
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36
-                        }
-                        // ... You can check the source to find the other keys.
+                    dateIcon: {
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0
+                    },
+                    dateInput: {
+                        marginLeft: 36
+                    }
+                    // ... You can check the source to find the other keys.
                     }}
-                    onDateChange={(value) => {setDate(value)}}
+                    onDateChange={(value) => {
+                        setDate(value);
+                        setIsVisible(false);
+                        props.getDate(value);
+                    }}
                     // style={{ color: '#52796F' }}
                     format='DD-MM-YYYY'
                     // onPressDate={}
                     // onPressCancel={}
+                /> 
+            </Overlay>
+            <MapView
+                style={{ height: '100%' }}
+                region={{
+                latitude: currentLatitude,
+                longitude: currentLongitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+                }}
+                customMapStyle={{ alignself: 'center'}}
+                scrollEnabled={true}
+            >
+                
+                
+                <Marker
+                    key={"currentPos"}
+                    pinColor="red"
+                    title=""
+                    description="I am here"
+                    coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
                 />
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <CheckBox
-                    center
-                    title='coiffeur a domicile'
-                    checkedIcon='dot-circle-o'
-                    uncheckedIcon='circle-o'
-                    checked={!barbershop}
-                    onPress={() => {
-                        setBarbershop(!barbershop);
-                    }}
-                    containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
-                    checkedColor='#52796F'
-                />
-                <CheckBox
-                    center
-                    title='au salon'
-                    checkedIcon='dot-circle-o'
-                    uncheckedIcon='circle-o'
-                    checked={barbershop}
-                    onPress={() => {
-                        setBarbershop(!barbershop);
-                    }}
-                    containerStyle={{ backgroundColor: 'transparent', border: 'none', width: '40%' }}
-                    checkedColor='#52796F'
-                />
-            </View>
-            <View style={{ height: '35%' }}>
-
-                <MapView
-                    style={{ height: '100%' }}
-                    region={{
-                        latitude: currentLatitude,
-                        longitude: currentLongitude,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}
-                    customMapStyle={{ alignself: 'center'}}
-                    scrollEnabled={true}
-                >
-                    <Marker
-                        key={"currentPos"}
-                        pinColor="red"
-                        title=""
-                        description="I am here"
-                        coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
+                {markerPro}
+            
+                
+            </MapView>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    <FAB
+                        style={styles.calendarStyle}
+                        small
+                        color={'#84A98C90'}
+                        title="disponibiltés" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
+                        icon={calendarIcon} 
+                        onPress={() => {
+                            setIsVisible(true);
+                        }}
+                    >
+                    </FAB>
+                    <FAB
+                        disabled={isDisabled} //inverse le bouton
+                        style={styles.freel}
+                        small
+                        color={'#84A98C90'}
+                        title="chez soi" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
+                        icon={filter}   
+                        onPress={() => {
+                            setBarbershop(!barbershop);
+                            setIsDisabled(!isDisabled);
+                        }}
                     />
-                    {markerPro}
-                </MapView>
-            </View>
-            <View style={{ alignItems: 'center', marginTop: 40 }}>
-                <View style={{ flex: 1, alignItems: 'stretch', justifyContent: 'center', width: '40%' }}>
-                    <Slider
-                        value={distance}
-                        onValueChange={(value) => setDistance(value)}
-                        maximumValue={20}
-                        minimumValue={0}
-                        step={1}
-                        thumbStyle={{ backgroundColor: '#52796F', width: 20, height: 20 }}
-                        thumbTouchSize={{ width: 10, height: 10 }}
+                    <FAB
+                        disabled={!isDisabled}
+                        style={styles.bs}
+                        small
+                        onPress={() => {
+                            setBarbershop(!barbershop);
+                            setIsDisabled(!isDisabled);
+                        }}
+                        color={'#84A98C80'}
+                        title="au salon" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
+                        icon={filter}
+                        // visible={barbershop ? false : true}
                     />
-                    <Text style={{ textAlign: 'center' }}>Distance: {distance}km</Text>
+                    <FAB
+                        style={styles.findButton}
+                        small
+                        onPress={() => {
+                            props.navigation.navigate('HairdresserList', { screen: 'HairdresserList' });
+                        }}
+                        color={'#52796F95'}
+                        title="trouver" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
+                        icon={filter}
+                        // visible={barbershop ? false : true}
+                    />
                 </View>
-                <Button
-                    buttonStyle={{ backgroundColor: '#52796F', marginTop: 50 }}
-                    containerStyle={{ width: 80 }}
-                    title='trouver'
-                    onPress={() => {
-                        // handleSearch();
-                        props.navigation.navigate('HairdresserList', { screen: 'HairdresserList' });
-                    }}
-                />
-            </View>
-
-            {/* <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae itaque vero iusto corporis ab tempore autem facere vitae recusandae voluptate reiciendis eum, totam esse dolor quaerat laboriosam, voluptas, praesentium omnis consequuntur modi ratione? Mollitia eos natus a quidem laudantium. Reiciendis excepturi omnis alias facilis enim cum accusamus aliquam doloribus dicta, dolorum exercitationem at commodi quae laboriosam consectetur repellendus minima, quisquam tempora eum facere praesentium. Tempora corrupti similique, facere ipsa assumenda, ipsam atque totam illo, provident sed non? Eveniet, sapiente quis vero assumenda recusandae libero similique cupiditate asperiores perferendis ipsum odit nostrum itaque! Aliquam velit ratione delectus dignissimos laudantium, nam similique iusto corrupti porro molestias magni? Saepe quas quibusdam voluptatum animi doloremque explicabo, in adipisci voluptates reprehenderit est! Rem, possimus sit deleniti illo fugit error est laboriosam ipsum maxime suscipit unde labore consectetur accusamus sapiente repudiandae cum distinctio eaque. Omnis, eligendi magnam? Commodi itaque dignissimos unde eius vero ipsam facilis repudiandae dolorem accusantium veritatis. Tempora tempore, temporibus aperiam iste rem consectetur molestiae deleniti delectus obcaecati? Molestias, cum. Tenetur quaerat saepe esse adipisci. Consequatur facilis debitis iste beatae ex ad temporibus. Distinctio molestiae hic consequuntur alias temporibus, quia recusandae modi odit accusamus iste quos provident nihil dicta id aliquid odio eligendi, earum vero! Beatae neque rerum esse dolores adipisci nostrum impedit reprehenderit necessitatibus nobis sint aspernatur facere rem consectetur ut, laudantium vitae totam, voluptas voluptates! Id aliquam pariatur nesciunt consectetur facere error, blanditiis corporis, sequi consequuntur ullam doloribus? Magnam, ad distinctio alias officia labore est nesciunt ex! Dignissimos incidunt eaque veniam provident possimus natus consequuntur quas molestiae minima deserunt tempore ea voluptatem magni consequatur alias, similique nobis sint. Commodi alias fuga optio sed amet recusandae ducimus, quae eaque quia nemo sit nam dolorem quidem debitis temporibus excepturi! Pariatur expedita ex nulla hic, placeat maiores voluptates tempore facilis sit harum laudantium, corrupti laborum?</Text> */}
-            {/* </ScrollView> */}
         </View>
 
-    )
+    )}
 }
 
 function mapStateToProps(state) {
-
     return { 
-
         professionnels : state.professionnels,
         statut: state.statut
     }
@@ -246,25 +244,53 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
     return {
-        getHairdressers: (pro) => {
+    getHairdressers: (pro) => {
         dispatch({ type: 'get-hairdressers', professionnels: pro });
-        },
-        getStatus: (status) => {
-            dispatch({ type: 'get-status', statut: status })
-        }
-        }
+      },
+      getStatus: (status) => {
+          dispatch({ type: 'get-status', statut: status })
+      },
+      getDate: (date) => {
+          dispatch({ type: 'get-date', date: date });
+      }
     }
+}
 
-    export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-    )(Home);
+export default connect(
+mapStateToProps,
+mapDispatchToProps
+)(Home);
+
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#EAEDE8',
-
+container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+    bs: {
+        position: 'absolute',
+        fontSize: 10,
+        margin: 16,
+        right: 40, 
+        bottom: 80
+    },
+    freel: {
+        position: 'absolute',
+        margin: 16,
+        left: 40,
+        bottom: 80
+    },
+    calendarStyle: {
+        position: 'absolute',
+        margin: 16,
+        bottom: vh(70)
+    },
+    findButton: {
+        position: 'absolute',
+        margin: 16,
+        // right: 40,
+        bottom: 10
     }
-
 });

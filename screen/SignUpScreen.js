@@ -9,9 +9,9 @@ import {
 
 import { 
     CheckBox, Button
- } from 'react-native-elements';
+} from 'react-native-elements';
 
- import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 
 
 import * as Animatable from 'react-native-animatable';
@@ -20,7 +20,9 @@ import Feather from 'react-native-vector-icons/Feather';
 
 
 
-function SignUpScreen ({navigation}){
+function SignUpScreen (props){
+
+    const navigation = props.navigation
 
     const [state, setState] = useState(false);
     const [signupUserName, setSignupUserName] = useState(''); 
@@ -39,21 +41,23 @@ function SignUpScreen ({navigation}){
         
         const handleSubmitSignup = async(props) => {
                 
-                var data = await fetch('http://192.168.1.13:3000/signup', {
-                //var data = await fetch('http://172.16.190.131:3000/signup', {
+                //var data = await fetch('http://192.168.1.13:3000/signup', {
+                var data = await fetch('http://172.16.190.131:3000/signup', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}`
                 });
                 var response = await data.json();
-                console.log('response', response)
+                console.log('response', response.token)
                 setIsRegistered(response.registered);
                 setSignUpMessage('');
                 if(response.registered == false){
                     setSignUpMessage(response.message);
                 }else {
                     setSignUpMessage('');
-                    navigation.navigate('BottomNavigator', { screen: 'Home'})
+                    props.addToken(response.token);
+                    props.addPseudo(response.pseudo);
+                    navigation.navigate('Welcome', { screen: 'Welcome'});
                 }
 
         };
@@ -102,6 +106,9 @@ function SignUpScreen ({navigation}){
                         name="eye-off"
                         color="grey"
                         size={20}
+                        onPress={()=>{
+                            setSecureTextEntry(!secureTextEntry)
+                        }}
                     />
                 </View>
 
@@ -172,9 +179,26 @@ function SignUpScreen ({navigation}){
         </View>
     )
 
-                    };
+};
 
-export default SignUpScreen;
+
+function mapDispatchToProps(dispatch){
+    return {
+      addToken: (token) => {
+        dispatch({ type:'add-token', token: token });
+      },
+      addPseudo: (pseudo) => {
+          dispatch({ type:'add-pseudo', pseudo: pseudo });
+      }
+    }
+  }
+  
+export default connect(
+null,
+mapDispatchToProps
+)(SignUpScreen);
+
+
 
 
 
