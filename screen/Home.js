@@ -55,19 +55,12 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-<<<<<<< HEAD
 
 
-         // const response = await fetch('http://172.16.189.138:3000/search', {
-                 const response = await fetch('http://172.16.189.140:3000/search', {
+          const response = await fetch('http://172.16.189.137:3000/search', {
+               //  const response = await fetch('http://172.16.189.140:3000/search', {
 
-            //const response = await fetch('http://172.17.188.11:3000/search', {
-            //const response = await fetch('http://172.17.188.11:3000/search', {
 
-=======
-            //const response = await fetch('http://172.16.190.131:3000/search', {
-            const response = await fetch('http://192.168.1.13:3000/search', {
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
@@ -75,12 +68,12 @@ function Home(props) {
             const data = await response.json();
 
             props.getHairdressers(data.professionnels);
-            console.log(data.professionnels)
+            //console.log(data.professionnels)
         }
         call();
     }, []);
 
-// Get independant or salon 
+
     useEffect(() => {
         if(!barbershop){
             const freelanceCopy = props.professionnels.filter(e => e.statut != "salon");
@@ -88,7 +81,7 @@ function Home(props) {
             // getFreelance(freelanceCopy);
             props.getStatus("independant")
             // setColor('orange');
-            
+
         } else {
             const barbershopCopy = props.professionnels.filter(e => e.statut != "independant");
             setProList(barbershopCopy);
@@ -105,26 +98,22 @@ function Home(props) {
             setColor('orange');
         }
     }, [status])
- 
+
     let markerPro = proList.map((pro, i) => {
         return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
-            prenom={pro.prenom}
-            nom={pro.nom}
+                       prenom={pro.prenom}
+                       nom={pro.nom}
         />
         });
-
 
     // console.log('test', proList)
 
 
     return (
-<<<<<<< HEAD
+
         <View style={{ flex: 1  }}>
             {/* <ScrollView
-=======
-        <View style={styles.container}>
-            {/* <ScrollView 
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
+
                 style={{flex: 1}}
             > */}
             <View style={{ margin: 40, marginTop: 75 }}>
@@ -193,27 +182,27 @@ function Home(props) {
                 />
             </View>
             <View style={{ height: '35%' }}>
-            <MapView
-                style={{ height: '100%' }}
-                region={{
-                    latitude: currentLatitude,
-                    longitude: currentLongitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
-                customMapStyle={{ alignself: 'center'}}
-                scrollEnabled={true}
-            >
-                <Marker
-                    key={"currentPos"}
-                    pinColor="red"
-                    title=""
-                    description="I am here"
-                    coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
-                />
-                {markerPro}
-            </MapView>
 
+                <MapView
+                    style={{ height: '100%' }}
+                    region={{
+                        latitude: currentLatitude,
+                        longitude: currentLongitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                    customMapStyle={{ alignself: 'center'}}
+                    scrollEnabled={true}
+                >
+                    <Marker
+                        key={"currentPos"}
+                        pinColor="red"
+                        title=""
+                        description="I am here"
+                        coordinate={{latitude: currentLatitude, longitude: currentLongitude}}
+                    />
+                    {markerPro}
+                </MapView>
             </View>
             <View style={{ alignItems: 'center', marginTop: 40 }}>
                 <View style={{ flex: 1, alignItems: 'stretch', justifyContent: 'center', width: '40%' }}>
@@ -239,8 +228,8 @@ function Home(props) {
                 />
             </View>
 
-         {/* <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae itaque vero iusto corporis ab tempore autem facere vitae recusandae voluptate reiciendis eum, totam esse dolor quaerat laboriosam, voluptas, praesentium omnis consequuntur modi ratione? Mollitia eos natus a quidem laudantium. Reiciendis excepturi omnis alias facilis enim cum accusamus aliquam doloribus dicta, dolorum exercitationem at commodi quae laboriosam consectetur repellendus minima, quisquam tempora eum facere praesentium. Tempora corrupti similique, facere ipsa assumenda, ipsam atque totam illo, provident sed non? Eveniet, sapiente quis vero assumenda recusandae libero similique cupiditate asperiores perferendis ipsum odit nostrum itaque! Aliquam velit ratione delectus dignissimos laudantium, nam similique iusto corrupti porro molestias magni? Saepe quas quibusdam voluptatum animi doloremque explicabo, in adipisci voluptates reprehenderit est! Rem, possimus sit deleniti illo fugit error est laboriosam ipsum maxime suscipit unde labore consectetur accusamus sapiente repudiandae cum distinctio eaque. Omnis, eligendi magnam? Commodi itaque dignissimos unde eius vero ipsam facilis repudiandae dolorem accusantium veritatis. Tempora tempore, temporibus aperiam iste rem consectetur molestiae deleniti delectus obcaecati? Molestias, cum. Tenetur quaerat saepe esse adipisci. Consequatur facilis debitis iste beatae ex ad temporibus. Distinctio molestiae hic consequuntur alias temporibus, quia recusandae modi odit accusamus iste quos provident nihil dicta id aliquid odio eligendi, earum vero! Beatae neque rerum esse dolores adipisci nostrum impedit reprehenderit necessitatibus nobis sint aspernatur facere rem consectetur ut, laudantium vitae totam, voluptas voluptates! Id aliquam pariatur nesciunt consectetur facere error, blanditiis corporis, sequi consequuntur ullam doloribus? Magnam, ad distinctio alias officia labore est nesciunt ex! Dignissimos incidunt eaque veniam provident possimus natus consequuntur quas molestiae minima deserunt tempore ea voluptatem magni consequatur alias, similique nobis sint. Commodi alias fuga optio sed amet recusandae ducimus, quae eaque quia nemo sit nam dolorem quidem debitis temporibus excepturi! Pariatur expedita ex nulla hic, placeat maiores voluptates tempore facilis sit harum laudantium, corrupti laborum?</Text> */}
-         {/* </ScrollView> */}
+            {/* <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae itaque vero iusto corporis ab tempore autem facere vitae recusandae voluptate reiciendis eum, totam esse dolor quaerat laboriosam, voluptas, praesentium omnis consequuntur modi ratione? Mollitia eos natus a quidem laudantium. Reiciendis excepturi omnis alias facilis enim cum accusamus aliquam doloribus dicta, dolorum exercitationem at commodi quae laboriosam consectetur repellendus minima, quisquam tempora eum facere praesentium. Tempora corrupti similique, facere ipsa assumenda, ipsam atque totam illo, provident sed non? Eveniet, sapiente quis vero assumenda recusandae libero similique cupiditate asperiores perferendis ipsum odit nostrum itaque! Aliquam velit ratione delectus dignissimos laudantium, nam similique iusto corrupti porro molestias magni? Saepe quas quibusdam voluptatum animi doloremque explicabo, in adipisci voluptates reprehenderit est! Rem, possimus sit deleniti illo fugit error est laboriosam ipsum maxime suscipit unde labore consectetur accusamus sapiente repudiandae cum distinctio eaque. Omnis, eligendi magnam? Commodi itaque dignissimos unde eius vero ipsam facilis repudiandae dolorem accusantium veritatis. Tempora tempore, temporibus aperiam iste rem consectetur molestiae deleniti delectus obcaecati? Molestias, cum. Tenetur quaerat saepe esse adipisci. Consequatur facilis debitis iste beatae ex ad temporibus. Distinctio molestiae hic consequuntur alias temporibus, quia recusandae modi odit accusamus iste quos provident nihil dicta id aliquid odio eligendi, earum vero! Beatae neque rerum esse dolores adipisci nostrum impedit reprehenderit necessitatibus nobis sint aspernatur facere rem consectetur ut, laudantium vitae totam, voluptas voluptates! Id aliquam pariatur nesciunt consectetur facere error, blanditiis corporis, sequi consequuntur ullam doloribus? Magnam, ad distinctio alias officia labore est nesciunt ex! Dignissimos incidunt eaque veniam provident possimus natus consequuntur quas molestiae minima deserunt tempore ea voluptatem magni consequatur alias, similique nobis sint. Commodi alias fuga optio sed amet recusandae ducimus, quae eaque quia nemo sit nam dolorem quidem debitis temporibus excepturi! Pariatur expedita ex nulla hic, placeat maiores voluptates tempore facilis sit harum laudantium, corrupti laborum?</Text> */}
+            {/* </ScrollView> */}
         </View>
 
     )
@@ -249,6 +238,7 @@ function Home(props) {
 function mapStateToProps(state) {
 
     return { 
+
         professionnels : state.professionnels,
         statut: state.statut
     }
@@ -256,22 +246,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
     return {
-<<<<<<< HEAD
-
-      getHairdressers: (pro) => {
-        dispatch({ type: 'get-hairdressers', professionnels: pro });
-      },
-      getStatus: (status) => {
-          dispatch({type: 'get-status', statut: status})
-      }
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Home);
-=======
         getHairdressers: (pro) => {
         dispatch({ type: 'get-hairdressers', professionnels: pro });
         },
@@ -290,8 +264,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#EAEDE8',
-        
+
     }
->>>>>>> 8644b5f6a811928da2c9a7d3b4504723e7902227
 
 });

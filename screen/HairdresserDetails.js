@@ -15,14 +15,8 @@ function HairdresserDetails(props) {
     const [isModalVisible2, setModalVisible2] = useState(false);
 
 
-
-
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
-    };
-
-    const toggleModal2 = () => {
-        setModalVisible2(!isModalVisible2);
     };
 
 
@@ -81,8 +75,11 @@ function HairdresserDetails(props) {
                         icon={<Icon name='money' color='#ffffff' />}
                         buttonStyle={{borderRadius: 10, marginLeft: 0, marginRight: 0, marginBottom: 0}}
                         title=' Commander'
-                        onPress={() => {props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
-                        }}/>
+                        onPress={() => {
+                            props.getPrestation(prestation);
+                            props.navigation.navigate('ChoixRDV', { screen: 'ChoixRDV' });
+                        }}
+                    />
             </Card>
         )
     })
@@ -92,17 +89,6 @@ function HairdresserDetails(props) {
 
     return (
         <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%"}}>
-            <View style={{width: '100%', alignItems: 'flex-start'}}>
-                <Button
-                    style={{marginTop: 40, display: "flex", justifyContent: "flex-start", width: "15%"}}
-                    title="<="
-                    type="solid"
-                    buttonStyle={{backgroundColor: "#009788"}}
-                    onPress={() => {
-                        props.navigation.navigate('BottomNavigator', {screen: 'HairderesserList'})
-                    }}
-                />
-            </View>
             <ScrollView
                 style={styles.scrollview}
                 contentContainerStyle={{alignItems: 'center'}}
@@ -158,7 +144,49 @@ function HairdresserDetails(props) {
                                 <Button title="Portfolio" onPress={toggleModal2} />
 
                                 <Modal isVisible={isModalVisible2}>
-                                    <View style={{flex: 1}}>
+
+                                    <View style={{color:"white", height: vh(70)}}>
+                                        <ScrollView>
+                                            <View style={{display:"flex", flexDirection:"column", alignItems:"center",justifyContent: "center"}}>
+                                                <Image
+                                                    style={{width: 300, height: 300, margin: 5}}
+                                                    source={
+                                                        require("../assets/1.png")
+                                                    }
+                                                />
+                                                <Image
+                                                    style={{width: 300, height: 300, margin: 5}}
+                                                    source={
+                                                        require("../assets/2.png")
+                                                    }
+                                                />
+                                                <Image
+                                                    style={{width: 300, height: 300, margin: 5}}
+                                                    source={
+                                                        require("../assets/3.png")
+                                                    }
+                                                />
+                                                <Image
+                                                    style={{width: 300, height: 300, margin: 5}}
+                                                    source={
+                                                        require("../assets/4.png")
+                                                    }
+                                                />
+                                                <Image
+                                                    style={{width: 300, height: 300, margin: 5}}
+                                                    source={
+                                                        require("../assets/5.png")
+                                                    }
+                                                />
+                                                <Image
+                                                    style={{width: 300, height: 300, margin: 5}}
+                                                    source={
+                                                        require("../assets/6.png")
+                                                    }
+                                                />
+                                            </View>
+                                        </ScrollView>
+                                        <LinearProgress color="primary" />
                                         <Button title="Fermer Portfolio" onPress={toggleModal2} />
                                     </View>
                                 </Modal>
@@ -250,7 +278,6 @@ function HairdresserDetails(props) {
                 </View>
             </ScrollView>
         </View>
-
     )
 }
 
@@ -261,15 +288,22 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(
+function mapDispatchToProps(dispatch){
+    return{
+        getPrestation: (prestation) => {
+            dispatch({type: 'get-Prestation', prestation: prestation})
+        }
+    }
+}
+  
+  export default connect( 
     mapStateToProps,
-    null,
-
+      mapDispatchToProps,
 )(HairdresserDetails);
 
 const styles = StyleSheet.create({
     scrollview: {
-        flex: .9,
-        marginTop: -10
+        marginTop: 30,
+        flex: 1,
     },
 });
