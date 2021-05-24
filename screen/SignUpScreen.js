@@ -20,7 +20,9 @@ import Feather from 'react-native-vector-icons/Feather';
 
 
 
-function SignUpScreen ({navigation}){
+function SignUpScreen (props){
+
+    const navigation = props.navigation
 
     const [state, setState] = useState(false);
     const [signupUserName, setSignupUserName] = useState(''); 
@@ -46,14 +48,16 @@ function SignUpScreen ({navigation}){
                     body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}`
                 });
                 var response = await data.json();
-                console.log('response', response)
+                console.log('response', response.token)
                 setIsRegistered(response.registered);
                 setSignUpMessage('');
                 if(response.registered == false){
                     setSignUpMessage(response.message);
                 }else {
                     setSignUpMessage('');
-                    navigation.navigate('BottomNavigator', { screen: 'Home'})
+                    props.addToken(response.token);
+                    props.addPseudo(response.pseudo);
+                    navigation.navigate('Welcome', { screen: 'Welcome'});
                 }
 
         };
@@ -172,9 +176,26 @@ function SignUpScreen ({navigation}){
         </View>
     )
 
-                    };
+};
 
-export default SignUpScreen;
+
+function mapDispatchToProps(dispatch){
+    return {
+      addToken: (token) => {
+        dispatch({ type:'add-token', token: token });
+      },
+      addPseudo: (pseudo) => {
+          dispatch({ type:'add-pseudo', pseudo: pseudo });
+      }
+    }
+  }
+  
+export default connect(
+null,
+mapDispatchToProps
+)(SignUpScreen);
+
+
 
 
 

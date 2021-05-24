@@ -22,14 +22,18 @@ import RecapRDV from './screen/RecapRDV';
 import Paiement from './screen/Paiement';
 import ChoixRDV from './screen/ChoixRDV';
 import Favorite from './screen/Favorite';
+import Welcome from './screen/Welcome';
 
 import professionnels from './reducers/professionnels';
 import proDetails from './reducers/proDetails';
 import statut from './reducers/status';
+import token from './reducers/token';
+import pseudo from './reducers/pseudo';
+import date from './reducers/date';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const store = createStore(combineReducers({ professionnels, proDetails, statut }));
+const store = createStore(combineReducers({ professionnels, proDetails, statut, token, pseudo, date }));
 
 
 
@@ -72,6 +76,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="Login" component={NavLoginScreen} />
+            <Stack.Screen name="Welcome" component={Welcome} />
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
             <Stack.Screen name="HairdresserList" component={HairdresserList} />
             <Stack.Screen name="HairdresserDetails" component={HairdresserDetails} />
@@ -80,6 +85,7 @@ export default function App() {
             <Stack.Screen name="paiement" component={Paiement} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Favorite" component={Favorite} />
+            
           </Stack.Navigator>
       </NavigationContainer> 
     </Provider>

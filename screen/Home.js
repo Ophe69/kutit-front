@@ -43,6 +43,8 @@ function Home(props) {
     //   }));
 
 // Geoloc Enabled
+
+    console.log("Today's date", new Date().toLocaleDateString())
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -143,7 +145,13 @@ function Home(props) {
                     }
                     // ... You can check the source to find the other keys.
                     }}
-                    onDateChange={(value) => {setDate(value)}}
+                    onDateChange={(value) => {
+                        setDate(value);
+                        console.log('calendar value', value);
+                        setIsVisible(false);
+                        props.getDate(value);
+                        console.log('try to catch value', date.toLocaleString())
+                    }}
                     // style={{ color: '#52796F' }}
                     format='DD-MM-YYYY'
                     // onPressDate={}
@@ -242,6 +250,9 @@ function mapDispatchToProps(dispatch){
       },
       getStatus: (status) => {
           dispatch({ type: 'get-status', statut: status })
+      },
+      getDate: (date) => {
+          dispatch({ type: 'get-date', date: date });
       }
     }
   }

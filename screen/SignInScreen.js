@@ -6,15 +6,17 @@ import {
     Dimensions,
     TextInput
 } from 'react-native';
+import {connect} from 'react-redux';
 
 import { Button } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
-const SignInScreen = ({navigation}) =>{
+const SignInScreen = (props) =>{
 
-    
+    const navigation = props.navigation
+
     const [signInUserName, setSignInUserName] = useState('');
     const [signInPassword, setSignInPassword] = useState('');
     const [signInMessage, setSignInMessage] = useState('');
@@ -42,8 +44,10 @@ const SignInScreen = ({navigation}) =>{
                 setSignInMessage(response.message);
             }else{
                 setIsLogin(response.exist);
-                setPasswordOk(response.passwordOK)
-                navigation.navigate('BottomNavigator', { screen: 'Home'})
+                setPasswordOk(response.passwordOK);
+                props.addToken(response.token);
+                props.addPseudo(response.pseudo);
+                navigation.navigate('Welcome', { screen: 'Welcome'});
             }
 /*             if (isLogin && passwordOK){
                 navigation.navigate('BottomNavigator', { screen: 'Home'})
@@ -129,7 +133,22 @@ const SignInScreen = ({navigation}) =>{
 
 };
 
-export default SignInScreen;
+
+function mapDispatchToProps(dispatch){
+    return {
+      addToken: (token) => {
+        dispatch({ type:'add-token', token: token });
+      },
+      addPseudo: (pseudo) => {
+        dispatch({ type:'add-pseudo', pseudo: pseudo });
+    }
+    }
+  }
+  
+export default connect(
+null,
+mapDispatchToProps
+)(SignInScreen);
 
 
 const {height} = Dimensions.get("screen");
