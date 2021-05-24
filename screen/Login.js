@@ -7,7 +7,7 @@ import {
     Image
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -41,6 +41,13 @@ const Login = ({navigation}) => {
               //onPress={()=> console.log('SignIn button Clicked!')}
               onPress={()=> navigation.navigate('SignInScreen')}
             />
+            
+{/*             <Icon.Button 
+              name="facebook" 
+              backgroundColor="#3b5998">
+              <Text style={{ fontFamily: 'Arial', fontSize: 20, textAlign: 'center' }}>Login with Facebook</Text>
+            </Icon.Button> */}
+
           </Animatable.View>
         </View>
     );
