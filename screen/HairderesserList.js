@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View , ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View , ScrollView, TouchableOpacity, Image } from 'react-native';
 import {connect} from 'react-redux';
 import { Button, Card, ListItem } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
@@ -14,6 +14,7 @@ import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 function HairdresserList(props) {
 
     const [review, setReview] = useState(0);
+    const [votedBy, setVotedBy] = useState(0);
     const [proList, setProList] = useState([]);
     const [status, setStatus] = useState(null);
 
@@ -28,34 +29,34 @@ function HairdresserList(props) {
         }
     }, [status])
 
-    const stars = [1,2,3,4,5].map((star, i) => {
-        if(review > i) {
-            return(
-                <FontAwesome
-                    name="star"
-                    size={24}
-                    value={i}
-                    onPress={() => {
-                        setReview(i+1);
-                    }}
-                    color="black"
-                    style={review > i ? { color: '#f1c40f' } : null}
-                    key={i}
-                />)
-        } else {
-            return(
-                <FontAwesome
-                    name="star-o"
-                    size={24}
-                    color="black"
-                    value={i}
-                    onPress={() => {
-                        setReview(i+1);
-                    }}
-                    key={i}
-                />)
-        }
-    })
+    // const stars = [1,2,3,4,5].map((star, i) => {
+    //     if(review > i) {
+    //         return(
+    //             <FontAwesome
+    //                 name="star"
+    //                 size={24}
+    //                 value={i}
+    //                 onPress={() => {
+    //                     setReview(i+1);
+    //                 }}
+    //                 color="black"
+    //                 style={review > i ? { color: '#f1c40f' } : null}
+    //                 key={i}
+    //             />)
+    //     } else {
+    //         return(
+    //             <FontAwesome
+    //                 name="star-o"
+    //                 size={24}
+    //                 color="black"
+    //                 value={i}
+    //                 onPress={() => {
+    //                     setReview(i+1);
+    //                 }}
+    //                 key={i}
+    //             />)
+    //     }
+    // })
 
     const ratings = [1,2,3,4,5].map((star, i) => {
         return(
@@ -85,20 +86,31 @@ function HairdresserList(props) {
                     key={i}
                     style={styles.user}
                 >
-                    <Ionicons
+                    {/* <Ionicons
                         name="person-circle-sharp"
                         size={24} color="black"
                         style={styles.avatar}
-                    />
-                    <View>
-                        <Text>{`${pro.prenom} ${pro.nom}`}</Text>
-                        <Text>{pro.statut}</Text>
+                    /> */}
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+                        <Image
+                            style={styles.image}
+                            source={require("../assets/images/pexels-stefan-lorentz-668196.jpg")}
+                            // { uri: "../assets/images/hairdresser-1.png" }
+                            style={{width: 80, height: 80, margin: 5, borderRadius: 50}}
+                        />
                     </View>
-                    <View style={styles.rating}>
-                        {ratings}
+                    <View style={{ flex: 1, flexDirection: 'column'}}>
+                        <Text style={{ alignSelf: 'center', marginVertical: 10 }}>{`${pro.prenom} ${pro.nom}`}</Text>
+                        <Text style={{ alignSelf: 'center' }}>{pro.statut}</Text>
+                    </View>
+                    <View style={{ justifyContent: 'center', flex: 1 }}>
+                        <View style={styles.rating}>
+                            {ratings}
+                        </View>
+                        <Text style={{ textAlign: 'center'}}>reviews: {votedBy}</Text>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> 
         );
     });
 
@@ -114,15 +126,9 @@ function HairdresserList(props) {
             <View style={{ flex: 1 }}>
                 { hairdressers }
             </View>
-            <View style={{ flexDirection: 'row', margin: 40 }}>
+            {/* <View style={{ flexDirection: 'row', margin: 40 }}>
                 { stars }
-            </View>
-            <Button
-                title='Details'
-                onPress={() => {
-                    props.navigation.navigate('HairdresserDetails', { screen: 'HairdresserDetails' });
-                }}
-            />
+            </View> */}
         </ScrollView>
 
 
@@ -164,13 +170,22 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF",
         margin: 5,
         borderRadius: 5,
-        height: 50
+        height: 100
+    },
+    image: {
+        marginHorizontal: 50
     },
     avatar: {
-        marginHorizontal: 50
+        marginHorizontal: 50,
     },
     rating: {
         flexDirection: 'row',
-        margin: 'auto'
-    }
+        justifyContent: 'center'
+    },
+    // rating: {
+    //     flexDirection: 'row',
+    //     backgroundColor: 'pink',
+    //     flex: 1,
+    //     justifyContent: 'center'
+    // },
 });
