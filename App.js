@@ -10,7 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { Ionicons } from '@expo/vector-icons';
 
-//import Login from './screen/Login';
+import Login from './screen/Login';
 import NavLoginScreen from './screen/NavLoginScreen';
 import Home from './screen/Home';
 import Calendar from './screen/Calendar';
@@ -24,6 +24,7 @@ import Paiement from './screen/Paiement';
 import ChoixRDV from './screen/ChoixRDV';
 import Favorite from './screen/Favorite';
 import Reviews from './screen/Reviews';
+import History from './screen/History';
 
 import professionnels from './reducers/professionnels';
 import proDetails from './reducers/proDetails';
@@ -84,6 +85,7 @@ export default function App() {
             <Stack.Screen name="Favorite" component={Favorite} />
             <Stack.Screen name="ProfileEdit" component={ProfileEdit} />
             <Stack.Screen name="Reviews" component={Reviews} />
+            <Stack.Screen name="History" component={History} />
           </Stack.Navigator>
       </NavigationContainer> 
     </Provider>

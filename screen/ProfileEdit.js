@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -7,29 +7,83 @@ import {
     TextInput,
     StyleSheet,
     SafeAreaView,
+    Platform, 
+    Image,
+    Button
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import * as ImagePicker from 'expo-image-picker';
 
 import {useTheme, Avatar} from 'react-native-paper';
 
 import { connect } from 'react-redux';
 
-function ProfileEdit() {
+function ProfileEdit(props) {
+
+    const navigation = props.navigation
 
     const {colors} = useTheme();
     const [secureTextEntry, setSecureTextEntry] = useState(false);
+    const [image, setImage] = useState(null);
 
+/*     useEffect(() => {
+        if(!image){
+            <Avatar.Image source={} size={200} />
+        }
+        }, []); */
+
+    useEffect(() => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Accès aux photos refusé!');
+            }
+            }
+        })();
+        }, []);
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+
+        if (!result.cancelled) {
+            setImage(result.uri);
+        }
+        };
+
+    var uploadPicture = async () =>{
+
+        //const data = await fetch('http://172.16.190.131:3000/upload', {
+            const data = await fetch('http://192.168.1.13:3000/upload', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body:`image=${image}`
+                //body: `userName=${signInUserName}&password=${signInPassword}&image=${changePicture}`
+            })
+            const response = await data.json();
+            console.log('response', response);
+    }
+///////////////////////////////////point de retour//////////////////////////
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{flexDirection: 'row', marginTop: 15, justifyContent: 'center'}}>
-                    <Avatar.Image
-                    source={require('../assets/images/avatar2.png')}
-                    size={120}
-                    />
+            <View style={{flexDirection: 'column', marginTop: 50,alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={{marginBottom: 20}}>Apperçu de votre nouvelle photo:</Text>    
+                {image && <Avatar.Image source={{ uri: image }} size={200} />}
+                <TouchableOpacity style={styles.commandButton} onPress={pickImage}>
+                    <Text style={styles.panelButtonTitle}>Changer d'image</Text>
+                </TouchableOpacity>
             </View>
+        
             <View style={styles.containerEdit}>
                 <View style={styles.action}>
                     <FontAwesome name="user-o" color={colors.text}  size={20} />
@@ -60,36 +114,7 @@ function ProfileEdit() {
                     ]}
                     />
                 </View>
-    {/*             <View style={styles.action}>
-                    <Feather name="phone" color={colors.text} size={20} />
-                    <TextInput
-                    placeholder="Phone"
-                    placeholderTextColor="#666666"
-                    keyboardType="number-pad"
-                    autoCorrect={false}
-                    style={[
-                        styles.textInput,
-                        {
-                        color: colors.text,
-                        },
-                    ]}
-                    />
-                </View> */}
 
-{/*                 <View style={styles.action}>
-                    <Icon name="map-marker-outline" color={colors.text} size={20} />
-                    <TextInput
-                    placeholder="Ville"
-                    placeholderTextColor="#666666"
-                    autoCorrect={false}
-                    style={[
-                        styles.textInput,
-                        {
-                        color: colors.text,
-                        },
-                    ]}
-                    />
-                </View> */}
                 <View style={styles.action}>
                     <FontAwesome name="lock" color={colors.text} size={20} />
                     <TextInput
@@ -122,7 +147,7 @@ const styles = StyleSheet.create({
         },
     containerEdit:{
         flex: 1,
-        marginTop: 200,
+        marginTop: 0,
         marginLeft: 30,
         marginRight: 30,
     },
@@ -132,6 +157,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#354F52',
         alignItems: 'center',
         marginTop: 50,
+        marginBottom: 70,
         },
     panel: {
         padding: 20,
@@ -207,5 +233,6 @@ const styles = StyleSheet.create({
         marginTop: Platform.OS === 'ios' ? 0 : -12,
         paddingLeft: 10,
         color: '#05375a',
+        fontSize: 18,
         },
 });
