@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 50,
     },
     rating: {
-        flexDirection: 'row',
+        flexDirection: 'row', 
         justifyContent: 'center'
     },
     // rating: {
