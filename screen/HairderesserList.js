@@ -102,6 +102,8 @@ function HairdresserList(props) {
         );
     });
 
+    console.log('date from redux', props.date)
+
     return (
 
         <ScrollView
@@ -130,7 +132,8 @@ function HairdresserList(props) {
 function mapStateToProps(state) {
     return {
         professionnels : state.professionnels,
-        statut: state.statut
+        statut: state.statut,
+        date: state.date
     }
 }
 
