@@ -4,6 +4,7 @@ import {Button, Card, ListItem,} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DatePicker from "react-native-datepicker";
 import {connect} from "react-redux";
+import date from "../reducers/date";
 
 
 function ChoixRDV(props) {
@@ -34,6 +35,7 @@ function ChoixRDV(props) {
     var currentPrestaType = props.prestation.type;
     var currentPrestaPrice = props.prestation.prix;
 
+    //console.log("que faire " + currentPrestaType + currentPrestaPrice)
         return (
 
         <View style={{alignItems: 'center', marginTop: 20}}>
@@ -54,7 +56,7 @@ function ChoixRDV(props) {
                 </Card>
             </View>
             <View>
-                <Text style={{fontSize: 35, fontWeight: "bold", margin: 20}}>Ajourd'hui ?</Text>
+                <Text style={{fontSize: 35, fontWeight: "bold", margin: 20}}>Pour le {props.date}</Text>
             </View>
             <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-evenly"}}>
                 {choixHeures}
@@ -116,7 +118,8 @@ function ChoixRDV(props) {
 function mapStateToProps(state) {
     return {
         prestation: state.prestation,
-        heures: state.heure
+        heures: state.heure,
+        date: state.date
     }
 }
 

@@ -5,7 +5,7 @@ import {FontAwesome} from '@expo/vector-icons';
 import {vw, vh, vmin, vmax} from 'react-native-expo-viewport-units';
 import Modal from 'react-native-modal';
 
-import { Overlay, Tab, LinearProgress, PricingCard,Card, ListItem, Button, Icon} from 'react-native-elements'
+import {Overlay, Tab, LinearProgress, PricingCard, Card, ListItem, Button, Icon, Input} from 'react-native-elements'
 
 
 function HairdresserDetails(props) {
@@ -13,10 +13,22 @@ function HairdresserDetails(props) {
     const [review, setReview] = useState(0);
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalVisible2, setModalVisible2] = useState(false);
+    const [isModalVisibleReviews, setModalVisibleReviews] = useState(false);
+
+    const [pseudo, setPeudo] = useState('')
+    const [contenu, setContenu] = useState('');
+
+
 
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
+    };
+    const toggleModal2 = () => {
+        setModalVisible2(!isModalVisible2);
+    };
+    const toggleReviews = () => {
+        setModalVisibleReviews(!isModalVisibleReviews);
     };
 
 
@@ -71,20 +83,25 @@ function HairdresserDetails(props) {
             <Card style={{borderRadius: 10}}>
                 <Card.Title>{bestCoupe} pour {prestation.prix} €</Card.Title>
                 <Card.Divider/>
-                    <Button
-                        icon={<Icon name='money' color='#ffffff' />}
-                        buttonStyle={{borderRadius: 10, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                        title=' Commander'
-                        onPress={() => {
-                            props.getPrestation(prestation);
-                            props.navigation.navigate('ChoixRDV', { screen: 'ChoixRDV' });
-                        }}
-                    />
+                <Button
+                    icon={<Icon name='money' color='#ffffff'/>}
+                    buttonStyle={{borderRadius: 10, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                    title=' Commander'
+                    onPress={() => {
+                        props.getPrestation(prestation);
+                        props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
+                    }}
+                />
             </Card>
         )
     })
 
-   // <Text>{prestation.type} pour => {prestation.prix} €</Text>
+
+    const recupReviews = () => {
+        console.log("mon pseudo c'est " + pseudo + ", et mon review c'est : "+ contenu)
+    }
+
+    // <Text>{prestation.type} pour => {prestation.prix} €</Text>
 
 
     return (
@@ -123,73 +140,13 @@ function HairdresserDetails(props) {
                         margin: 15,
                     }}>
 
-                        <View style={{display: "flex", flexDirection:"row"}}>
+                        <View style={{display: "flex", flexDirection: "row"}}>
                             <Text style={{margin: 10}}>
-                                <Button title="Contacts" onPress={toggleModal} />
-                                <Modal isVisible={isModalVisible}>
-                                    <View style={{flex: 1}}>
-                                        <PricingCard
-                                            color="#4f9deb"
-                                            title="Free"
-                                            price="$0"
-                                            info={['1 User', 'Basic Support', 'All Core Features']}
-                                            button={{ title: 'GET STARTED', icon: 'flight-takeoff' }}
-                                        />;
-                                        <Button title="Fermer Contacts" onPress={toggleModal} />
-                                    </View>
-                                </Modal>
+                                <Button title="Contacts" onPress={toggleModal}/>
                             </Text>
 
-                            <Text style={{ margin: 10}}>
-                                <Button title="Portfolio" onPress={toggleModal2} />
-
-                                <Modal isVisible={isModalVisible2}>
-
-                                    <View style={{color:"white", height: vh(70)}}>
-                                        <ScrollView>
-                                            <View style={{display:"flex", flexDirection:"column", alignItems:"center",justifyContent: "center"}}>
-                                                <Image
-                                                    style={{width: 300, height: 300, margin: 5}}
-                                                    source={
-                                                        require("../assets/1.png")
-                                                    }
-                                                />
-                                                <Image
-                                                    style={{width: 300, height: 300, margin: 5}}
-                                                    source={
-                                                        require("../assets/2.png")
-                                                    }
-                                                />
-                                                <Image
-                                                    style={{width: 300, height: 300, margin: 5}}
-                                                    source={
-                                                        require("../assets/3.png")
-                                                    }
-                                                />
-                                                <Image
-                                                    style={{width: 300, height: 300, margin: 5}}
-                                                    source={
-                                                        require("../assets/4.png")
-                                                    }
-                                                />
-                                                <Image
-                                                    style={{width: 300, height: 300, margin: 5}}
-                                                    source={
-                                                        require("../assets/5.png")
-                                                    }
-                                                />
-                                                <Image
-                                                    style={{width: 300, height: 300, margin: 5}}
-                                                    source={
-                                                        require("../assets/6.png")
-                                                    }
-                                                />
-                                            </View>
-                                        </ScrollView>
-                                        <LinearProgress color="primary" />
-                                        <Button title="Fermer Portfolio" onPress={toggleModal2} />
-                                    </View>
-                                </Modal>
+                            <Text style={{margin: 10}}>
+                                <Button title="Portfolio" onPress={toggleModal2}/>
                             </Text>
                         </View>
 
@@ -219,10 +176,13 @@ function HairdresserDetails(props) {
                             }}>-------------------------------------------------</Text>
                     </View>
                     <View>
+                        <Text style={{margin: 10, alignSelf: "center"}}>
+                            <Button title="Laisser un Avis" onPress={toggleReviews} />
+                        </Text>
                         <Text style={{margin: 10, fontSize: 20, textAlign: "center"}}>Ce que les autres ont
                             pensé</Text>
                         <Card>
-                            <Card.Title>Fleury nichon</Card.Title>
+                            <Card.Title>gustave Macon</Card.Title>
                             <Card.Divider/>
                             <View style={{display: "flex", flexDirection: "row"}}>
                                 <Image
@@ -240,7 +200,7 @@ function HairdresserDetails(props) {
                         </Card>
 
                         <Card>
-                            <Card.Title>Fleury nichon</Card.Title>
+                            <Card.Title>dublin laporte</Card.Title>
                             <Card.Divider/>
                             <View style={{display: "flex", flexDirection: "row"}}>
                                 <Image
@@ -258,7 +218,7 @@ function HairdresserDetails(props) {
                         </Card>
 
                         <Card>
-                            <Card.Title>Fleury nichon</Card.Title>
+                            <Card.Title>bernard pothin</Card.Title>
                             <Card.Divider/>
                             <View style={{display: "flex", flexDirection: "row"}}>
                                 <Image
@@ -277,28 +237,140 @@ function HairdresserDetails(props) {
                     </View>
                 </View>
             </ScrollView>
+            <Modal isVisible={isModalVisible}>
+                <View style={{color: "white", height: vh(70)}}>
+
+                    <PricingCard
+                        style={{height: vh(50)}}
+                        color="#4f9deb"
+                        title={prenom}
+                        price={prenom + "." + nom + "@gmail.com"}
+                        info={['15', 'Rue des curassiers', 'Lyon 3ème']}
+                        button={{title: 'Appeler', icon: 'call'}}
+                    />
+
+                    <LinearProgress color="primary"/>
+                    <Button style={{margin: 2}} title="Fermer Contacts" onPress={toggleModal}/>
+                </View>
+            </Modal>
+
+            <Modal isVisible={isModalVisible2}>
+
+                <View style={{color: "white", height: vh(70)}}>
+                    <ScrollView>
+                        <View style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}>
+                            <Image
+                                style={{width: 300, height: 300, margin: 5}}
+                                source={
+                                    require("../assets/1.png")
+                                }
+                            />
+                            <Image
+                                style={{width: 300, height: 300, margin: 5}}
+                                source={
+                                    require("../assets/2.png")
+                                }
+                            />
+                            <Image
+                                style={{width: 300, height: 300, margin: 5}}
+                                source={
+                                    require("../assets/3.png")
+                                }
+                            />
+                            <Image
+                                style={{width: 300, height: 300, margin: 5}}
+                                source={
+                                    require("../assets/4.png")
+                                }
+                            />
+                            <Image
+                                style={{width: 300, height: 300, margin: 5}}
+                                source={
+                                    require("../assets/5.png")
+                                }
+                            />
+                            <Image
+                                style={{width: 300, height: 300, margin: 5}}
+                                source={
+                                    require("../assets/6.png")
+                                }
+                            />
+                        </View>
+                    </ScrollView>
+                    <LinearProgress color="primary"/>
+                    <Button style={{margin: 2}} title="Fermer Portfolio" onPress={toggleModal2}/>
+                </View>
+            </Modal>
+
+
+            <Modal isVisible={isModalVisibleReviews}>
+                <View style={{color: "white", height: vh(70)}}>
+
+                    <View style={{marginTop: 100}}>
+                        <Input
+                            style={{ color: "white"}}
+                            placeholder='Entrer un pseudo'
+                            onChangeText={(value) => setPeudo(value)}
+                            value={pseudo}
+                        />
+
+                        <Input
+                            style={{height: vh(20), color: "white"}}
+                            placeholder='Entrer votre avis'
+                            onChangeText={(value) => setContenu(value)}
+                            value={contenu}
+                        />
+
+                        <Button
+                            icon={
+                                <Icon
+                                    name="arrow-right"
+                                    size={15}
+                                    color="white"
+                                />
+                            }
+                            iconRight
+                            title="Button with right icon"
+                            //onPress={recupReviews(pseudo, contenu) }
+                            onPress={() => recupReviews(pseudo, contenu)}
+                        />
+                    </View>
+
+                    <Button
+                        style={{margin: 2, opacity: .1}} title="J'ai fini"
+                        onPress={
+                        toggleReviews
+                        }
+                    />
+                </View>
+            </Modal>
         </View>
     )
 }
 
 function mapStateToProps(state) {
     return {
-        professionnels : state.professionnels,
+        professionnels: state.professionnels,
         proDetails: state.proDetails
     }
 }
 
-function mapDispatchToProps(dispatch){
-    return{
+function mapDispatchToProps(dispatch) {
+    return {
         getPrestation: (prestation) => {
             dispatch({type: 'get-Prestation', prestation: prestation})
         }
     }
 }
-  
-  export default connect( 
+
+export default connect(
     mapStateToProps,
-      mapDispatchToProps,
+    mapDispatchToProps,
 )(HairdresserDetails);
 
 const styles = StyleSheet.create({

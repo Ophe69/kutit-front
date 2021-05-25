@@ -8,23 +8,42 @@ function RecapRDV(props) {
     // console.log(props.prestation.prix)
     // console.log(props.heures)
 
+    var coupe = props.prestation.type;
+    var prixCoupe = props.prestation.prix;
+    var dateCoupe = props.date;
+    var heureCoupe = props.heures
+
     return (
-        <View>
+        <View style={{marginTop: 30}} >
             <Card>
-                <Card.Title>Vous avez choisi un(e) {props.prestation.type}</Card.Title>
+                <Card.Title>Vous avez choisi un(e) {coupe}</Card.Title>
                 <Card.Divider/>
                 <View >
                     <Image
-                        style={{width: 200, height: 100}}
+                        style={{width: 200, height: 200, marginBottom: 10, display: "flex", flexDirection: "row", alignSelf: "center"}}
                         source={
                             require("../assets/coupe.png")
                         }
                     />
-                    <Text style={{textAlign: "center", marginTop: 5}}> cela vous coûtera {props.prestation.prix} €</Text>
-                    <Text style={{textAlign: "center", marginTop: 5}}> Votre Rdv sera pour le 02/06/2021</Text>
-                    <Text style={{textAlign: "center", marginTop: 5}}> Votre coiffure sera à {props.heures}</Text>
+                    <Text style={{textAlign: "center", marginTop: 5}}> cela vous coûtera {prixCoupe} €</Text>
+                    <Card.Divider/>
+                    <Text style={{textAlign: "center", marginTop: 5}}> Votre Rdv sera pour le {dateCoupe}</Text>
+                    <Card.Divider/>
+                    <Text style={{textAlign: "center", marginTop: 5}}> Votre coiffure sera à {heureCoupe}</Text>
+                    <Card.Divider/>
                 </View>
+
+                <Button
+                    style={{margin: 10}}
+                    iconRight
+                    title="Valider votre RDV"
+                    onPress={() => {
+                        props.getCoiffure(coupe, prixCoupe, dateCoupe, heureCoupe);
+                        props.navigation.navigate('BottomNavigator', {screen: 'RecapRDV'})
+                    }}
+                />
             </Card>
+
         </View>
     )
 }
@@ -32,30 +51,23 @@ function RecapRDV(props) {
 function mapStateToProps(state) {
     return {
         prestation: state.prestation,
+        date: state.date,
         heures: state.heure
     }
 }
 
 
-/*function mapDispatchToProps(dispatch){
-    return{
-        getHeure: (heure) => {
-            dispatch({type: 'get-heure', heure: heure})
+function mapDispatchToProps(dispatch){
+    return {
+    getCoiffure: (coupe, prixCoupe, dateCoupe, heureCoupe) => {
+            console.log("mapDispatch", coupe, prixCoupe, dateCoupe, heureCoupe)
+            dispatch({type: 'getCoupe', coupe: coupe, prixCoupe: prixCoupe, dateCoupe: dateCoupe, heureCoupe: heureCoupe});
         }
     }
 }
- */
+
 
 export default connect(
     mapStateToProps,
-    // mapDispatchToProps,
+    mapDispatchToProps,
 )(RecapRDV);
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});

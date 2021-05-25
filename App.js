@@ -28,14 +28,17 @@ import Reviews from './screen/Reviews';
 
 import professionnels from './reducers/professionnels';
 import proDetails from './reducers/proDetails';
+import prestation from './reducers/prestationsDetails';
 import statut from './reducers/status';
+import heure from './reducers/heureDeRDV';
 import token from './reducers/token';
 import pseudo from './reducers/pseudo';
 import date from './reducers/date';
+import coupe from './reducers/choixCoupe';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const store = createStore(combineReducers({ professionnels, proDetails, statut, token, pseudo, date }));
+const store = createStore(combineReducers({ professionnels, proDetails,heure, statut, prestation, token, pseudo, date, coupe }));
 
 
 

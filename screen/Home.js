@@ -12,7 +12,6 @@ import { Entypo } from '@expo/vector-icons';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
 
-
 import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -67,8 +66,8 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-            const response = await fetch('http://172.16.190.131:3000/search', {
-            //const response = await fetch('http://192.168.1.13:3000/search', {
+            const response = await fetch('http://172.16.189.163:3000/search', {
+           // const response = await fetch('http://192.168.1.3:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
