@@ -1,10 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect } from 'react';
 import {
-    View, 
+    View,
     Text,
-    StyleSheet,
-    Dimensions,
+    TouchableOpacity,
+    ImageBackground,
     TextInput,
+    StyleSheet,
+    SafeAreaView,
+    Platform, 
+    Image,
+    Dimensions,
 } from 'react-native';
 
 import { 
@@ -17,6 +22,9 @@ import {connect} from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';  
+import {useTheme, Avatar} from 'react-native-paper';
+import * as ImagePicker from 'expo-image-picker';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 
@@ -29,6 +37,7 @@ function SignUpScreen (props){
     const [signupEmail, setSignupEmail] = useState('');
     const [signupPassword, setSignupPassword] = useState('');
     const [signupPasswordConf, setSignupPasswordConf] = useState('');
+    const [signupImage, setSignupImage] = useState('')
 
     const [secureTextEntry, setSecureTextEntry] = useState(false);
     const [userExists, setUserExists] = useState(false);
@@ -37,15 +46,17 @@ function SignUpScreen (props){
     const [signUpMessage, setSignUpMessage] = useState('');
     const [error, setError] = useState('');
     const [cvgAccepted, setCgvAccepted] = useState(false);
+    const [image, setImage] = useState(null);
+    const {colors} = useTheme();
     
         
         const handleSubmitSignup = async(props) => {
                 
-                //var data = await fetch('http://192.168.1.13:3000/signup', {
-                var data = await fetch('http://172.16.190.131:3000/signup', {
+                var data = await fetch('http://192.168.1.13:3000/signup', {
+                //var data = await fetch('http://172.16.190.131:3000/signup', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}`
+                    body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}&image=${image}`
                 });
                 var response = await data.json();
                 console.log('response', response.token)
@@ -60,13 +71,56 @@ function SignUpScreen (props){
                     navigation.navigate('Welcome', { screen: 'Welcome'});
                 }
 
+    
+
         };
+
+        useEffect(() => {
+            (async () => {
+                if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Accès aux photos refusé!');
+                }
+                }
+            })();
+            }, []);
+    
+        const pickImage = async () => {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            });
+    
+            console.log('result',result);
+    
+            if (!result.cancelled) {
+                setImage(result.uri);
+            }
+            };
+            console.log('image', image)
+    
+        /* var uploadPicture = async () =>{
+    
+            //const data = await fetch('http://172.16.190.131:3000/upload', {
+                const data = await fetch('http://192.168.1.13:3000/upload', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body:`image=${image}`
+                    //body: `userName=${signInUserName}&password=${signInPassword}&image=${changePicture}`
+                })
+                const response = await data.json();
+                console.log('response', response);
+        } */
 
     
 
 
     return(
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
+        <View >
             <View style={[styles.header, {marginTop: 55}]}>
                 <Text style={styles.text_header}>Créez votre compte</Text>
             </View>
@@ -75,7 +129,23 @@ function SignUpScreen (props){
                 style={styles.footer}
                 animation="fadeInUpBig"
                 >
-                <View style={styles.actionSignUp}>
+                <View style={styles.containerEdit}>
+                <View style={{flexDirection: 'column', marginTop: 0, alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={{marginBottom: 20}}>Votre photo de profil:</Text>    
+                {image && <Avatar.Image 
+                    source={{ uri: image }} 
+                    size={100}
+                    onChangeText={(value) => {setSignupImage(value)}}
+                    value={signupImage} />}
+                <TouchableOpacity style={styles.commandButton} onPress={pickImage}>
+                    <Text style={styles.panelButtonTitle}>
+                        <FontAwesome name="camera" color={colors.text}  size={20} marginLeft={20}/>
+                        Ajouter une photo
+                    </Text>
+                </TouchableOpacity>
+                </View>
+                <View style={styles.action}>
+                    <FontAwesome name="user-o" color={colors.text}  size={20} />
                     <TextInput
                         placeholder="Nom d'utlisateur"
                         style={styles.TextInputSignUp}
@@ -84,7 +154,8 @@ function SignUpScreen (props){
                         value={signupUserName}
                     />
                 </View>
-                <View style={styles.actionSignUp}>
+                <View style={styles.action}>
+                    <FontAwesome name="envelope-o" color={colors.text} size={20} />
                     <TextInput
                         placeholder="Email"
                         style={styles.TextInputSignUp}
@@ -93,7 +164,8 @@ function SignUpScreen (props){
                         value={signupEmail}
                     />
                 </View>
-                <View style={styles.actionSignUp}>
+                <View style={styles.action}>
+                    <FontAwesome name="lock" color={colors.text} size={20} />
                     <TextInput
                         placeholder="Password"
                         style={styles.TextInputSignUp}
@@ -112,7 +184,8 @@ function SignUpScreen (props){
                     />
                 </View>
 
-                <View style={styles.actionSignUp}>
+                <View style={styles.action}>
+                    <FontAwesome name="lock" color={colors.text} size={20} />
                     <TextInput
                         placeholder="Confirmez Password"
                         style={styles.TextInputSignUp}
@@ -126,6 +199,7 @@ function SignUpScreen (props){
                         color="grey"
                         size={20}
                     />
+                
                 </View>
                 
                 <View>
@@ -135,6 +209,7 @@ function SignUpScreen (props){
                     checkedIcon='dot-circle-o'
                     uncheckedIcon='circle-o'
                     checked={cvgAccepted}
+                    style={styles.TextInputSignUp}
                     onPress={() => {
                         setCgvAccepted(!cvgAccepted);
                     }}
@@ -147,36 +222,34 @@ function SignUpScreen (props){
                     checked={state.checked}
                     /> */}
                 </View>
+                
                 <View style={styles.ViewTextSigninMessage}>
                     <Text style={styles.TextSigninMessage} >{signUpMessage}</Text>  
                 </View>  
-                    
-
-                    <Button style={styles.buttonSign}
-                        type="clear"
-                        title= "je créé mon compte"
-
-                        onPress={()=> {
-                            //console.log(signupUserName, signupEmail, signupPassword, signupPasswordConf);
-                            setSignupUserName('');
-                            setSignupEmail('');
-                            setSignupPassword('');
-                            setSignupPasswordConf(''); 
-                            handleSubmitSignup();
-
-
-                        }}
-                    />
+                <TouchableOpacity 
+                    style={styles.commandButton} 
+                    onPress={()=> {
+                        //console.log(signupUserName, signupEmail, signupPassword, signupPasswordConf);
+                        setSignupUserName('');
+                        setSignupEmail('');
+                        setSignupPassword('');
+                        setSignupPasswordConf(''); 
+                        handleSubmitSignup();
+                    }}>
+                    <Text style={styles.panelButtonTitle}>Créer mon compte</Text>
+                </TouchableOpacity>    
 
                 <Button
-                style={{marginTop: 40, display: "flex", justifyContent: "flex-start", width: "12%" }}
-                title="<="
+                style={{marginTop: 10, display: "flex", justifyContent: "flex-start", width: 60}}
+                title="skip "
                 type="solid"
                 buttonStyle={{backgroundColor: "#009788"}}
                 onPress={() => navigation.navigate('BottomNavigator', {screen: 'registered'})}
             />
+            </View>
             </Animatable.View>
         </View>
+        </ScrollView>
     )
 
 };
@@ -212,16 +285,22 @@ const styles = StyleSheet.create({
         backgroundColor: '#354F52',
         
     },
+    containerEdit:{
+        flex: 1,
+        marginTop: 0,
+        marginLeft: 30,
+        marginRight: 30,
+    },
     header:{
         flex: 1,
         justifyContent: 'center',
     },
     footer:{
-        flex: 3,
+        flex: 5,
         backgroundColor:'#CAD2C5',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        paddingVertical: 50,
+        paddingVertical: 20,
         paddingHorizontal: 30
     },
     logo: {
@@ -299,7 +378,27 @@ const styles = StyleSheet.create({
     TextSigninMessage: {
         color: 'red',
         marginTop: 30,
-    }
+    },
+    commandButton: {
+        padding: 15,
+        borderRadius: 10,
+        backgroundColor: '#354F52',
+        alignItems: 'center',
+        marginTop: 20,
+        marginBottom: 40,
+        },
+    panelButton: {
+        padding: 13,
+        borderRadius: 10,
+        backgroundColor: '#FF6347',
+        alignItems: 'center',
+        marginVertical: 7,
+        },
+    panelButtonTitle: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        color: 'white',
+        },
 
 
 

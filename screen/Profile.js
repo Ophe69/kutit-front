@@ -8,11 +8,16 @@ import { FontAwesome } from '@expo/vector-icons';
 
 //import BottomSheet from 'reanimated-bottom-sheet';
 //import Animated from 'react-native-reanimated';
+import { connect } from 'react-redux';
 
 
-function Profile({navigation}) {
+function Profile(props) {
+
+    const navigation = props.navigation
+    
     return (
         <SafeAreaView style={styles.container}>
+            
             <View style={styles.userInfoSection}>
                 <View style={{flexDirection: 'row', marginTop: 15, justifyContent: 'center'}}>
                     <Avatar.Image
@@ -21,14 +26,22 @@ function Profile({navigation}) {
                     />
                 </View>
                 <View style={{flexDirection: 'row', marginTop: 15, justifyContent: 'center'}}>
-                    <Title style={styles.title}>Cantinou</Title>
+                    <Title style={styles.title}>Cantin69</Title>
                 </View>
+                <TouchableOpacity style={styles.commandButton}
+                    onPress={() => {
+                        // handleSearch();
+                        navigation.navigate('ProfileEdit', { screen: 'ProfileEdit' });
+                    }}>
+                    <Text style={styles.panelButtonTitle}>Editer mon Profil</Text>
+                </TouchableOpacity>
+                
             </View>
             <View style={styles.userInfoSection}>
-                <View style={styles.row}>
+                {/* <View style={styles.row}>
                     <Icon name="map-marker-radius" color="#777777" size={20}/>
                     <Text style={{color:"#777777", marginLeft: 20}}>Bangkok</Text>
-                </View>
+                </View> */}
                 <View style={styles.row}>
                     <Icon name="phone" color="#777777" size={20}/>
                     <Text style={{color:"#777777", marginLeft: 20}}>+33 (0)6.43.54.76.87</Text>
@@ -52,7 +65,7 @@ function Profile({navigation}) {
 
 
             <View style={styles.menuWrapper}>
-                <TouchableRipple onPress={() => {}}>
+                {/* <TouchableRipple onPress={() => {}}>
                     <View style={styles.menuItem}>
                         <Icon name="heart-outline" color="#354F52" size={25}/>
                         <Text 
@@ -60,11 +73,14 @@ function Profile({navigation}) {
                         onPress={()=>{navigation.navigate('Favorite', { screen: 'Favorite' })}}
                         >Coiffeurs Favoris</Text>
                     </View>
-                </TouchableRipple>
+                </TouchableRipple> */}
                 <TouchableRipple onPress={() => {}}>
                     <View style={styles.menuItem}>
                         <Icon name="credit-card" color="#354F52" size={25}/>
-                        <Text style={styles.menuItemText}>Historique Réservations</Text>
+                        <Text 
+                        style={styles.menuItemText}
+                        onPress={()=>{navigation.navigate('History', { screen: 'History' })}}
+                        >Historique Réservations</Text>
                     </View>
                 </TouchableRipple>
                 <TouchableRipple onPress={() => {}}>
@@ -88,15 +104,17 @@ function Profile({navigation}) {
                         <Text style={styles.menuItemText}>Réglages</Text>
                     </View>
                 </TouchableRipple>
-            </View>
-            <View>
                 <TouchableOpacity style={styles.commandButton}
                     onPress={() => {
                         // handleSearch();
-                        navigation.navigate('ProfileEdit', { screen: 'ProfileEdit' });
+                        navigation.navigate('Login', { screen: 'Login' });
                     }}>
-                    <Text style={styles.panelButtonTitle}>Editer mon Profil</Text>
+                    <Text style={styles.panelButtonTitle}>Me déconnecter</Text>
                 </TouchableOpacity>
+            </View>
+            
+            <View>
+
 {/*                 <Button
                     buttonStyle={{ backgroundColor: '#354F52', marginTop: 40, width: 200, height: 30}}
                     containerStyle={{ width: 200, height: 80}}
@@ -184,7 +202,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#354F52',
         alignItems: 'center',
-        marginTop: 30,
+        marginTop: 15,
         marginHorizontal: 20,
         },
     panelButtonTitle: {
@@ -192,6 +210,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'white',
         },
+    logOutButton: {
+        padding: 15,
+        borderRadius: 10,
+        backgroundColor: '#354F52',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 15,
+    },
 
 });
 
