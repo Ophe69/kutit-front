@@ -1,38 +1,73 @@
 import React from 'react'
-import {StyleSheet, Text, View} from 'react-native';
-import {Button} from 'react-native-elements';
+import {StyleSheet, Text, View, Image} from 'react-native';
+import {connect} from "react-redux";
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
 
-export default function RecapRDV(props) {
+function RecapRDV(props) {
+    // console.log(props.prestation.type)
+    // console.log(props.prestation.prix)
+    // console.log(props.heures)
+
+    var coupe = props.prestation.type;
+    var prixCoupe = props.prestation.prix;
+    var dateCoupe = props.date;
+    var heureCoupe = props.heures
+
     return (
-        <View style={{width: '100%', alignItems: 'flex-start'}}>
-            <Button
-                style={{marginTop: 40, display: "flex", justifyContent: "flex-start", width: "15%"}}
-                title="<="
-                type="solid"
-                buttonStyle={{backgroundColor: "#009788"}}
-                onPress={() => {
-                    props.navigation.navigate('BottomNavigator', {screen: 'HairderesserList'})
-                }}
-            />
-            <View style={styles.container}>
-                <Text>Page de recap de la prestation</Text>
+        <View style={{marginTop: 30}} >
+            <Card>
+                <Card.Title>Vous avez choisi un(e) {coupe}</Card.Title>
+                <Card.Divider/>
+                <View >
+                    <Image
+                        style={{width: 200, height: 200, marginBottom: 10, display: "flex", flexDirection: "row", alignSelf: "center"}}
+                        source={
+                            require("../assets/coupe.png")
+                        }
+                    />
+                    <Text style={{textAlign: "center", marginTop: 5}}> cela vous coûtera {prixCoupe} €</Text>
+                    <Card.Divider/>
+                    <Text style={{textAlign: "center", marginTop: 5}}> Votre Rdv sera pour le {dateCoupe}</Text>
+                    <Card.Divider/>
+                    <Text style={{textAlign: "center", marginTop: 5}}> Votre coiffure sera à {heureCoupe}</Text>
+                    <Card.Divider/>
+                </View>
+
                 <Button
-                    title='Proceder au paiement'
+                    style={{margin: 10}}
+                    iconRight
+                    title="Valider votre RDV"
                     onPress={() => {
-                        props.navigation.navigate('paiement', {screen: 'paiement'});
+                        props.getCoiffure(coupe, prixCoupe, dateCoupe, heureCoupe);
+                        props.navigation.navigate('BottomNavigator', {screen: 'RecapRDV'})
                     }}
                 />
-            </View>
+            </Card>
+
         </View>
     )
 }
 
+function mapStateToProps(state) {
+    return {
+        prestation: state.prestation,
+        date: state.date,
+        heures: state.heure
+    }
+}
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
+
+function mapDispatchToProps(dispatch){
+    return {
+    getCoiffure: (coupe, prixCoupe, dateCoupe, heureCoupe) => {
+            console.log("mapDispatch", coupe, prixCoupe, dateCoupe, heureCoupe)
+            dispatch({type: 'getCoupe', coupe: coupe, prixCoupe: prixCoupe, dateCoupe: dateCoupe, heureCoupe: heureCoupe});
+        }
+    }
+}
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(RecapRDV);
