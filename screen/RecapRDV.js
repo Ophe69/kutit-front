@@ -11,7 +11,28 @@ function RecapRDV(props) {
     var coupe = props.prestation.type;
     var prixCoupe = props.prestation.prix;
     var dateCoupe = props.date;
-    var heureCoupe = props.heures
+    var heureCoupe = props.heures;
+
+    const addOrder = async() => {
+        
+        let datas = JSON.stringify({
+            type: props.prestation.type,
+            prix: props.prestation.prix,
+            date: props.date,
+            token: props.token,
+            proFrontId: props.proDetails._id,
+        })
+
+        console.log('datas sent to back', datas)
+        const response = await fetch('http://172.17.188.18:3000/add-order', {
+        // const response = await fetch('http://192.168.43.103:3000/add-order', {
+                method: 'POST',
+                headers: {'Content-Type':'application/Json'},
+                body: datas
+        });
+        const data = await response.json();
+        console.log(data.message);
+    };
 
     return (
         <View style={{marginTop: 30}} >
@@ -37,9 +58,10 @@ function RecapRDV(props) {
                     style={{margin: 10}}
                     iconRight
                     title="Valider votre RDV"
-                    onPress={() => {
+                    onPress={async() => {
                         props.getCoiffure(coupe, prixCoupe, dateCoupe, heureCoupe);
-                        props.navigation.navigate('BottomNavigator', {screen: 'RecapRDV'})
+                        // props.navigation.navigate('RecapRDV', {screen: 'RecapRDV'});
+                        addOrder();
                     }}
                 />
             </Card>
@@ -52,7 +74,9 @@ function mapStateToProps(state) {
     return {
         prestation: state.prestation,
         date: state.date,
-        heures: state.heure
+        heures: state.heure,
+        proDetails: state.proDetails,
+        token: state.token
     }
 }
 

@@ -30,8 +30,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 function SignUpScreen (props){
 
-    const navigation = props.navigation
-
     const [state, setState] = useState(false);
     const [signupUserName, setSignupUserName] = useState(''); 
     const [signupEmail, setSignupEmail] = useState('');
@@ -50,15 +48,17 @@ function SignUpScreen (props){
     const {colors} = useTheme();
     
         
-        const handleSubmitSignup = async(props) => {
+        const handleSubmitSignup = async() => {
+
                 
-                var data = await fetch('http://172.17.188.17:3000/signup', {
+        
+                var data = await fetch('http://172.17.188.18:3000/signup', {
+                // var data = await fetch('http://192.168.43.103:3000/signup', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}&image=${image}`
                 });
                 var response = await data.json();
-                console.log('response', response.token)
                 setIsRegistered(response.registered);
                 setSignUpMessage('');
                 if(response.registered == false){
@@ -67,7 +67,7 @@ function SignUpScreen (props){
                     setSignUpMessage('');
                     props.addToken(response.token);
                     props.addPseudo(response.pseudo);
-                    navigation.navigate('Welcome', { screen: 'Welcome'});
+                    props.navigation.navigate('Welcome');
                 }
 
     

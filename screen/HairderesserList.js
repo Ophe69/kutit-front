@@ -90,8 +90,8 @@ function HairdresserList(props) {
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
                         <Image
                             style={styles.image}
-                            source={require("../assets/images/pexels-stefan-lorentz-668196.jpg")}
-                            // { uri: "../assets/images/hairdresser-1.png" }
+                            source={require("../assets/independant/independant_1.jpg")}
+                            //source={ {uri: `../assets/${pro.statut}/${pro.statut}_1.jpg`} }
                             style={{width: 80, height: 80, margin: 5, borderRadius: 50}}
                         />
                     </View>

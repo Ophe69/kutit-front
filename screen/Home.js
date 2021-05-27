@@ -34,16 +34,7 @@ function Home(props) {
     const [isDisabled, setIsDisabled] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
-    // const [markerPro, setMarkerPro] = useState(proList.map((pro, i) => {
-    //     return <Marker key={i} pinColor={color} coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
-    //       prenom={pro.prenom}
-    //       nom={pro.nom}
-    //     />
-    //   }));
-
 // Geoloc Enabled
-
-    console.log("Today's date", new Date().toLocaleDateString())
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -66,12 +57,14 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-            const response = await fetch('http://172.17.188.17:3000/search', {
+            const response = await fetch('http://172.17.188.18:3000/search', {
+            // const response = await fetch('http://192.168.43.103:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
             });
             const data = await response.json();
+            // console.log('get data from db', data)
             props.getHairdressers(data.professionnels);
             setProList(data.professionnels.filter(e => e.statut !== "salon"));
         }
@@ -102,7 +95,10 @@ function Home(props) {
             key={i}
             coordinate={{ latitude: pro.latitude, longitude: pro.longitude }}
             image={ barbershop ? require('../assets/Pin2-b.png') : require('../assets/Pin1-b.png')}
-            
+            onPress={() => {
+                props.getDetails(pro);
+                props.navigation.navigate('HairdresserDetails', { screen: 'HairdresserDetails' });
+            }}
             // anchor={{ x: 0.5, y: 1 }}
             // centerOffset={{ x: 0.5, y: 1 }}
             // onPress={e => onPressMarker(e, info.id, { id: info._id, title: info.name, address: info.address, sport: info.sport, description: info.description, image: info.picture })}
@@ -250,7 +246,10 @@ function mapDispatchToProps(dispatch){
       },
       getDate: (date) => {
           dispatch({ type: 'get-date', date: date });
-      }
+      },
+      getDetails: (proDetails) => {
+        dispatch({ type:'get-details', proDetails: proDetails });
+    }
     }
 }
 

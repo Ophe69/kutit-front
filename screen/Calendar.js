@@ -19,6 +19,10 @@ export default function Calendar() {
     const [chignon, setChignon] = useState(false);
     const [barbe, setBarbe] = useState(false);
     const [shampoing, setShampoing] = useState(false);
+    const [imageButton, setImageButton] =useState(false);
+    const [imageNumber, setImageNumber] = useState(1);
+    const [stars, setStars] = useState(3);
+    const [votedBy, setVotedBy] = useState(10);
 
     const handleDegrade = () => {
         if(!degrade){
@@ -80,6 +84,20 @@ export default function Calendar() {
         }    
     }
 
+    const handleRandomNumbers = () => {
+        if(!imageButton){
+            setImageNumber(Math.floor(Math.random() * 10) + 1); // 1-10
+            setStars(Math.floor(Math.random() * 5) + 1);
+            setVotedBy(Math.floor(Math.random() * 50) + 1);
+            setImageButton(true);
+        } else {
+            setImageNumber(1);
+            setStars(3);
+            setVotedBy(10);
+            setImageButton(false);
+        }
+    }
+
     let statut;
 
     if(barbershop) {
@@ -100,9 +118,12 @@ export default function Calendar() {
             statut,
             latitude,
             longitude,
-            prestations
+            prestations,
+            imageNumber,
+            stars,
+            votedBy
         })
-        const proDetails = await fetch('http://172.16.190.131:3000/create-pro', {
+        const proDetails = await fetch('http://172.17.188.18:3000/create-pro', {
         //const proDetails = await fetch('http://172.17.188.8:3000/create-pro', {
                 method: 'POST',
                 headers: {'Content-Type':'application/Json'},
@@ -203,6 +224,13 @@ export default function Calendar() {
                         handleShampoing();
                     }} //min 5$ - max 15$
                     buttonStyle={ shampoing ? { margin: 10, backgroundColor: '#ccc'} : { margin: 10 }}
+                />
+                <Button 
+                    title="image-number"
+                    onPress={() =>{ 
+                        handleRandomNumbers();
+                    }} //min 5$ - max 15$
+                    buttonStyle={ imageButton ? { margin: 10, backgroundColor: '#ccc'} : { margin: 10 }}
                 />
                 <Button 
                     title="create"
