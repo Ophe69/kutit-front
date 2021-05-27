@@ -35,6 +35,11 @@ function Home(props) {
     const [isVisible, setIsVisible] = useState(false);
 
 // Geoloc Enabled
+<<<<<<< HEAD
+=======
+
+    console.log("Today's date", new Date().toLocaleDateString())
+>>>>>>> 2df10a59ef80fe7d021c9ce087034c583f0f0548
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -104,6 +109,8 @@ function Home(props) {
             // onPress={e => onPressMarker(e, info.id, { id: info._id, title: info.name, address: info.address, sport: info.sport, description: info.description, image: info.picture })}
         />)
     });
+
+
 
 
     if(isMounted){
@@ -228,6 +235,17 @@ function Home(props) {
 
     )}
 }
+
+const sport = ["foot", "basket"];
+var inde = 0;
+var sportObjet = [];
+for(var i= 0; i<sport.length; i++){
+    sportObjet.push({inde: sport[i]});
+    inde ++;
+    console.log(inde);
+}
+
+console.log("table mathieu", sportObjet)
 
 function mapStateToProps(state) {
     return { 

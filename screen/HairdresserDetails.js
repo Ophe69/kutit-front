@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {connect} from 'react-redux';
-import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, Image, ScrollView, TouchableOpacity} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {vw, vh, vmin, vmax} from 'react-native-expo-viewport-units';
 import Modal from 'react-native-modal';
@@ -14,10 +14,11 @@ function HairdresserDetails(props) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalVisible2, setModalVisible2] = useState(false);
     const [isModalVisibleReviews, setModalVisibleReviews] = useState(false);
+    const [reviews, setReviews] = useState([]);
 
     const [pseudo, setPeudo] = useState('')
     const [contenu, setContenu] = useState('');
-
+    //const [disabled, setDisabled] = useState(false);
 
 
 
@@ -29,6 +30,14 @@ function HairdresserDetails(props) {
     };
     const toggleReviews = () => {
         setModalVisibleReviews(!isModalVisibleReviews);
+        //disabled={true}
+    };
+
+    // var reviews = [];
+    const recupReviews = () => {
+        setReviews([...reviews, {pseudo: pseudo, contenu: contenu}])
+        //setDisabled(true);
+        //console.log("mon pseudo c'est " + pseudo + ", et mon review c'est : " + contenu)
     };
 
 
@@ -73,7 +82,6 @@ function HairdresserDetails(props) {
     var nom = nomRecup.charAt(0).toUpperCase() + nomRecup.substr(1);
     var prenom = prenomRecup.charAt(0).toUpperCase() + prenomRecup.substr(1)
 
-    //console.log(prenom + " " + nom);
 
     var prestations = props.proDetails.prestations
     const parcours = prestations.map((prestation, i) => {
@@ -96,10 +104,6 @@ function HairdresserDetails(props) {
         )
     })
 
-
-    const recupReviews = () => {
-        console.log("mon pseudo c'est " + pseudo + ", et mon review c'est : "+ contenu)
-    }
 
     // <Text>{prestation.type} pour => {prestation.prix} €</Text>
 
@@ -177,63 +181,39 @@ function HairdresserDetails(props) {
                     </View>
                     <View>
                         <Text style={{margin: 10, alignSelf: "center"}}>
-                            <Button title="Laisser un Avis" onPress={toggleReviews} />
+                            <Button title="Laisser un Avis" onPress={toggleReviews}/>
                         </Text>
                         <Text style={{margin: 10, fontSize: 20, textAlign: "center"}}>Ce que les autres ont
                             pensé</Text>
-                        <Card>
-                            <Card.Title>gustave Macon</Card.Title>
-                            <Card.Divider/>
-                            <View style={{display: "flex", flexDirection: "row"}}>
-                                <Image
-                                    style={{width: 70, height: 60}}
-                                    //resizeMode="cover"
-                                    source={
-                                        require("../assets/avatar.png")
-                                    }
-                                />
-                                <View>
-                                    <Text style={{width: vw(60)}}>Très bon coiffeur, professionnel et pointuel</Text>
-                                    <View style={{display: "flex", flexDirection: "row"}}>{stars}</View>
-                                </View>
-                            </View>
-                        </Card>
-
-                        <Card>
-                            <Card.Title>dublin laporte</Card.Title>
-                            <Card.Divider/>
-                            <View style={{display: "flex", flexDirection: "row"}}>
-                                <Image
-                                    style={{width: 70, height: 60}}
-                                    //resizeMode="cover"
-                                    source={
-                                        require("../assets/avatar.png")
-                                    }
-                                />
-                                <View>
-                                    <Text style={{width: vw(60)}}>Très bon coiffeur, professionnel et pointuel</Text>
-                                    <View style={{display: "flex", flexDirection: "row"}}>{stars}</View>
-                                </View>
-                            </View>
-                        </Card>
-
-                        <Card>
-                            <Card.Title>bernard pothin</Card.Title>
-                            <Card.Divider/>
-                            <View style={{display: "flex", flexDirection: "row"}}>
-                                <Image
-                                    style={{width: 70, height: 60}}
-                                    //resizeMode="cover"
-                                    source={
-                                        require("../assets/avatar.png")
-                                    }
-                                />
-                                <View>
-                                    <Text style={{width: vw(60)}}>Très bon coiffeur, professionnel et pointuel</Text>
-                                    <View style={{display: "flex", flexDirection: "row"}}>{stars}</View>
-                                </View>
-                            </View>
-                        </Card>
+                        <View>
+                            {reviews.map((avis, i) => {
+                                return (
+                                    <Card key={i}>
+                                        <Card.Title>{avis.pseudo}</Card.Title>
+                                        <Card.Divider/>
+                                        <View style={{display: "flex", flexDirection: "row"}}>
+                                            <Image
+                                                style={{width: 70, height: 60}}
+                                                //resizeMode="cover"
+                                                source={
+                                                    require("../assets/avatar.png")
+                                                }
+                                            />
+                                            <View>
+                                                <Text style={{width: vw(60)}}>{avis.contenu}</Text>
+                                                <View style={{
+                                                    flexDirection: 'row',
+                                                    justifyContent: "center",
+                                                    margin: 20
+                                                }}>
+                                                    {stars}
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </Card>
+                                )
+                            })}
+                        </View>
                     </View>
                 </View>
             </ScrollView>
@@ -313,7 +293,7 @@ function HairdresserDetails(props) {
 
                     <View style={{marginTop: 100}}>
                         <Input
-                            style={{ color: "white"}}
+                            style={{color: "white"}}
                             placeholder='Entrer un pseudo'
                             onChangeText={(value) => setPeudo(value)}
                             value={pseudo}
@@ -326,25 +306,21 @@ function HairdresserDetails(props) {
                             value={contenu}
                         />
 
+                        <View style={{flexDirection: 'row', justifyContent: "center", margin: 20}}>
+                            {stars}
+                        </View>
                         <Button
-                            icon={
-                                <Icon
-                                    name="arrow-right"
-                                    size={15}
-                                    color="white"
-                                />
-                            }
-                            iconRight
-                            title="Button with right icon"
+                            title="Valider"
                             //onPress={recupReviews(pseudo, contenu) }
-                            onPress={() => recupReviews(pseudo, contenu)}
+                            onPress={recupReviews}
                         />
+
                     </View>
 
                     <Button
-                        style={{margin: 2, opacity: .1}} title="J'ai fini"
+                        style={{margin: 2, opacity: .8}} title="J'ai fini"
                         onPress={
-                        toggleReviews
+                            toggleReviews
                         }
                     />
                 </View>
