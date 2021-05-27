@@ -13,8 +13,6 @@ import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
 function HairdresserList(props) {
 
-    const [review, setReview] = useState(0);
-    const [votedBy, setVotedBy] = useState(0);
     const [proList, setProList] = useState([]);
     const [status, setStatus] = useState(null);
 
@@ -29,47 +27,38 @@ function HairdresserList(props) {
         }
     }, [status])
 
-    // const stars = [1,2,3,4,5].map((star, i) => {
-    //     if(review > i) {
-    //         return(
-    //             <FontAwesome
-    //                 name="star"
-    //                 size={24}
-    //                 value={i}
-    //                 onPress={() => {
-    //                     setReview(i+1);
-    //                 }}
-    //                 color="black"
-    //                 style={review > i ? { color: '#f1c40f' } : null}
-    //                 key={i}
-    //             />)
-    //     } else {
-    //         return(
-    //             <FontAwesome
-    //                 name="star-o"
-    //                 size={24}
-    //                 color="black"
-    //                 value={i}
-    //                 onPress={() => {
-    //                     setReview(i+1);
-    //                 }}
-    //                 key={i}
-    //             />)
-    //     }
-    // })
-
-    const ratings = [1,2,3,4,5].map((star, i) => {
-        return(
-            <FontAwesome
-                name="star"
-                size={16}
-                color="black"
-                style={{ color: '#f1c40f' }}
-                key={i}
-            />)
-    })
-
     const hairdressers = proList.map((pro, i) => {
+
+        const ratings = [1,2,3,4,5].map((star, i) => {
+        
+                if(pro.stars > i) {
+                            return(
+                                <FontAwesome
+                                    name="star"
+                                    size={15}
+                                    value={i}
+                                    color='#f1c40f'
+                                    key={i}
+                                />)
+                        } else {
+                            return(
+                                <FontAwesome
+                                    name="star-o"
+                                    size={15}
+                                    color="black"
+                                    value={i}
+                                    onPress={() => {
+                                        setReview(i+1);
+                                    }}
+                                    key={i}
+                                />)
+                        }
+        })
+
+        console.log(`../assets/${pro.statut}/${pro.statut}_1.jpg`);
+        let path = `../assets/${pro.statut}/${pro.statut}_1.jpg`;
+
+
         return(
             <TouchableOpacity
                 key={i}
@@ -87,23 +76,25 @@ function HairdresserList(props) {
                         size={24} color="black"
                         style={styles.avatar}
                     /> */}
-                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+                    <View style={{ flex: 0.8, flexDirection: 'row', justifyContent: 'center' }}>
                         <Image
                             style={styles.image}
                             source={require("../assets/independant/independant_1.jpg")}
+                            //source={require(path)}
+                            //source={{uri: path}}
                             //source={ {uri: `../assets/${pro.statut}/${pro.statut}_1.jpg`} }
                             style={{width: 80, height: 80, margin: 5, borderRadius: 50}}
                         />
                     </View>
-                    <View style={{ flex: 1, flexDirection: 'column'}}>
+                    <View style={{ flex: 1.3, flexDirection: 'column'}}>
                         <Text style={{ alignSelf: 'center', marginVertical: 10 }}>{`${pro.prenom} ${pro.nom}`}</Text>
                         <Text style={{ alignSelf: 'center' }}>{pro.statut}</Text>
                     </View>
-                    <View style={{ justifyContent: 'center', flex: 1 }}>
+                    <View style={{ justifyContent: 'center', flex: 0.8 }}>
                         <View style={styles.rating}>
                             {ratings}
                         </View>
-                        <Text style={{ textAlign: 'center'}}>reviews: {votedBy}</Text>
+                        <Text style={{ textAlign: 'center'}}>reviews: {pro.votedBy}</Text>
                     </View>
                 </View>
             </TouchableOpacity> 
@@ -118,7 +109,8 @@ function HairdresserList(props) {
             style={styles.scrollview}
             contentContainerStyle={{ alignItems: 'center' }}
         >
-            <Text style={{ textAlign: 'center' }}>HairdresserList</Text>
+            <Text style={{ textAlign: 'center', fontSize: 25, marginBottom: 50 }}>
+                {`${props.statut}s disponibles`}</Text>
             <View style={{ flex: 1 }}>
                 { hairdressers }
             </View>
@@ -156,7 +148,7 @@ export default connect(
 const styles = StyleSheet.create({
     scrollview: {
         flex: 1,
-        marginTop: 80
+        marginTop: 80,
     },
     user: {
         flexDirection: 'row',

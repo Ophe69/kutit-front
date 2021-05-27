@@ -35,7 +35,7 @@ function ChoixRDV(props) {
     var currentPrestaType = props.prestation.type;
     var currentPrestaPrice = props.prestation.prix;
 
-    //console.log("que faire " + currentPrestaType + currentPrestaPrice)
+    // console.log("que faire " + currentPrestaType + currentPrestaPrice)
         return (
 
         <View style={{alignItems: 'center', marginTop: 20}}>

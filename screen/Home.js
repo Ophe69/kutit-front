@@ -35,11 +35,6 @@ function Home(props) {
     const [isVisible, setIsVisible] = useState(false);
 
 // Geoloc Enabled
-<<<<<<< HEAD
-=======
-
-    console.log("Today's date", new Date().toLocaleDateString())
->>>>>>> 2df10a59ef80fe7d021c9ce087034c583f0f0548
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);

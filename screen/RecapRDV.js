@@ -32,6 +32,10 @@ function RecapRDV(props) {
         });
         const data = await response.json();
         console.log(data.message);
+
+    
+        props.getOrder(!props.exist);
+    
     };
 
     return (
@@ -76,7 +80,8 @@ function mapStateToProps(state) {
         date: state.date,
         heures: state.heure,
         proDetails: state.proDetails,
-        token: state.token
+        token: state.token,
+        exist: state.exist
     }
 }
 
@@ -86,7 +91,10 @@ function mapDispatchToProps(dispatch){
     getCoiffure: (coupe, prixCoupe, dateCoupe, heureCoupe) => {
             console.log("mapDispatch", coupe, prixCoupe, dateCoupe, heureCoupe)
             dispatch({type: 'getCoupe', coupe: coupe, prixCoupe: prixCoupe, dateCoupe: dateCoupe, heureCoupe: heureCoupe});
-        }
+        },
+    getOrder: (order) => {
+        dispatch({type: 'submit-order', exist: order});
+    }
     }
 }
 

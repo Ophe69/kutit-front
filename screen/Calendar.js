@@ -5,8 +5,8 @@ import { Button } from 'react-native-elements';
 
 export default function Calendar() {
 
-    const [nom, setNom] = useState(null);
-    const [prenom, setPrenom] = useState(null);
+    const [nom, setNom] = useState('');
+    const [prenom, setPrenom] = useState('');
     const [mail, setMail] = useState(null);
     const [password, setPassword] = useState(null);
     const [barbershop, setBarbershop] = useState(false);
