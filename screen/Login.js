@@ -34,13 +34,13 @@ const Login = ({navigation}) => {
             animation="fadeInUpBig"
 
           >
-            <Text style={styles.text}>Déjà membre?</Text>
-            <Text style={styles.text2}>Connecte-toi :</Text>
+            <Text style={styles.text}>Envie de te faire beau?</Text>
+            <Text style={styles.text2}>Où tu veux et Quand tu veux!</Text>
 
             <TouchableOpacity style={styles.commandButton}
               onPress={()=> console.log('SignIn button Clicked!')}
               onPress={()=> navigation.navigate('SignInScreen')}>
-                    <Text style={styles.panelButtonTitle}>Editer mon Profil</Text>
+                    <Text style={styles.panelButtonTitle}>C'est parti !</Text>
             </TouchableOpacity>  
            {/*  <Button style={styles.buttonSign}
               type="clear"
@@ -92,15 +92,14 @@ const styles = StyleSheet.create({
     },
     text: {
       marginBottom: 30,
-      fontSize: 40,
+      fontSize: 30,
       fontWeight: 'bold',
 
     },
     text2: {
-      marginTop: -20,
-      marginLeft: 50,
+      marginTop: -10,
       marginBottom: 30,
-      fontSize: 35,
+      fontSize: 20,
       fontWeight: 'bold',
 
     },
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       backgroundColor: '#354F52',
       alignItems: 'center',
-      marginTop: 15,
+      marginTop: 35,
       marginHorizontal: 20,
       },
       panelButtonTitle: {

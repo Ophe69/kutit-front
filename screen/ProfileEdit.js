@@ -139,7 +139,9 @@ function ProfileEdit(props) {
                     />
                 </View> 
                 <TouchableOpacity style={styles.commandButton} onPress={() => {}}>
-                    <Text style={styles.panelButtonTitle}>Editer mon Profil</Text>
+                    <Text style={styles.panelButtonTitle}
+                    onPress={()=>{navigation.navigate('Profil', { screen: 'Profile' })}}
+                    >Editer mon Profil</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>            

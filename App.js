@@ -57,9 +57,9 @@ const BottomNavigator = () => {
 
           if (route.name == 'Home') {
             return <Ionicons name="home-outline" size={24} color={color} />
-          } else if (route.name == 'Calendar') {
+          } else if (route.name == 'Historique') {
             return <Ionicons name="calendar-outline" size={24} color={color}/>
-          }else if (route.name == 'Profile') {
+          }else if (route.name == 'Profil') {
           return <Ionicons name="person-outline" size={24} color={color}/>
         }
 
@@ -75,9 +75,9 @@ const BottomNavigator = () => {
       }}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Calendar" component={Calendar} />
-      <Tab.Screen name="History" component={History} />
-      <Tab.Screen name="Profile" component={Profile} />
+      {/* <Tab.Screen name="Calendar" component={Calendar} /> */}
+      <Tab.Screen name="Historique" component={History} />
+      <Tab.Screen name="Profil" component={Profile} />
     </Tab.Navigator>
   );
 };

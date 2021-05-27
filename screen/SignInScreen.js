@@ -21,14 +21,15 @@ const SignInScreen = (props) =>{
     const [signInPassword, setSignInPassword] = useState('');
     const [signInMessage, setSignInMessage] = useState('');
 
-    const [secureTextEntry, setSecureTextEntry] = useState(false);
+    const [secureTextEntry, setSecureTextEntry] = useState(true);
     const [isLogin, setIsLogin] = useState(false);
     const [passwordOK, setPasswordOk] = useState(false);
     const [userExists, setUserExists] = useState(false);
+    const [hidePass, setHidePass] = useState(true);
 
     var handleSubmitSignIn = async () => {
             
-            const data = await fetch('http://172.17.188.18:3000/signin', {
+            const data = await fetch('http://172.16.190.137:3000/signin', {
             // const data = await fetch('http://192.168.43.103:3000/signin', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -59,14 +60,14 @@ const SignInScreen = (props) =>{
     return(
         <View style={styles.container}>
             <View style={[styles.header, {marginTop: 55}]}>
-                <Text style={styles.text_header}>Bienvenue!</Text>
+                <Text style={styles.text_header}>Déjà membre ? </Text>
             </View>
 
             <Animatable.View 
                 style={styles.footer}
                 animation="fadeInUpBig"
                 >
-                <Text style={styles.text_footer}>Email</Text>
+                <Text style={styles.text_footer}>Pseudo</Text>
                     <View style={styles.action}>
                         <FontAwesome
                             name="user-o"
@@ -89,7 +90,7 @@ const SignInScreen = (props) =>{
                             size={25}
                         />
                         <TextInput
-                            placeholder="Votre password"
+                            placeholder="Mot de passe"
                             style={styles.TextInput}
                             autoCapitalize="none"
                             secureTextEntry={true}
@@ -97,6 +98,7 @@ const SignInScreen = (props) =>{
                             value={signInPassword}
                         />
                         <Feather
+                            onPress={()=> {setSecureTextEntry(!secureTextEntry)}}
                             name="eye-off"
                             color="grey"
                             size={20}
@@ -109,7 +111,8 @@ const SignInScreen = (props) =>{
 
                     <Button style={styles.buttonSign}
                         type="clear"
-                        title= "Se connecter"
+                        title= "Oui, je me connecte !"
+                        titleStyle={{color: "white"}}
                         onPress={()=> {
                             console.log(signInUserName, signInPassword);
                             setSignInUserName('');
@@ -120,7 +123,8 @@ const SignInScreen = (props) =>{
                     />
                     <Button style={styles.buttonSign}
                         type="clear"
-                        title= "Créer un compte"
+                        titleStyle={{color: "white"}}
+                        title= "Non, je créé un compte !"
                         onPress={()=> navigation.navigate('SignUpScreen')}
                         
                         
@@ -231,6 +235,7 @@ const styles = StyleSheet.create({
     },
     TextSigninMessage: {
         color: 'red',
+        fontSize: 17,
         marginTop: 20,
     }
 

@@ -24,8 +24,8 @@ function RecapRDV(props) {
         })
 
         console.log('datas sent to back', datas)
-        const response = await fetch('http://172.17.188.18:3000/add-order', {
-        // const response = await fetch('http://192.168.43.103:3000/add-order', {
+        const response = await fetch('http://172.16.190.137:3000/add-order', {
+        //const response = await fetch('http://192.168.43.103:3000/add-order', {
                 method: 'POST',
                 headers: {'Content-Type':'application/Json'},
                 body: datas

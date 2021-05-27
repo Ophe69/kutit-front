@@ -50,19 +50,12 @@ function SignUpScreen (props){
     const {colors} = useTheme();
     
         
-<<<<<<< HEAD
         const handleSubmitSignup = async() => {
 
                 
         
-                var data = await fetch('http://172.17.188.18:3000/signup', {
+                var data = await fetch('http://172.16.190.137:3000/signup', {
                 // var data = await fetch('http://192.168.43.103:3000/signup', {
-=======
-        const handleSubmitSignup = async(props) => {
-                
-                // var data = await fetch('http://192.168.1.3:3000/signup', {
-                var data = await fetch('http://172.16.189.157:3000/signup', {
->>>>>>> 2df10a59ef80fe7d021c9ce087034c583f0f0548
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}&image=${image}`
@@ -146,7 +139,7 @@ function SignUpScreen (props){
                     value={signupImage} />}
                 <TouchableOpacity style={styles.commandButton} onPress={pickImage}>
                     <Text style={styles.panelButtonTitle}>
-                        <FontAwesome name="camera" color={colors.text}  size={20} marginLeft={20}/>
+                        <FontAwesome name="camera" color={'white'}  size={20} marginVertical={20}/>    
                         Ajouter une photo
                     </Text>
                 </TouchableOpacity>

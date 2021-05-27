@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { ScrollView, StyleSheet, Text, View, SafeAreaView, TouchableOpacity,Image} from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Card, Divider} from 'react-native-elements';
 import {Avatar, Title, Caption, TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -60,7 +60,7 @@ function Profile(props) {
                 
                             navigation.navigate('ProfileEdit', { screen: 'ProfileEdit' });
                         }}>
-                        <Text style={styles.panelButtonTitle}>Editer mon Profil</Text>
+                        <Text style={styles.panelButtonTitle}>Editer mon profil</Text>
                     </TouchableOpacity>
                     
                 </View>
@@ -69,15 +69,19 @@ function Profile(props) {
                         <Icon name="map-marker-radius" color="#777777" size={20}/>
                         <Text style={{color:"#777777", marginLeft: 20}}>Bangkok</Text>
                     </View> */}
+                    
                     <View style={styles.row}>
-                        <Icon name="phone" color="#777777" size={20}/>
-                        <Text style={styles.menuItemText}>+33 (0)6.43.54.76.87</Text>
+                        <Icon name="phone" color="#354F52" size={25}/>
+                        <Text style={styles.menuItemText}>06.43.54.76.87</Text>
                     </View>
                     <View style={styles.row}>
-                        <Icon name="email" color="#777777" size={20}/>
+                        <Icon name="email" color="#354F52" size={25}/>
                         <Text style={styles.menuItemText}>{userMail}</Text>
                     </View>
                 </View>
+                    <View>
+                        <Card.Divider style={{ marginBottom: 20 }} />
+                    </View>
 
     {/*             <View style={styles.infoBoxWrapper}>
                     <View style={[styles.infoBox, {
@@ -98,7 +102,7 @@ function Profile(props) {
                             <Text 
                             style={styles.menuItemText}
                             onPress={()=>{navigation.navigate('History', { screen: 'History' })}}
-                            >Historique Réservations</Text>
+                            >Historique des réservations</Text>
                         </View>
                     </TouchableRipple>
                     <TouchableRipple onPress={() => {}}>
@@ -106,7 +110,7 @@ function Profile(props) {
                             <FontAwesome name="star-half-full" color="#354F52"  size={25}/>
                             <Text 
                             style={styles.menuItemText}
-                            onPress={()=>{navigation.navigate('Reviews', { screen: 'Reviews' })}}
+                            //onPress={()=>{navigation.navigate('Reviews', { screen: 'Reviews' })}}
                             >Mes avis</Text>
                         </View>
                     </TouchableRipple>
@@ -170,6 +174,9 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         marginBottom: 10,
+        fontWeight: '600',
+        fontSize: 16,
+        lineHeight: 26,
     },
     infoBoxWrapper: {
         borderBottomColor: '#dddddd',
@@ -196,7 +203,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
     },
     menuItemText: {
-        color: '#777777',
+        color: '#354F52',
         marginLeft: 20,
         fontWeight: '600',
         fontSize: 16,
