@@ -93,13 +93,13 @@ function SignUpScreen (props){
                 quality: 1,
             });
     
-            console.log('result',result);
+            //console.log('result',result);
     
             if (!result.cancelled) {
                 setImage(result.uri);
             }
             };
-            console.log('image', image)
+            //console.log('image', image)
     
         /* var uploadPicture = async () =>{
     
@@ -229,6 +229,7 @@ function SignUpScreen (props){
                     style={styles.commandButton} 
                     onPress={()=> {
                         //console.log(signupUserName, signupEmail, signupPassword, signupPasswordConf);
+                        setSignupImage('');
                         setSignupUserName('');
                         setSignupEmail('');
                         setSignupPassword('');
@@ -243,7 +244,7 @@ function SignUpScreen (props){
                 title="skip "
                 type="solid"
                 buttonStyle={{backgroundColor: "#009788"}}
-                onPress={() => navigation.navigate('BottomNavigator', {screen: 'registered'})}
+                onPress={() => props.navigation.navigate('BottomNavigator', {screen: 'registered'})}
             />
             </View>
             </Animatable.View>
@@ -256,15 +257,15 @@ function SignUpScreen (props){
 
 function mapDispatchToProps(dispatch){
     return {
-      addToken: (token) => {
+        addToken: (token) => {
         dispatch({ type:'add-token', token: token });
-      },
-      addPseudo: (pseudo) => {
-          dispatch({ type:'add-pseudo', pseudo: pseudo });
-      }
+        },
+        addPseudo: (pseudo) => {
+            dispatch({ type:'add-pseudo', pseudo: pseudo });
+        }
     }
-  }
-  
+    }
+
 export default connect(
 null,
 mapDispatchToProps
