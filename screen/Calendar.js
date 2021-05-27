@@ -123,7 +123,7 @@ export default function Calendar() {
             stars,
             votedBy
         })
-        const proDetails = await fetch('http://172.17.188.18:3000/create-pro', {
+        const proDetails = await fetch('http://172.16.189.155:3000/create-pro', {
         //const proDetails = await fetch('http://172.17.188.8:3000/create-pro', {
                 method: 'POST',
                 headers: {'Content-Type':'application/Json'},

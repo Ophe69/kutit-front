@@ -1,29 +1,19 @@
 import React, {useState, useEffect} from 'react'
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Button, Card, ListItem,} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import DatePicker from "react-native-datepicker";
 import {connect} from "react-redux";
-import date from "../reducers/date";
 
 
 function ChoixRDV(props) {
-    const [date, setDate] = useState(new Date())
-
 
     const horaires = ["9H00","11H00","12H00","12H30","15H00","16H30"];
     const choixHeures = horaires.map((heure, i) => {
         return(
             <Button
-                style={{margin: 15}}
-                icon={
-                    <Icon
-                        name="arrow-right"
-                        size={15}
-                        color="white"
-                    />
-                }
+                type="clear"
+                style={styles.commandButton}
                 title={heure}
+                titleStyle={{color: "white"}}
                 onPress={() => {
                     props.getHeure(heure);
                     props.navigation.navigate('RecapRDV', { screen: 'RecapRDV' });
@@ -38,74 +28,42 @@ function ChoixRDV(props) {
     //console.log("que faire " + currentPrestaType + currentPrestaPrice)
         return (
 
-        <View style={{alignItems: 'center', marginTop: 20}}>
+        <View style={{alignItems: 'center', marginTop: 20, margin: "1.5%"}}>
 
             <View>
                 <Card>
-                    <Card.Title>Vous avez choisi un(e) {currentPrestaType}</Card.Title>
+                    <Card.Title>Votre choix : {currentPrestaType}</Card.Title>
                     <Card.Divider/>
                     <View >
                         <Image
-                            style={{width: 200, height: 100}}
+                            style={{width: 200, height: 150, alignSelf:"center"}}
                             source={
-                                require("../assets/coupe.png")
+                                require("../assets/3.png")
                             }
                         />
-                        <Text style={{textAlign: "center", marginTop: 5}}> cela vous coûtera {currentPrestaPrice} €</Text>
+                        <Text style={{textAlign: "center", marginTop: 5}}>Prix : {currentPrestaPrice} €</Text>
                     </View>
                 </Card>
             </View>
             <View>
-                <Text style={{fontSize: 35, fontWeight: "bold", margin: 20}}>Pour le {props.date}</Text>
+                <Text style={{fontSize: 15, margin: 20}}>Date : {props.date}</Text>
             </View>
             <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-evenly"}}>
                 {choixHeures}
             </View>
             <View>
-                <Text style={{fontSize: 25, fontWeight: "bold", margin: 20, color: "gray"}}>Pour une autre Date ?</Text>
+                <Text style={{fontSize: 15, fontWeight: "bold", margin: 10, color: "gray"}}>Vous souhaitez changer de Date ?</Text>
             </View>
 
             <View>
-                <DatePicker
-                    customStyles={{}}
-                    style={{width: 200}}
-                    date={date}
-                    mode="date"
-                    placeholder="select date"
-                    minDate="01-05-2021"
-                    maxDate="01-05-2022"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36
-                        }
-                    }}
-                    onDateChange={(value) => {
-                        setDate(value)
-                    }}
-                    format='DD-MM-YYYY'
-                />
+
             </View>
             <View>
-                <Text style={{margin: 10}}>c'est tout bon ? </Text>
                 <Button
-                    style={{margin: 10}}
-                    icon={
-                        <Icon
-                            name="arrow-right"
-                            size={15}
-                            color="white"
-                        />
-                    }
-                    iconRight
-                    title="Valider  "
+                    style={styles.commandButton}
+                    type="clear"
+                    title="Revenir au calendrier"
+                    titleStyle={{color: "white"}}
                     onPress={() => {
                         props.navigation.navigate('BottomNavigator', {screen: 'RecapRDV'})
                     }}
@@ -136,3 +94,13 @@ export default connect(
      mapDispatchToProps,
 )(ChoixRDV);
 
+const styles = StyleSheet.create({
+    commandButton: {
+        padding: 5,
+        borderRadius: 10,
+        backgroundColor: '#354F52',
+        alignItems: 'center',
+        marginTop: 5,
+        marginHorizontal: 20,
+    }
+});
