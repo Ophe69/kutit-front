@@ -7,6 +7,8 @@ import {connect} from 'react-redux';
 
 function Welcome({pseudo, token, navigation}) {
     console.log('log de props token', token);
+    console.log('log de props pseudo', pseudo);
+
     setTimeout(() => {
         navigation.navigate('BottomNavigator', { screen: 'Home'});
     }, 1500);

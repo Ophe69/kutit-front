@@ -66,8 +66,8 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-            const response = await fetch('http://172.16.189.163:3000/search', {
-           // const response = await fetch('http://192.168.1.3:3000/search', {
+            const response = await fetch('http://172.16.189.157:3000/search', {
+            // const response = await fetch('http://192.168.1.3:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
@@ -109,6 +109,8 @@ function Home(props) {
             // onPress={e => onPressMarker(e, info.id, { id: info._id, title: info.name, address: info.address, sport: info.sport, description: info.description, image: info.picture })}
         />)
     });
+
+
 
 
     if(isMounted){
@@ -233,6 +235,17 @@ function Home(props) {
 
     )}
 }
+
+const sport = ["foot", "basket"];
+var inde = 0;
+var sportObjet = [];
+for(var i= 0; i<sport.length; i++){
+    sportObjet.push({inde: sport[i]});
+    inde ++;
+    console.log(inde);
+}
+
+console.log("table mathieu", sportObjet)
 
 function mapStateToProps(state) {
     return { 

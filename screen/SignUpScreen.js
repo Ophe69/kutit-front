@@ -52,8 +52,8 @@ function SignUpScreen (props){
         
         const handleSubmitSignup = async(props) => {
                 
-                var data = await fetch('http://192.168.1.13:3000/signup', {
-                //var data = await fetch('http://172.16.190.131:3000/signup', {
+                // var data = await fetch('http://192.168.1.3:3000/signup', {
+                var data = await fetch('http://172.16.189.157:3000/signup', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}&image=${image}`
@@ -67,11 +67,10 @@ function SignUpScreen (props){
                 }else {
                     setSignUpMessage('');
                     props.addToken(response.token);
+                    console.log("lui c'est la response" , response);
                     props.addPseudo(response.pseudo);
                     navigation.navigate('Welcome', { screen: 'Welcome'});
                 }
-
-    
 
         };
 
@@ -94,13 +93,13 @@ function SignUpScreen (props){
                 quality: 1,
             });
     
-            console.log('result',result);
+            //console.log('result',result);
     
             if (!result.cancelled) {
                 setImage(result.uri);
             }
             };
-            console.log('image', image)
+           // console.log('image', image)
     
         /* var uploadPicture = async () =>{
     
