@@ -1,137 +1,154 @@
-import React from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity} from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { ScrollView, StyleSheet, Text, View, SafeAreaView, TouchableOpacity,Image} from 'react-native';
 import { Button } from 'react-native-elements';
 import {Avatar, Title, Caption, TouchableRipple} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Ionicons } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons'; 
 
-//import BottomSheet from 'reanimated-bottom-sheet';
-//import Animated from 'react-native-reanimated';
+
 import { connect } from 'react-redux';
 
 
 function Profile(props) {
 
-    const navigation = props.navigation
+    const [userMail, setUserMail] = useState('');
+    const [userPassword, setUserPassword] = useState('');
+    const [userImage, setUserImage] = useState ('');
+    const [pseudo, setPseudo] = useState('');
+    const [image, setImage] = useState('');
     
+
+    const navigation = props.navigation
+    //pour aller chercher les info user en db - fetch sur route profile
+    const [userConnected, setUserConnected] = useState('');
+
+
+    useEffect(() =>{
+        const findUser = async() =>{
+            const data = await fetch(`http://172.16.190.137:3000/profile?token=${props.token}`)
+            //const data = await fetch(`http://192.168.1.13:3000/profile?token=${props.token}`)
+            const response = await data.json()
+ 
+            setPseudo(response.userConnected.userName)
+            setUserMail(response.userConnected.mail);
+            setUserPassword(response.userConnected.password);
+            setUserImage(response.userConnected.image);
+            
+            
+    }
+    findUser()
+}, []);
+    
+
     return (
-        <SafeAreaView style={styles.container}>
-            
-            <View style={styles.userInfoSection}>
-                <View style={{flexDirection: 'row', marginTop: 15, justifyContent: 'center'}}>
-                    <Avatar.Image
-                    source={require('../assets/images/avatar2.png')}
-                    size={120}
-                    />
-                </View>
-                <View style={{flexDirection: 'row', marginTop: 15, justifyContent: 'center'}}>
-                    <Title style={styles.title}>Cantin69</Title>
-                </View>
-                <TouchableOpacity style={styles.commandButton}
-                    onPress={() => {
-                        // handleSearch();
-                        navigation.navigate('ProfileEdit', { screen: 'ProfileEdit' });
-                    }}>
-                    <Text style={styles.panelButtonTitle}>Editer mon Profil</Text>
-                </TouchableOpacity>
+        <ScrollView style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 
-            </View>
-            <View style={styles.userInfoSection}>
-                {/* <View style={styles.row}>
-                    <Icon name="map-marker-radius" color="#777777" size={20}/>
-                    <Text style={{color:"#777777", marginLeft: 20}}>Bangkok</Text>
+                <View style={styles.userInfoSection}>
+                <View style={{flexDirection: 'row', marginTop: 15, justifyContent: 'center'}}>
+                        <Avatar.Image
+                        source={require('../assets/images/Jean-Kevin-pic.jpg')}
+                        size={150}
+                        />
+                    </View>
+                    <View style={{flexDirection: 'row', marginTop: 15, justifyContent: 'center'}}>
+                        <Title style={styles.title}>{pseudo.charAt(0).toUpperCase() + pseudo.substring(1).toLowerCase()}</Title>
+                    </View>
+                    <TouchableOpacity style={styles.commandButton}
+                        onPress={() => {
+                
+                            navigation.navigate('ProfileEdit', { screen: 'ProfileEdit' });
+                        }}>
+                        <Text style={styles.panelButtonTitle}>Editer mon Profil</Text>
+                    </TouchableOpacity>
+                    
+                </View>
+                <View style={styles.userInfoSection}>
+                    {/* <View style={styles.row}>
+                        <Icon name="map-marker-radius" color="#777777" size={20}/>
+                        <Text style={{color:"#777777", marginLeft: 20}}>Bangkok</Text>
+                    </View> */}
+                    <View style={styles.row}>
+                        <Icon name="phone" color="#777777" size={20}/>
+                        <Text style={styles.menuItemText}>+33 (0)6.43.54.76.87</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Icon name="email" color="#777777" size={20}/>
+                        <Text style={styles.menuItemText}>{userMail}</Text>
+                    </View>
+                </View>
+
+    {/*             <View style={styles.infoBoxWrapper}>
+                    <View style={[styles.infoBox, {
+                        borderRightColor: '#dddddd',
+                        borderRightWidth: 1
+                        }]}>
+                        <Title>Rendez-vous à venir</Title>
+                        <Caption style={styles.rdvavenir}>Liste rdv à venir</Caption>
+                    </View>
+                    
                 </View> */}
-                <View style={styles.row}>
-                    <Icon name="phone" color="#777777" size={20}/>
-                    <Text style={{color:"#777777", marginLeft: 20}}>+33 (0)6.43.54.76.87</Text>
-                </View>
-                <View style={styles.row}>
-                    <Icon name="email" color="#777777" size={20}/>
-                    <Text style={{color:"#777777", marginLeft: 20}}>cantin@vandame.com</Text>
-                </View>
-            </View>
 
-            <View style={styles.infoBoxWrapper}>
-                <View style={[styles.infoBox, {
-                    borderRightColor: '#dddddd',
-                    borderRightWidth: 1
-                    }]}>
-                    <Title>Rendez-vous à venir</Title>
-                    <Caption style={styles.rdvavenir}>Liste rdv à venir</Caption>
+
+                <View style={styles.menuWrapper}>
+                    <TouchableRipple onPress={() => {}}>
+                        <View style={styles.menuItem}>
+                            <Icon name="credit-card" color="#354F52" size={25}/>
+                            <Text 
+                            style={styles.menuItemText}
+                            onPress={()=>{navigation.navigate('History', { screen: 'History' })}}
+                            >Historique Réservations</Text>
+                        </View>
+                    </TouchableRipple>
+                    <TouchableRipple onPress={() => {}}>
+                        <View style={styles.menuItem}>
+                            <FontAwesome name="star-half-full" color="#354F52"  size={25}/>
+                            <Text 
+                            style={styles.menuItemText}
+                            onPress={()=>{navigation.navigate('Reviews', { screen: 'Reviews' })}}
+                            >Mes avis</Text>
+                        </View>
+                    </TouchableRipple>
+                    <TouchableRipple onPress={() => {}}>
+                        <View style={styles.menuItem}>
+                            <Icon name="help-circle" color="#354F52"  size={25}/>
+                            <Text style={styles.menuItemText}>Aide</Text>
+                        </View>
+                    </TouchableRipple>
+                    <TouchableRipple onPress={() => {}}>
+                        <View style={styles.menuItem}>
+                            <Ionicons name="settings-outline" color="#354F52"  size={24}/>
+                            <Text style={styles.menuItemText}>Réglages</Text>
+                        </View>
+                    </TouchableRipple>
+                    <TouchableOpacity style={styles.commandButton}
+                        onPress={() => {
+                            // handleSearch();
+                            navigation.navigate('Login', { screen: 'Login' });
+                        }}>
+                        <Text style={styles.panelButtonTitle}>Me déconnecter</Text>
+                    </TouchableOpacity>
                 </View>
                 
-            </View>
 
+            </SafeAreaView>
+        </ScrollView>
+    );
+};
 
-            <View style={styles.menuWrapper}>
-                {/* <TouchableRipple onPress={() => {}}>
-                    <View style={styles.menuItem}>
-                        <Icon name="heart-outline" color="#354F52" size={25}/>
-                        <Text 
-                        style={styles.menuItemText}
-                        onPress={()=>{navigation.navigate('Favorite', { screen: 'Favorite' })}}
-                        >Coiffeurs Favoris</Text>
-                    </View>
-                </TouchableRipple> */}
-                <TouchableRipple onPress={() => {}}>
-                    <View style={styles.menuItem}>
-                        <Icon name="credit-card" color="#354F52" size={25}/>
-                        <Text 
-                        style={styles.menuItemText}
-                        onPress={()=>{navigation.navigate('History', { screen: 'History' })}}
-                        >Historique Réservations</Text>
-                    </View>
-                </TouchableRipple>
-                <TouchableRipple onPress={() => {}}>
-                    <View style={styles.menuItem}>
-                        <FontAwesome name="star-half-full" color="#354F52"  size={25}/>
-                        <Text 
-                        style={styles.menuItemText}
-                        onPress={()=>{navigation.navigate('Reviews', { screen: 'Reviews' })}}
-                        >Mes avis</Text>
-                    </View>
-                </TouchableRipple>
-                <TouchableRipple onPress={() => {}}>
-                    <View style={styles.menuItem}>
-                        <Icon name="help-circle" color="#354F52"  size={25}/>
-                        <Text style={styles.menuItemText}>Aide</Text>
-                    </View>
-                </TouchableRipple>
-                <TouchableRipple onPress={() => {}}>
-                    <View style={styles.menuItem}>
-                        <Ionicons name="settings-outline" color="#354F52"  size={24}/>
-                        <Text style={styles.menuItemText}>Réglages</Text>
-                    </View>
-                </TouchableRipple>
-                <TouchableOpacity style={styles.commandButton}
-                    onPress={() => {
-                        // handleSearch();
-                        navigation.navigate('Login', { screen: 'Login' });
-                    }}>
-                    <Text style={styles.panelButtonTitle}>Me déconnecter</Text>
-                </TouchableOpacity>
-            </View>
-            
-            <View>
+function mapStateToProps(state) {
+    return { 
+        token: state.token,
+        pseudo: state.pseudo 
+    }
+  }
+  
+  export default connect(
+      mapStateToProps, 
+      null
+  )(Profile);
 
-{/*                 <Button
-                    buttonStyle={{ backgroundColor: '#354F52', marginTop: 40, width: 200, height: 30}}
-                    containerStyle={{ width: 200, height: 80}}
-                    title='Editer mon profil'
-                    onPress={() => {
-                        // handleSearch();
-                        navigation.navigate('ProfileEdit', { screen: 'ProfileEdit' });
-                    }}
-                    /> */}
-            </View>
-
-        </SafeAreaView>
-        
-    )
-}
-
-export default Profile;
 
 const styles = StyleSheet.create({
     container: {

@@ -4,8 +4,10 @@ import {
     Text,
     StyleSheet,
     Dimensions,
-    Image
+    Image,
+    TouchableOpacity
 } from 'react-native';
+import {Avatar, Title, Caption, TouchableRipple} from 'react-native-paper';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable';
@@ -34,13 +36,18 @@ const Login = ({navigation}) => {
           >
             <Text style={styles.text}>Déjà membre?</Text>
             <Text style={styles.text2}>Connecte-toi :</Text>
-              
-            <Button style={styles.buttonSign}
+
+            <TouchableOpacity style={styles.commandButton}
+              onPress={()=> console.log('SignIn button Clicked!')}
+              onPress={()=> navigation.navigate('SignInScreen')}>
+                    <Text style={styles.panelButtonTitle}>Editer mon Profil</Text>
+            </TouchableOpacity>  
+           {/*  <Button style={styles.buttonSign}
               type="clear"
               title= "Log Me In"
               //onPress={()=> console.log('SignIn button Clicked!')}
               onPress={()=> navigation.navigate('SignInScreen')}
-            />
+            /> */}
             
 {/*             <Icon.Button 
               name="facebook" 
@@ -108,6 +115,19 @@ const styles = StyleSheet.create({
       marginHorizontal: 80,
       marginTop: 40,
       elevation:3,
-    }
+    }, 
+    commandButton: {
+      padding: 15,
+      borderRadius: 10,
+      backgroundColor: '#354F52',
+      alignItems: 'center',
+      marginTop: 15,
+      marginHorizontal: 20,
+      },
+      panelButtonTitle: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        color: 'white',
+        },
 
 });

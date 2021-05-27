@@ -28,6 +28,14 @@ function ProfileEdit(props) {
     const {colors} = useTheme();
     const [secureTextEntry, setSecureTextEntry] = useState(false);
     const [image, setImage] = useState(null);
+/* 
+    //const data = await fetch('http://172.16.190.139:3000/upload', {
+    const data = await fetch('http://192.168.1.13:3000/upload', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}&image=${image}`
+            })
+            const response = await data.json(); */
 
 /*     useEffect(() => {
         if(!image){
@@ -63,8 +71,8 @@ function ProfileEdit(props) {
 
     var uploadPicture = async () =>{
 
-        //const data = await fetch('http://172.16.190.131:3000/upload', {
-            const data = await fetch('http://192.168.1.13:3000/upload', {
+        const data = await fetch('http://172.16.190.139:3000/upload', {
+        //const data = await fetch('http://192.168.1.13:3000/upload', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body:`image=${image}`
@@ -73,7 +81,7 @@ function ProfileEdit(props) {
             const response = await data.json();
             console.log('response', response);
     }
-///////////////////////////////////point de retour//////////////////////////
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={{flexDirection: 'column', marginTop: 50,alignItems: 'center', justifyContent: 'center'}}>
