@@ -4,7 +4,8 @@ import {
     Text,
     StyleSheet,
     Dimensions,
-    TextInput
+    TextInput, 
+    TouchableOpacity
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -14,8 +15,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
 const SignInScreen = (props) =>{
-
-    const navigation = props.navigation
 
     const [signInUserName, setSignInUserName] = useState('');
     const [signInPassword, setSignInPassword] = useState('');
@@ -29,14 +28,14 @@ const SignInScreen = (props) =>{
 
     var handleSubmitSignIn = async () => {
             
-            //const data = await fetch('http://172.16.190.131:3000/signin', {
-            const data = await fetch('http://192.168.1.13:3000/signin', {
+            const data = await fetch('http://172.16.190.137:3000/signin', {
+            //const data = await fetch('http://192.168.1.13:3000/signin', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: `userName=${signInUserName}&password=${signInPassword}`
             })
             const response = await data.json();
-            console.log('response', response);
+            //console.log('response', response);
             setUserExists(response.exist);
             setSignInMessage(response.message);
             //console.log('signInMessage', signInMessage);
@@ -47,7 +46,8 @@ const SignInScreen = (props) =>{
                 setPasswordOk(response.passwordOK);
                 props.addToken(response.token);
                 props.addPseudo(response.pseudo);
-                navigation.navigate('Welcome', { screen: 'Welcome'});
+
+                props.navigation.navigate('Welcome');
             }
 /*             if (isLogin && passwordOK){
                 navigation.navigate('BottomNavigator', { screen: 'Home'})
@@ -109,24 +109,22 @@ const SignInScreen = (props) =>{
                         <Text style={styles.TextSigninMessage} >{signInMessage}</Text>  
                     </View>  
 
-                    <Button style={styles.buttonSign}
-                        type="clear"
-                        title= "Se connecter"
+                    <TouchableOpacity style={styles.commandButton}
                         onPress={()=> {
                             console.log(signInUserName, signInPassword);
                             setSignInUserName('');
                             setSignInPassword('');
                             handleSubmitSignIn();
 
-                        }}
-                    />
-                    <Button style={styles.buttonSign}
-                        type="clear"
-                        title= "Créer un compte"
-                        onPress={()=> navigation.navigate('SignUpScreen')}
-                        
-                        
-                    />
+                        }}>
+                        <Text style={styles.panelButtonTitle}>Se connecter</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.commandButton}
+                        onPress={()=> props.navigation.navigate('SignUpScreen')}>
+                        <Text style={styles.panelButtonTitle}>Créer un compte</Text>
+                    </TouchableOpacity>
+                
             </Animatable.View>
         </View>
     );
@@ -136,11 +134,14 @@ const SignInScreen = (props) =>{
 
 function mapDispatchToProps(dispatch){
     return {
-      addToken: (token) => {
+    addToken: (token) => {
         dispatch({ type:'add-token', token: token });
       },
-      addPseudo: (pseudo) => {
+    addPseudo: (pseudo) => {
         dispatch({ type:'add-pseudo', pseudo: pseudo });
+    },
+    addImage: (image) => {
+        dispatch({ type:'add-image', image: image });
     }
     }
   }
@@ -234,6 +235,19 @@ const styles = StyleSheet.create({
     TextSigninMessage: {
         color: 'red',
         marginTop: 20,
-    }
+    },
+    commandButton: {
+        padding: 15,
+        borderRadius: 10,
+        backgroundColor: '#354F52',
+        alignItems: 'center',
+        marginTop: 15,
+        marginHorizontal: 20,
+        },
+    panelButtonTitle: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        color: 'white',
+        },
 
     });

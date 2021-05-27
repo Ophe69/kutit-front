@@ -30,8 +30,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 function SignUpScreen (props){
 
-    const navigation = props.navigation
-
     const [state, setState] = useState(false);
     const [signupUserName, setSignupUserName] = useState(''); 
     const [signupEmail, setSignupEmail] = useState('');
@@ -50,10 +48,10 @@ function SignUpScreen (props){
     const {colors} = useTheme();
     
         
-        const handleSubmitSignup = async(props) => {
+        const handleSubmitSignup = async() => {
                 
-                var data = await fetch('http://192.168.1.13:3000/signup', {
-                //var data = await fetch('http://172.16.190.131:3000/signup', {
+                //var data = await fetch('http://192.168.1.13:3000/signup', {
+                var data = await fetch('http://172.16.190.137:3000/signup', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}&image=${image}`
@@ -68,7 +66,7 @@ function SignUpScreen (props){
                     setSignUpMessage('');
                     props.addToken(response.token);
                     props.addPseudo(response.pseudo);
-                    navigation.navigate('Welcome', { screen: 'Welcome'});
+                    props.navigation.navigate('Welcome', { screen: 'Welcome'});
                 }
 
     
@@ -94,13 +92,13 @@ function SignUpScreen (props){
                 quality: 1,
             });
     
-            console.log('result',result);
+            //console.log('result',result);
     
             if (!result.cancelled) {
                 setImage(result.uri);
             }
             };
-            console.log('image', image)
+            //console.log('image', image)
     
         /* var uploadPicture = async () =>{
     
@@ -230,6 +228,7 @@ function SignUpScreen (props){
                     style={styles.commandButton} 
                     onPress={()=> {
                         //console.log(signupUserName, signupEmail, signupPassword, signupPasswordConf);
+                        setSignupImage('');
                         setSignupUserName('');
                         setSignupEmail('');
                         setSignupPassword('');
@@ -244,7 +243,7 @@ function SignUpScreen (props){
                 title="skip "
                 type="solid"
                 buttonStyle={{backgroundColor: "#009788"}}
-                onPress={() => navigation.navigate('BottomNavigator', {screen: 'registered'})}
+                onPress={() => props.navigation.navigate('BottomNavigator', {screen: 'registered'})}
             />
             </View>
             </Animatable.View>
@@ -257,15 +256,15 @@ function SignUpScreen (props){
 
 function mapDispatchToProps(dispatch){
     return {
-      addToken: (token) => {
+        addToken: (token) => {
         dispatch({ type:'add-token', token: token });
-      },
-      addPseudo: (pseudo) => {
-          dispatch({ type:'add-pseudo', pseudo: pseudo });
-      }
+        },
+        addPseudo: (pseudo) => {
+            dispatch({ type:'add-pseudo', pseudo: pseudo });
+        }
     }
-  }
-  
+    }
+
 export default connect(
 null,
 mapDispatchToProps

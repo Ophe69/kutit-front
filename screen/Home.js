@@ -43,7 +43,7 @@ function Home(props) {
 
 // Geoloc Enabled
 
-    console.log("Today's date", new Date().toLocaleDateString())
+    //console.log("Today's date", new Date().toLocaleDateString())
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -66,8 +66,8 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-            const response = await fetch('http://172.16.189.163:3000/search', {
-           // const response = await fetch('http://192.168.1.3:3000/search', {
+            const response = await fetch('http://172.16.190.137:3000/search', {
+            //const response = await fetch('http://192.168.1.13:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
