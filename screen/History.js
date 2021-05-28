@@ -5,14 +5,14 @@ import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
 function History(props) {
     const [orders, setOrders] = useState([]);
- 
+
     let date = new Date();
 
     // Fetch all Professionnels from db
     useEffect(() => {
         const call = async() => { 
 
-            const response = await fetch(`http://172.17.188.18:3000/orders?token=${props.token}`
+            const response = await fetch(`http://172.16.190.133:3000/orders?token=${props.token}`
             // const response = await fetch('http://192.168.43.103:3000/orders'
         );
             const data = await response.json();

@@ -29,7 +29,7 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { 
 
-            const response = await fetch('http://172.16.190.137/search', {
+            const response = await fetch('http://172.16.190.133/search', {
             //const response = await fetch('http://192.168.43.103:3000/search', {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},

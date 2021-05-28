@@ -54,7 +54,7 @@ function SignUpScreen (props){
 
                 
         
-                var data = await fetch('http://172.16.190.137:3000/signup', {
+                var data = await fetch('http://172.16.190.133:3000/signup', {
                 // var data = await fetch('http://192.168.43.103:3000/signup', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -138,10 +138,8 @@ function SignUpScreen (props){
                     onChangeText={(value) => {setSignupImage(value)}}
                     value={signupImage} />}
                 <TouchableOpacity style={styles.commandButton} onPress={pickImage}>
-                    <Text style={styles.panelButtonTitle}>
-                        <FontAwesome name="camera" color={'white'}  size={20} marginVertical={20}/>    
-                        Ajouter une photo
-                    </Text>
+                    <FontAwesome name="camera" color={'white'}  size={20} marginVertical={20}/> 
+                    <Text style={styles.panelButtonTitle}>Ajouter une photo</Text>
                 </TouchableOpacity>
                 </View>
                 <View style={styles.action}>
