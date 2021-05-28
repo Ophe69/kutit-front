@@ -2,6 +2,7 @@ import React from 'react'
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {connect} from "react-redux";
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import {vw} from "react-native-expo-viewport-units";
 
 function RecapRDV(props) {
     // console.log(props.prestation.type)
@@ -23,7 +24,7 @@ function RecapRDV(props) {
             proFrontId: props.proDetails._id,
         })
 
-        console.log('datas sent to back', datas)
+        //console.log('datas sent to back', datas)
         const response = await fetch('http://172.16.190.133:3000/add-order', {
         //const response = await fetch('http://192.168.43.103:3000/add-order', {
                 method: 'POST',
@@ -31,7 +32,7 @@ function RecapRDV(props) {
                 body: datas
         });
         const data = await response.json();
-        console.log(data.message);
+        // console.log(data.message);
     };
 
     return (
@@ -41,9 +42,9 @@ function RecapRDV(props) {
                 <Card.Divider/>
                 <View >
                     <Image
-                        style={{width: 200, height: 200, marginBottom: 10, display: "flex", flexDirection: "row", alignSelf: "center"}}
+                        style={{width: 200, height: 150, alignSelf:"center"}}
                         source={
-                            require("../assets/coupe.png")
+                            require("../assets/3.png")
                         }
                     />
                     <Text style={{textAlign: "center", marginTop: 5}}> cela vous coûtera {prixCoupe} €</Text>
@@ -55,12 +56,14 @@ function RecapRDV(props) {
                 </View>
 
                 <Button
-                    style={{margin: 10}}
+                    style={styles.commandButton}
                     iconRight
+                    type="clear"
+                    titleStyle={{color: "white"}}
                     title="Valider votre RDV"
                     onPress={async() => {
                         props.getCoiffure(coupe, prixCoupe, dateCoupe, heureCoupe);
-                        // props.navigation.navigate('RecapRDV', {screen: 'RecapRDV'});
+                        props.navigation.navigate('Home', {screen: 'Home'});
                         addOrder();
                     }}
                 />
@@ -84,7 +87,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch){
     return {
     getCoiffure: (coupe, prixCoupe, dateCoupe, heureCoupe) => {
-            console.log("mapDispatch", coupe, prixCoupe, dateCoupe, heureCoupe)
+            //console.log("mapDispatch", coupe, prixCoupe, dateCoupe, heureCoupe)
             dispatch({type: 'getCoupe', coupe: coupe, prixCoupe: prixCoupe, dateCoupe: dateCoupe, heureCoupe: heureCoupe});
         }
     }
@@ -95,3 +98,14 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps,
 )(RecapRDV);
+
+const styles = StyleSheet.create({
+    commandButton: {
+        padding: 5,
+        borderRadius: 10,
+        backgroundColor: '#354F52',
+        alignItems: 'center',
+        marginTop: 5,
+        marginHorizontal: 20,
+    }
+});

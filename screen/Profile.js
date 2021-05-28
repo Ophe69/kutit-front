@@ -146,12 +146,11 @@ function mapStateToProps(state) {
         token: state.token,
         pseudo: state.pseudo 
     }
-  }
-  
-  export default connect(
-      mapStateToProps, 
-      null
-  )(Profile);
+}
+export default connect(
+    mapStateToProps, 
+    null
+)(Profile);
 
 
 const styles = StyleSheet.create({

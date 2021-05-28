@@ -41,10 +41,11 @@ import pseudo from './reducers/pseudo';
 import date from './reducers/date';
 import image from './reducers/image';
 import coupe from './reducers/choixCoupe';
+import exist from './reducers/orders';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const store = createStore(combineReducers({ professionnels, proDetails,heure, statut, prestation, token, pseudo, date, coupe, image }));
+const store = createStore(combineReducers({ professionnels, proDetails,heure, statut, prestation, token, pseudo, date, coupe, image, exist }));
 
 
 

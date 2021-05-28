@@ -4,6 +4,7 @@ import {StyleSheet, Text, View, Image, ScrollView, TouchableOpacity} from 'react
 import {FontAwesome} from '@expo/vector-icons';
 import {vw, vh, vmin, vmax} from 'react-native-expo-viewport-units';
 import Modal from 'react-native-modal';
+import { TextInput } from 'react-native-paper';
 
 import {Overlay, Tab, LinearProgress, PricingCard, Card, ListItem, Button, Icon, Input} from 'react-native-elements'
 
@@ -18,8 +19,7 @@ function HairdresserDetails(props) {
 
     const [pseudo, setPeudo] = useState('')
     const [contenu, setContenu] = useState('');
-    //const [disabled, setDisabled] = useState(false);
-
+    const [disabled, setDisabled] = useState(true);
 
 
     const toggleModal = () => {
@@ -30,13 +30,13 @@ function HairdresserDetails(props) {
     };
     const toggleReviews = () => {
         setModalVisibleReviews(!isModalVisibleReviews);
-        //disabled={true}
+        //setDisabled(!disabled);
     };
 
     // var reviews = [];
     const recupReviews = () => {
         setReviews([...reviews, {pseudo: pseudo, contenu: contenu}])
-        //setDisabled(true);
+        //setDisabled(!disabled);
         //console.log("mon pseudo c'est " + pseudo + ", et mon review c'est : " + contenu)
     };
 
@@ -77,6 +77,8 @@ function HairdresserDetails(props) {
     // recupération des infos du coiffeur
     var nomRecup = props.proDetails.nom
     var prenomRecup = props.proDetails.prenom
+    var email = props.proDetails.mail
+
 
     // Mise en majiscule des premiers caractère du nom et prénom
     var nom = nomRecup.charAt(0).toUpperCase() + nomRecup.substr(1);
@@ -91,15 +93,17 @@ function HairdresserDetails(props) {
             <Card style={{borderRadius: 10}}>
                 <Card.Title>{bestCoupe} pour {prestation.prix} €</Card.Title>
                 <Card.Divider/>
-                <Button
-                    icon={<Icon name='money' color='#ffffff'/>}
-                    buttonStyle={{borderRadius: 10, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                    title=' Commander'
-                    onPress={() => {
-                        props.getPrestation(prestation);
-                        props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
-                    }}
+
+                <Button style={styles.commandButton}
+                        type="clear"
+                        title='Réserver'
+                        titleStyle={{color: "white"}}
+                        onPress={() => {
+                            props.getPrestation(prestation);
+                            props.navigation.navigate('ChoixRDV', {screen: 'ChoixRDV'});
+                        }}
                 />
+
             </Card>
         )
     })
@@ -109,7 +113,7 @@ function HairdresserDetails(props) {
 
 
     return (
-        <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%"}}>
+        <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center', margin: "1.5%", marginTop: 15}}>
             <ScrollView
                 style={styles.scrollview}
                 contentContainerStyle={{alignItems: 'center'}}
@@ -127,12 +131,12 @@ function HairdresserDetails(props) {
                         </View>
                         <View>
                             <Text style={{fontWeight: "bold", fontSize: 25, marginBottom: 0}}>{prenom} {nom}</Text>
-                            <View style={{flexDirection: 'row', justifyContent: "flex-end", marginTop: 10}}>
+                            <View style={{flexDirection: 'row', justifyContent: "center", margin: 10}}>
                                 {stars}
                             </View>
                             <View
-                                style={(statut == "Salon" ? {backgroundColor: 'green'} : {backgroundColor: 'yellow'})}>
-                                <Text style={{marginTop: 10, textAlign: "center", fontWeight: "bold"}}>{statut}</Text>
+                                style={(statut == "Salon" ? {backgroundColor: 'brown', borderRadius: 10} : {backgroundColor: 'gray', borderRadius: 10})}>
+                                <Text style={{margin: 10, textAlign: "center", fontWeight: "bold" }}>{statut}</Text>
                             </View>
                         </View>
 
@@ -145,12 +149,26 @@ function HairdresserDetails(props) {
                     }}>
 
                         <View style={{display: "flex", flexDirection: "row"}}>
-                            <Text style={{margin: 10}}>
-                                <Button title="Contacts" onPress={toggleModal}/>
+                            <Text style={{margin: 2}}>
+
+                                <Button style={styles.commandButton}
+                                        buttonStyle={{width: vw(25)}}
+                                        type="clear"
+                                        title='Contact'
+                                        titleStyle={{color: "white"}}
+                                        onPress={toggleModal}
+                                />
                             </Text>
 
-                            <Text style={{margin: 10}}>
-                                <Button title="Portfolio" onPress={toggleModal2}/>
+                            <Text style={{margin: 2}}>
+
+                                <Button style={styles.commandButton}
+                                        buttonStyle={{width: vw(25)}}
+                                        type="clear"
+                                        title='Portfolio'
+                                        titleStyle={{color: "white"}}
+                                        onPress={toggleModal2}
+                                />
                             </Text>
                         </View>
 
@@ -158,13 +176,13 @@ function HairdresserDetails(props) {
                     <View>
                         <Text
                             style={{
-                                margin: 10,
+                                margin: 5,
                                 fontSize: 15
                             }}>-------------------------------------------------</Text>
 
 
                         <Text style={{margin: 10, fontSize: 25, textAlign: "center"}}>Choisissez votre
-                            prestation</Text>
+                            modèle</Text>
                         <View Style={{
                             width: "90%",
                             display: "flex",
@@ -181,7 +199,14 @@ function HairdresserDetails(props) {
                     </View>
                     <View>
                         <Text style={{margin: 10, alignSelf: "center"}}>
-                            <Button title="Laisser un Avis" onPress={toggleReviews}/>
+
+                            <Button style={styles.commandButton}
+                                    type="clear"
+                                    title='Laisser un Avis'
+                                    titleStyle={{color: "white"}}
+                                    onPress={toggleReviews}
+                            />
+
                         </Text>
                         <Text style={{margin: 10, fontSize: 20, textAlign: "center"}}>Ce que les autres ont
                             pensé</Text>
@@ -222,15 +247,25 @@ function HairdresserDetails(props) {
 
                     <PricingCard
                         style={{height: vh(50)}}
-                        color="#4f9deb"
+                        color="#354F52"
                         title={prenom}
-                        price={prenom + "." + nom + "@gmail.com"}
-                        info={['15', 'Rue des curassiers', 'Lyon 3ème']}
-                        button={{title: 'Appeler', icon: 'call'}}
+                        price={email}
+                        pricingStyle={{fontSize: 20}}
+                        info={['15 Rue des cuirassiers', 'Lyon 3ème']}
+
+                        button={{title: '  Appeler', icon: 'call', color: "#354F52"}}
                     />
 
-                    <LinearProgress color="primary"/>
-                    <Button style={{margin: 2}} title="Fermer Contacts" onPress={toggleModal}/>
+
+                    <LinearProgress style={{width: vw(70), alignSelf: "center"}} color="white"/>
+
+                    <Button style={styles.commandButton}
+                            type="clear"
+                            title='Fermer Contacts'
+                            titleStyle={{color: "white"}}
+                            onPress={toggleModal}
+                    />
+
                 </View>
             </Modal>
 
@@ -282,47 +317,64 @@ function HairdresserDetails(props) {
                             />
                         </View>
                     </ScrollView>
-                    <LinearProgress color="primary"/>
-                    <Button style={{margin: 2}} title="Fermer Portfolio" onPress={toggleModal2}/>
+
+                    <LinearProgress style={{width: vw(70), alignSelf: "center"}} color="white"/>
+
+                    <Button style={styles.commandButton}
+                            type="clear"
+                            title='Fermer Portfolio'
+                            titleStyle={{color: "white"}}
+                            onPress={toggleModal2}
+                    />
+
                 </View>
             </Modal>
 
 
-            <Modal isVisible={isModalVisibleReviews}>
-                <View style={{color: "white", height: vh(70)}}>
+            <Modal isVisible={isModalVisibleReviews} >
+                <View style={{color: "white", height: vh(60),backgroundColor: "gray", borderRadius: 20}}>
 
-                    <View style={{marginTop: 100}}>
-                        <Input
-                            style={{color: "white"}}
-                            placeholder='Entrer un pseudo'
+                    <View style={{marginTop: 30, borderRadius: 5}}>
+
+                        <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, width: "95%", alignSelf: "center"}}
                             onChangeText={(value) => setPeudo(value)}
                             value={pseudo}
+                            label="Pseudo"
+                            placeholder='Entrez votre pseudo'
                         />
 
-                        <Input
-                            style={{height: vh(20), color: "white"}}
-                            placeholder='Entrer votre avis'
-                            onChangeText={(value) => setContenu(value)}
-                            value={contenu}
+                        <TextInput style={{ borderColor: '#354F52', borderWidth: 1, borderRadius: 5, height: 200, width: "95%", alignSelf: "center"}}
+                                   editable
+                                   multiline
+                                   numberOfLines={6}
+                                   maxLength={200}
+                                   label="Votre Avis"
+                                   placeholder="Faites votre retour sur la prestation :)"
+                                   onChangeText={(value) => setContenu(value)}
+                                   value={contenu}
                         />
 
-                        <View style={{flexDirection: 'row', justifyContent: "center", margin: 20}}>
+                        <View style={{flexDirection: 'row', justifyContent: "center", margin: 12}}>
                             {stars}
                         </View>
+
                         <Button
-                            title="Valider"
-                            //onPress={recupReviews(pseudo, contenu) }
-                            onPress={recupReviews}
+                                buttonStyle={{backgroundColor: "white", width: "85%", alignSelf: "center", marginBottom: 10}}
+                                type="clear"
+                                title='Envoyer '
+                                titleStyle={{color: "Black"}}
+                                onPress={recupReviews}
                         />
 
                     </View>
 
-                    <Button
-                        style={{margin: 2, opacity: .8}} title="J'ai fini"
-                        onPress={
-                            toggleReviews
-                        }
+                    <Button buttonStyle={{backgroundColor: "white", width: "85%", alignSelf: "center"}}
+                            type="clear"
+                            title="Quitter"
+                            titleStyle={{color: "red"}}
+                            onPress={toggleReviews}
                     />
+
                 </View>
             </Modal>
         </View>
@@ -354,4 +406,12 @@ const styles = StyleSheet.create({
         marginTop: 30,
         flex: 1,
     },
+    commandButton: {
+        padding: 5,
+        borderRadius: 10,
+        backgroundColor: '#354F52',
+        alignItems: 'center',
+        marginTop: 5,
+        marginHorizontal: 20,
+    }
 });

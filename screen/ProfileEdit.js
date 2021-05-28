@@ -71,7 +71,7 @@ function ProfileEdit(props) {
 
     var uploadPicture = async () =>{
 
-        const data = await fetch('http://172.16.190.133:3000/upload', {
+        const data = await fetch('http://172.16.189.155:3000/upload', {
         //const data = await fetch('http://192.168.1.13:3000/upload', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},

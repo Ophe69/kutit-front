@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
 function History(props) {
-    const [orders, setOrders] = useState(null);
+    const [orders, setOrders] = useState([]);
+ 
     let date = new Date();
 
     // Fetch all Professionnels from db
@@ -18,16 +19,20 @@ function History(props) {
             console.log('get orders from db', data.orders);
             if(data.result){
                 setOrders(data.orders);
+                
             } else {
-                setOrders(null)
+                setOrders([])
             }
         }
         call();
-    }, []); 
+    }, [props.exist]); 
+
+
 
     let history;
+    // console.log('exist log', props.exist);
 
-    if(orders !== null){
+    if(orders.length > 0){
         history = orders.map((order, i) => {
             return (
                 <View style={styles.user} key={i}>
@@ -63,7 +68,8 @@ function History(props) {
 
 function mapStateToProps(state) {
     return { 
-        token: state.token
+        token: state.token,
+        exist: state.exist
     }
 }
 
@@ -71,6 +77,9 @@ export default connect(
 mapStateToProps,
 null
 )(History);
+
+
+
 
 
 // const styles = StyleSheet.create({
