@@ -71,7 +71,7 @@ function ProfileEdit(props) {
 
     var uploadPicture = async () =>{
 
-        const data = await fetch('http://172.16.190.139:3000/upload', {
+        const data = await fetch('http://172.16.190.133:3000/upload', {
         //const data = await fetch('http://192.168.1.13:3000/upload', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -85,7 +85,7 @@ function ProfileEdit(props) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={{flexDirection: 'column', marginTop: 50,alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{marginBottom: 20}}>Apperçu de votre nouvelle photo:</Text>    
+                <Text style={{marginBottom: 20}}>Aperçu de votre nouvelle photo:</Text>    
                 {image && <Avatar.Image source={{ uri: image }} size={200} />}
                 <TouchableOpacity style={styles.commandButton} onPress={pickImage}>
                     <Text style={styles.panelButtonTitle}>Changer d'image</Text>

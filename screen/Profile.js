@@ -26,7 +26,7 @@ function Profile(props) {
 
     useEffect(() =>{
         const findUser = async() =>{
-            const data = await fetch(`http://172.16.190.137:3000/profile?token=${props.token}`)
+            const data = await fetch(`http://172.16.190.133:3000/profile?token=${props.token}`)
             //const data = await fetch(`http://192.168.1.13:3000/profile?token=${props.token}`)
             const response = await data.json()
  
