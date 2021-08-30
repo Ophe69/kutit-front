@@ -17,11 +17,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const Login = ({navigation}) => {
     return(
         <View style={styles.container}>
-{/*             <Text>Login</Text>
-            <Button
-                title= "Click Here"
-                onPress={() => console.log('button Login clicked')}
-                /> */}
+
           <View style={styles.header}>
             <Image
             source={require('../assets/man-beard.png')}
@@ -38,22 +34,10 @@ const Login = ({navigation}) => {
             <Text style={styles.text2}>Où tu veux et Quand tu veux!</Text>
 
             <TouchableOpacity style={styles.commandButton}
-              onPress={()=> console.log('SignIn button Clicked!')}
               onPress={()=> navigation.navigate('SignInScreen')}>
                     <Text style={styles.panelButtonTitle}>C'est parti !</Text>
             </TouchableOpacity>  
-           {/*  <Button style={styles.buttonSign}
-              type="clear"
-              title= "Log Me In"
-              //onPress={()=> console.log('SignIn button Clicked!')}
-              onPress={()=> navigation.navigate('SignInScreen')}
-            /> */}
-            
-{/*             <Icon.Button 
-              name="facebook" 
-              backgroundColor="#3b5998">
-              <Text style={{ fontFamily: 'Arial', fontSize: 20, textAlign: 'center' }}>Login with Facebook</Text>
-            </Icon.Button> */}
+
 
           </Animatable.View>
         </View>

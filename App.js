@@ -24,7 +24,6 @@ import HairdresserDetails from './screen/HairdresserDetails';
 import Profile from './screen/Profile';
 import ProfileEdit from './screen/ProfileEdit';
 import RecapRDV from './screen/RecapRDV';
-import Paiement from './screen/Paiement';
 import ChoixRDV from './screen/ChoixRDV';
 import Favorite from './screen/Favorite';
 import Welcome from './screen/Welcome';
@@ -76,7 +75,7 @@ const BottomNavigator = () => {
       }}
     >
       <Tab.Screen name="Home" component={Home} />
-      {/* <Tab.Screen name="Calendar" component={Calendar} /> */}
+      {/* <Tab.Screen name="Calendar" component={Calendar} />  */}
       <Tab.Screen name="Historique" component={History} />
       <Tab.Screen name="Profil" component={Profile} />
     </Tab.Navigator>
@@ -95,7 +94,6 @@ export default function App() {
             <Stack.Screen name="HairdresserDetails" component={HairdresserDetails} />
             <Stack.Screen name="RecapRDV" component={RecapRDV} />
             <Stack.Screen name="ChoixRDV" component={ChoixRDV} />
-            <Stack.Screen name="paiement" component={Paiement} />
             <Stack.Screen name="Dashboard" component={Dashboard} />
             <Stack.Screen name="Favorite" component={Favorite} />
             <Stack.Screen name="ProfileEdit" component={ProfileEdit} />

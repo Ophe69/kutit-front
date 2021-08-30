@@ -101,16 +101,15 @@ function HairdresserList(props) {
         );
     });
 
-    console.log('date from redux', props.date)
+    //console.log('date from redux', props.date)
 
     return (
-
         <ScrollView
             style={styles.scrollview}
             contentContainerStyle={{ alignItems: 'center' }}
         >
             <Text style={{ textAlign: 'center', fontSize: 25, marginBottom: 50 }}>
-                {`${props.statut}s disponibles`}</Text>
+                {`${props.statut.charAt(0).toUpperCase() + props.statut.substring(1).toLowerCase()}s disponibles`}</Text>
             <View style={{ flex: 1 }}>
                 { hairdressers }
             </View>

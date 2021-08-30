@@ -27,22 +27,30 @@ function ProfileEdit(props) {
 
     const {colors} = useTheme();
     const [secureTextEntry, setSecureTextEntry] = useState(false);
-    const [image, setImage] = useState(null);
-/* 
-    //const data = await fetch('http://172.16.190.139:3000/upload', {
-    const data = await fetch('http://192.168.1.13:3000/upload', {
-                method: 'POST',
+    //const [image, setImage] = useState('');
+    const [newEmail, setNewEmail] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [newImage, setNewImage] = useState ('');
+    const [newPseudo, setNewPseudo] = useState('');
+
+
+        const editProfile = async() => {
+            //var data = await fetch(`http://172.16.190.133:3000/editProfile?token=${props.token}`, {
+            //var data = await fetch(`http://192.168.1.13:3000/editProfile?token=${props.token}`, {
+            var data = await fetch(`http://172.20.10.5:3000/editProfile?token=${props.token}`, {
+                method: 'PUT',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}&image=${image}`
-            })
-            const response = await data.json(); */
+                body:`token=${props.token}&newPseudo=${newPseudo}&newEmail=${newEmail}&newPassword=${newPassword}`
+            });
+            var response = await data.json();
+            console.log('response new données front:', response)
+            setNewPseudo(response.userName);
+            setNewEmail(response.mail);
+            setNewPassword(response.password);
+            props.navigation.navigate('Profile');
 
-/*     useEffect(() => {
-        if(!image){
-            <Avatar.Image source={} size={200} />
-        }
-        }, []); */
-
+    };
+        
     useEffect(() => {
         (async () => {
             if (Platform.OS !== 'web') {
@@ -62,43 +70,32 @@ function ProfileEdit(props) {
             quality: 1,
         });
 
-        console.log(result);
-
         if (!result.cancelled) {
             setImage(result.uri);
         }
         };
 
-    var uploadPicture = async () =>{
-
-        const data = await fetch('http://172.16.189.155:3000/upload', {
-        //const data = await fetch('http://192.168.1.13:3000/upload', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body:`image=${image}`
-                //body: `userName=${signInUserName}&password=${signInPassword}&image=${changePicture}`
-            })
-            const response = await data.json();
-            console.log('response', response);
-    }
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={{flexDirection: 'column', marginTop: 50,alignItems: 'center', justifyContent: 'center'}}>
                 <Text style={{marginBottom: 20}}>Aperçu de votre nouvelle photo:</Text>    
-                {image && <Avatar.Image source={{ uri: image }} size={200} />}
+                <Avatar.Image source={require('../assets/images/Jean-Kevin-pic.jpg')} size={200} />
                 <TouchableOpacity style={styles.commandButton} onPress={pickImage}>
-                    <Text style={styles.panelButtonTitle}>Changer d'image</Text>
+                    <Text style={styles.panelButtonTitle}>Changer image profil</Text>
                 </TouchableOpacity>
-            </View>
+            </View> 
         
             <View style={styles.containerEdit}>
                 <View style={styles.action}>
                     <FontAwesome name="user-o" color={colors.text}  size={20} />
                     <TextInput
-                    placeholder="Nom d'utilisateur"
+                    placeholder="Nouveau nom d'utilisateur"
                     placeholderTextColor="#666666"
                     autoCorrect={false} // pour ne pas avoir de correction orthographique
+                    autoCapitalize="none"
+                    onChangeText={(value) => {setNewPseudo(value)}}
+                    value={newPseudo}
                     style={[
                         styles.textInput,
                         {
@@ -110,10 +107,13 @@ function ProfileEdit(props) {
                 <View style={styles.action}>
                     <FontAwesome name="envelope-o" color={colors.text} size={20} />
                     <TextInput
-                    placeholder="Email"
+                    placeholder="Nouvel Email"
                     placeholderTextColor="#666666"
-                    secureTextEntry={true}
+                    keyboardType="email-address"
                     autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={(value) => {setNewEmail(value)}}
+                    value={newEmail}
                     style={[
                         styles.textInput,
                         {
@@ -126,10 +126,13 @@ function ProfileEdit(props) {
                 <View style={styles.action}>
                     <FontAwesome name="lock" color={colors.text} size={20} />
                     <TextInput
-                    placeholder="mot de passe"
+                    placeholder="Nouveau mot de passe"
                     placeholderTextColor="#666666"
-                    keyboardType="email-address"
+                    secureTextEntry={true}
                     autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={(value) => {setNewPassword(value)}}
+                    value={newPassword}
                     style={[
                         styles.textInput,
                         {
@@ -138,10 +141,19 @@ function ProfileEdit(props) {
                     ]}
                     />
                 </View> 
-                <TouchableOpacity style={styles.commandButton} onPress={() => {}}>
+                <TouchableOpacity 
+                    style={styles.commandButton}
+                    onPress={() => {editProfile()} }  >
                     <Text style={styles.panelButtonTitle}
-                    onPress={()=>{navigation.navigate('Profil', { screen: 'Profile' })}}
+                    //onPress={()=>{navigation.navigate('Profil', { screen: 'Profile' })}}
+                    
                     >Editer mon Profil</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    style={styles.commandButton}
+                    onPress={()=>{navigation.navigate('Profil', { screen: 'Profile' })}}  >
+                    <Text style={styles.panelButtonTitle}
+                    >Retour à mon profil</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>            
@@ -149,7 +161,19 @@ function ProfileEdit(props) {
     )
 };
 
-export default ProfileEdit;
+
+function mapStateToProps(state) {
+    return { 
+        token: state.token,
+        pseudo: state.pseudo 
+    }
+}
+export default connect(
+    mapStateToProps, 
+    null
+)(ProfileEdit);
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -173,12 +197,7 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#FFFFFF',
         paddingTop: 20,
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
-        // shadowColor: '#000000',
-        // shadowOffset: {width: 0, height: 0},
-        // shadowRadius: 5,
-        // shadowOpacity: 0.4,
+
         },
     header: {
         backgroundColor: '#FFFFFF',

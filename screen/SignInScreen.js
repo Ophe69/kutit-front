@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { IP_ADDRESS } from '@env';
 import {
     View, 
     Text,
@@ -29,17 +30,17 @@ const SignInScreen = (props) =>{
 
     var handleSubmitSignIn = async () => {
             
-            const data = await fetch('http://172.16.190.133:3000/signin', {
-            // const data = await fetch('http://192.168.43.103:3000/signin', {
+            //const data = await fetch('http://172.16.190.133:3000/signin', {
+            //const data = await fetch('http://192.168.1.13:3000/signin', {
+            const data = await fetch('http://172.20.10.5:3000/signin', {
+            //const data = await fetch(`http://${IP_ADDRESS}:3000//signin`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: `userName=${signInUserName}&password=${signInPassword}`
             })
             const response = await data.json();
-            console.log('response', response);
             setUserExists(response.exist);
             setSignInMessage(response.message);
-            //console.log('signInMessage', signInMessage);
             if(response.login == false){
                 setSignInMessage(response.message);
             }else{

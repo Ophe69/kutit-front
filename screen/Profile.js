@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { IP_ADDRESS } from '@env';
 import { ScrollView, StyleSheet, Text, View, SafeAreaView, TouchableOpacity,Image} from 'react-native';
 import { Button, Card, Divider} from 'react-native-elements';
 import {Avatar, Title, Caption, TouchableRipple} from 'react-native-paper';
@@ -13,7 +14,6 @@ import { connect } from 'react-redux';
 function Profile(props) {
 
     const [userMail, setUserMail] = useState('');
-    const [userPassword, setUserPassword] = useState('');
     const [userImage, setUserImage] = useState ('');
     const [pseudo, setPseudo] = useState('');
     const [image, setImage] = useState('');
@@ -26,14 +26,15 @@ function Profile(props) {
 
     useEffect(() =>{
         const findUser = async() =>{
-            const data = await fetch(`http://172.16.190.133:3000/profile?token=${props.token}`)
+            //const data = await fetch(`http://172.16.190.133:3000/profile?token=${props.token}`)
+            const data = await fetch(`http://172.20.10.5:3000/profile?token=${props.token}`)
             //const data = await fetch(`http://192.168.1.13:3000/profile?token=${props.token}`)
+            //const data = await fetch(`(http://${IP_ADDRESS}:3000/profile?token=${props.token}`)
             const response = await data.json()
- 
+
             setPseudo(response.userConnected.userName)
             setUserMail(response.userConnected.mail);
-            setUserPassword(response.userConnected.password);
-            setUserImage(response.userConnected.image);
+            setUserImage(response.image);
             
             
     }
@@ -48,7 +49,9 @@ function Profile(props) {
                 <View style={styles.userInfoSection}>
                 <View style={{flexDirection: 'row', marginTop: 15, justifyContent: 'center'}}>
                         <Avatar.Image
-                        source={require('../assets/images/Jean-Kevin-pic.jpg')}
+                        style={{width:150, height:150}}
+                        source={{uri: userImage}}
+                        //source={{uri: userImage}}
                         size={150}
                         />
                     </View>
@@ -65,10 +68,6 @@ function Profile(props) {
                     
                 </View>
                 <View style={styles.userInfoSection}>
-                    {/* <View style={styles.row}>
-                        <Icon name="map-marker-radius" color="#777777" size={20}/>
-                        <Text style={{color:"#777777", marginLeft: 20}}>Bangkok</Text>
-                    </View> */}
                     
                     <View style={styles.row}>
                         <Icon name="phone" color="#354F52" size={25}/>
@@ -83,16 +82,6 @@ function Profile(props) {
                         <Card.Divider style={{ marginBottom: 20 }} />
                     </View>
 
-    {/*             <View style={styles.infoBoxWrapper}>
-                    <View style={[styles.infoBox, {
-                        borderRightColor: '#dddddd',
-                        borderRightWidth: 1
-                        }]}>
-                        <Title>Rendez-vous à venir</Title>
-                        <Caption style={styles.rdvavenir}>Liste rdv à venir</Caption>
-                    </View>
-                    
-                </View> */}
 
 
                 <View style={styles.menuWrapper}>
@@ -144,7 +133,8 @@ function Profile(props) {
 function mapStateToProps(state) {
     return { 
         token: state.token,
-        pseudo: state.pseudo 
+        pseudo: state.pseudo,
+        image: state.image 
     }
 }
 export default connect(
