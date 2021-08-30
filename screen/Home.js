@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { IP_ADDRESS } from '@env';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, DatePickerIOS, Image, TouchableOpacity } from 'react-native';
 import { Button, CheckBox, Slider, FAB, Overlay } from 'react-native-elements';
+
 import { FontAwesome } from '@expo/vector-icons'; 
 import DatePicker from 'react-native-datepicker'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
@@ -36,7 +38,6 @@ function Home(props) {
 
 // Geoloc Enabled
 
-    //console.log("Today's date", new Date().toLocaleDateString())
     useEffect(() => {
         async function askPermissions() {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -59,14 +60,15 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { //call ici = handleSubmitSignup la bas
 
-            const response = await fetch('http://172.16.190.133:3000/search', {
-            // const response = await fetch('http://192.168.43.103:3000/search', {
+            //const response = await fetch('http://172.16.190.133:3000/search', {
+            //const response = await fetch('http://192.168.1.13:3000/search', {
+            const response = await fetch('http://172.20.10.5:3000/search', {
+            //const response = await fetch(`http://${IP_ADDRESS}:3000//search`, {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`
             });
             const data = await response.json();
-            // console.log('get data from db', data)
             props.getHairdressers(data.professionnels);
             setProList(data.professionnels.filter(e => e.statut !== "salon"));
         }
@@ -239,10 +241,8 @@ var sportObjet = [];
 for(var i= 0; i<sport.length; i++){
     sportObjet.push({inde: sport[i]});
     inde ++;
-    console.log(inde);
 }
 
-console.log("table mathieu", sportObjet)
 
 function mapStateToProps(state) {
     return { 

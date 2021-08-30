@@ -1,4 +1,5 @@
 import React, {useState, useEffect } from 'react';
+import { IP_ADDRESS } from '@env';
 import {
     View,
     Text,
@@ -54,8 +55,10 @@ function SignUpScreen (props){
 
                 
         
-                var data = await fetch('http://172.16.190.133:3000/signup', {
-                // var data = await fetch('http://192.168.43.103:3000/signup', {
+                //var data = await fetch('http://172.16.190.133:3000/signup', {
+                //var data = await fetch('http://192.168.1.13:3000/signup', {
+                var data = await fetch('http://172.20.10.5:3000/signup', {
+                //var data = await fetch(`http://${IP_ADDRESS}:3000/signup`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body:`userName=${signupUserName}&mail=${signupEmail}&password=${signupPassword}&image=${image}`
@@ -68,8 +71,8 @@ function SignUpScreen (props){
                 }else {
                     setSignUpMessage('');
                     props.addToken(response.token);
-                    console.log("lui c'est la response" , response);
                     props.addPseudo(response.pseudo);
+                    props.addImage(response.image);
                     props.navigation.navigate('Welcome');
                 }
 
@@ -260,6 +263,9 @@ function mapDispatchToProps(dispatch){
       },
       addPseudo: (pseudo) => {
           dispatch({ type:'add-pseudo', pseudo: pseudo });
+      },
+      addImage: (image) =>{
+          dispatch({ type: 'add-image', image: image });
       }
     }
   }

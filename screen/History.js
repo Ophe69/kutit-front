@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { IP_ADDRESS } from '@env';
 import { StyleSheet, Text, View , ScrollView, TouchableOpacity, Image } from 'react-native';
 import {connect} from 'react-redux';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
@@ -12,26 +13,25 @@ function History(props) {
     useEffect(() => {
         const call = async() => { 
 
-            const response = await fetch(`http://172.16.190.133:3000/orders?token=${props.token}`
-            // const response = await fetch('http://192.168.43.103:3000/orders'
+            //const response = await fetch(`http://172.16.190.133:3000/orders?token=${props.token}`
+            //const response = await fetch('http://192.168.1.13:3000/orders'
+            const response = await fetch(`http://172.20.10.5:3000/orders?token=${props.token}`
+            //const response = await fetch(`http://${IP_ADDRESS}:3000/orders`
         );
             const data = await response.json();
-            console.log('get orders from db', data.orders);
             if(data.result){
                 setOrders(data.orders);
                 
             } else {
                 setOrders([])
-               
             }
         }
         call();
-    }, [props.exist]); 
+    }, []); 
 
 
 
     let history;
-    // console.log('exist log', props.exist);
 
     if(orders.length > 0){
         history = orders.map((order, i) => {
@@ -42,7 +42,7 @@ function History(props) {
                     </View>
                     <View style={{ flex: 1, flexDirection: 'column'}}>
                         <Text style={{ alignSelf: 'center' }}>{order.type}</Text>
-                        <Text style={{ alignSelf: 'center' }}>${order.prix}</Text>
+                        <Text style={{ alignSelf: 'center' }}>€{order.prix}</Text>
                     </View>
                     <View style={{flex: 1, alignItems: 'center'}}>
                         <Text >{order.proId.prenom}</Text> 
@@ -80,18 +80,6 @@ null
 )(History);
 
 
-
-
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         backgroundColor: '#fff',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//     },
-// });
-
 const styles = StyleSheet.create({
     scrollview: {
         flex: 1,
@@ -118,10 +106,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'center'
     },
-    // rating: {
-    //     flexDirection: 'row',
-    //     backgroundColor: 'pink',
-    //     flex: 1,
-    //     justifyContent: 'center'
-    // },
+
 });

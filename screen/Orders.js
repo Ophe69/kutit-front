@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { IP_ADDRESS } from '@env';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, DatePickerIOS, Image, TouchableOpacity } from 'react-native';
 import { Button, CheckBox, Slider, FAB, Overlay } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons'; 
@@ -29,8 +30,10 @@ function Home(props) {
     useEffect(() => {
         const call = async() => { 
 
-            const response = await fetch('http://172.16.190.133/search', {
-            //const response = await fetch('http://192.168.43.103:3000/search', {
+            //const response = await fetch('http://172.16.190.133/search', {
+            //const response = await fetch('http://192.168.1.13:3000/search', {
+            const response = await fetch('http://172.20.10.5:3000/search', {
+            //const response = await fetch((`http://${IP_ADDRESS}:3000/search`, {
                 method: 'POST',
                 headers: {'Content-Type':'application/x-www-form-urlencoded'},
                 body: `latitude=${currentLatitude}&longitude=${currentLongitude}`

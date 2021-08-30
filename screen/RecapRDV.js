@@ -1,4 +1,5 @@
 import React from 'react'
+import { IP_ADDRESS } from '@env';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {connect} from "react-redux";
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
@@ -24,9 +25,10 @@ function RecapRDV(props) {
             proFrontId: props.proDetails._id,
         })
 
-        //console.log('datas sent to back', datas)
-        const response = await fetch('http://172.16.190.133:3000/add-order', {
-        //const response = await fetch('http://192.168.43.103:3000/add-order', {
+        //const response = await fetch('http://172.16.190.133:3000/add-order', {
+        //const response = await fetch('http://192.168.1.13:3000/add-order', {
+        const response = await fetch('http://172.20.10.5:3000/add-order', {
+        //const response = await fetch(`http://${IP_ADDRESS}:3000/add-order`, {
                 method: 'POST',
                 headers: {'Content-Type':'application/Json'},
                 body: datas
@@ -36,7 +38,7 @@ function RecapRDV(props) {
     };
 
     return (
-        <View style={{marginTop: 30}} >
+        <View style={{marginTop: 0}} >
             <Card>
                 <Card.Title>Vous avez choisi un(e) {coupe}</Card.Title>
                 <Card.Divider/>
@@ -47,11 +49,11 @@ function RecapRDV(props) {
                             require("../assets/3.png")
                         }
                     />
-                    <Text style={{textAlign: "center", marginTop: 5}}> cela vous coûtera {prixCoupe} €</Text>
+                    <Text style={{textAlign: "center", marginTop: 5}}> Prix : {prixCoupe} €</Text>
                     <Card.Divider/>
-                    <Text style={{textAlign: "center", marginTop: 5}}> Votre Rdv sera pour le {dateCoupe}</Text>
+                    <Text style={{textAlign: "center", marginTop: 5}}> Date du RDV: {dateCoupe}</Text>
                     <Card.Divider/>
-                    <Text style={{textAlign: "center", marginTop: 5}}> Votre coiffure sera à {heureCoupe}</Text>
+                    <Text style={{textAlign: "center", marginTop: 5}}> à {heureCoupe} heure</Text>
                     <Card.Divider/>
                 </View>
 

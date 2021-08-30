@@ -20,7 +20,7 @@ function Dashboard(props) {
                 }}
             />
         </View>
-        
+        //don't see what it's used for
     )
 }
 
